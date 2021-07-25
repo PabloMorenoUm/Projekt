@@ -1,6 +1,7 @@
-#include <iostream>
+#include "pages/MainMenu.hpp"
 
 int main() {
-    std::cout << "Hello, friendo!" << std::endl;
+    MainMenu game;
+    game.start();
     return 0;
 }

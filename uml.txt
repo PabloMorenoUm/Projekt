@@ -1,0 +1,180 @@
+@startuml
+
+class WindowSize {
+-x: float
+-y: float
++WindowSize()
++getX() const: float
++getY() const: float
+}
+
+class Basic {
+#m_Sprite: sf::Sprite
+#m_Texture: sf::Texture
+#m_WindowSize: WindowSize
++setSprite(const std::string&): void
+}
+
+WindowSize *-- Basic
+
+class Thing {
+#m_Position: sf::Vector2f
+#setPosition(const float&, const float&): void
++Thing()
++Thing(const float&, const float&, const std::string&)
++getSprite() const: const sf::Sprite&
++getBounds() const: sf::FloatRect
+}
+
+Basic <|-- Thing
+
+class BasicPage {
+#m_Window: sf::RenderWindow
+#m_Buffer: sf::SoundBuffer
+#m_Song: sf::Sound
+#m_NotesMusic: Words
+#goToMainMenu(): void
+#modifySong(): void
+#setSong(const std::string&): void
+#setWindow(const std::string&): void
+#input() = 0: virtual void
+#update(float) = 0: virtual void
+#draw() = 0: virtual void
++start(): void
+}
+
+Basic <|-- BasicPage
+Words *-- BasicPage
+
+class Direction {
+-pressed: bool
+-move(): void
+-stop(): void
++handleMoving(const bool&): void
++isPressed() const: bool
+}
+
+class Bob {
+-m_RightPressed: Direction
+-m_LeftPressed: Direction
+-m_UpPressed: Direction
+-m_DownPressed: Direction
+-m_Speed: float
++Bob()
++input(): void
++update(float): void
+}
+
+Thing <|--Bob
+Direction *-- Bob
+
+class Engine {
+-m_Bob: Bob
+-m_ThingRight: Thing
+-m_ThingLeft: Thing
+-m_ThingUp: Thing
+-m_ThingDown: Thing
+-input() override: void
+-update(float) override: void
+-draw() override: void
++Engine()
+}
+
+BasicPage <|-- Engine
+Bob *-- Engine
+
+class MainMenu{
+-titleSize: unsigned
+-itemSize: unsigned
+-title: Words
+-play: Words
+-info: Words
+-quit: Words
+-markItem(Words&, Words&, Words&): static void
+-input() override: void
+-update(float) override: void
+-draw() override: void
++MainMenu()
+}
+
+BasicPage <|-- MainMenu
+
+class Info {
+-itemSize: unsigned
+-title: Words
+-eike: Words
+-moritz: Words
+-pablo: Words
+-input() override: void
+-update(float) override: void
+-draw() override: void
++Info()
+}
+
+BasicPage <|-- Info
+
+class Words {
+-m_Text: sf::Text
+-m_Font: sf::Font
++Words(const std::string&, unsigned)
++Words(const std::string&, unsigned, float, float)
++getText() const: const sf::Text&
++setString(const std::string&): void
++changeColor(const sf::Color&): void
+}
+
+class BallBat {
+#position: sf::Vector2f
+#shape: sf::RectangleShape
+#speed: float
++getPosition(): sf::FloatRect
++getShape() const: const sf::RectangleShape&
++update(float) = 0: virtual void
+}
+
+class Ball {
+-signX: bool
+-signY: bool
+-speedConst: const float
++Ball()
++reboundSides(): void
++reboundBatOrTop(): void
++hitBottom(): void
++update(float): void
+}
+
+BallBat <|-- Ball
+
+class Bat {
+-m_RightPressed: Direction
+-m_LeftPressed: Direction
+-m_WindowSize: WindowSize
+-moveLeft(): void
+-moveRight(): void
++Bat()
++input(): void
++update(float): void
+}
+
+BallBat <|-- Bat
+Direction *-- Bat
+WindowSize *-- Bat
+
+class Pong {
+-score: int
+-lives: int
+-bat: Bat
+-ball: Ball
+-hud: Words
+-writeScore() const: std::string
+-input() override: void
+-update(float) override: void
+-draw() override: void
++Pong()
+}
+
+Bat *-- Pong
+Ball *-- Pong
+BasicPage <|--Pong
+
+@enduml
