@@ -26,7 +26,6 @@ class Engine: public BasicPage {
     void input() override;
     void update(float) override;
     void draw() override;
-    void updateStatus();
 
 public:
     Engine();

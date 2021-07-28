@@ -4,6 +4,7 @@
 
 #include "BasicPage.hpp"
 #include "MainMenu.hpp"
+#include "Engine.hpp"
 #include <iostream>
 using namespace sf;
 using namespace std;
@@ -41,6 +42,13 @@ void BasicPage::goToMainMenu() {
         MainMenu mainMenu;
         mainMenu.start();
     }
+}
+
+void BasicPage::goToBob() {
+        m_Song.stop();
+        m_Window.close();
+        Engine engine{m_MissionsCompleted};
+        engine.start();
 }
 
 void BasicPage::start() {

@@ -26,6 +26,7 @@ protected:
     void loadSong(const std::string&);
     void createWindow(const std::string&);
     void goToMainMenu();
+    void goToBob();
     virtual void input() = 0;
     virtual void update(float) = 0;
     virtual void draw() = 0;

@@ -5,10 +5,11 @@
 #include "Pong.hpp"
 #include "Engine.hpp"
 #include <sstream>
+#include <utility>
 using namespace sf;
 
 Pong::Pong(std::map<std::string, bool> missionsCompleted) {
-    m_MissionsCompleted = missionsCompleted;
+    m_MissionsCompleted = std::move(missionsCompleted);
     createWindow("Pong");
     loadSong("2021_04_07_Helenenmarsch.ogg");
 }
@@ -25,15 +26,14 @@ std::string Pong::writeScore() const {
 
 void Pong::input() {
     bat.input();
+    if (Keyboard::isKeyPressed(Keyboard::Escape))
+        goToBob();
 }
 
 void Pong::update(float dtAsSeconds) {
     if(scoreLimit == score) {
-        m_Song.stop();
-        m_Window.close();
         m_MissionsCompleted["Pong"] = true;
-        Engine engine{m_MissionsCompleted};
-        engine.start();
+        goToBob();
     }
 
     if (ball.getPosition().top > m_WindowSize.getY()) {

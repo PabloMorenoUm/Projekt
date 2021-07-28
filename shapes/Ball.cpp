@@ -22,7 +22,7 @@ void Ball::reboundSides() {
 void Ball::reboundBatOrTop() {
     signY = not signY;
     position.y += signY ? 2.2f : -2.2f;
-    speed += 50;
+    speed += .2;
 }
 
 void Ball::hitBottom() {
@@ -31,10 +31,10 @@ void Ball::hitBottom() {
     speed = speedConst;
 }
 
-void Ball::update(float elapsedTime) {
+void Ball::update(float) {
     // Update the ball position variables
-    position.y += (signY ? +1.0f : -1.0f) * speed * elapsedTime;
-    position.x += (signX ? +1.0f : -1.0f) * speed * elapsedTime;
+    position.y += (signY ? +1.0f : -1.0f) * speed;
+    position.x += (signX ? +1.0f : -1.0f) * speed;
 
     // Move the ball and the bat
     shape.setPosition(position);

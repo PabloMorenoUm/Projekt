@@ -10,7 +10,7 @@
 
 class Ball: public BallBat {
     bool signX = true, signY = true;
-    const float speedConst = 1200.5f;
+    const float speedConst = 1.25f;
 public:
     Ball(float startX, float startY);
     void reboundSides();

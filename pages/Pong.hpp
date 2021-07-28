@@ -20,7 +20,7 @@ class Pong: public BasicPage {
     void update(float) override;
     void draw() override;
 public:
-    Pong(std::map<std::string, bool>);
+    explicit Pong(std::map<std::string, bool>);
 };
 
 

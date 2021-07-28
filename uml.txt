@@ -35,6 +35,7 @@ class BasicPage {
 #m_Song: sf::Sound
 #m_NotesMusic: Words
 #goToMainMenu(): void
+#goToBob(): void
 #modifySong(): void
 #loadSong(const std::string&): void
 #createWindow(const std::string&): void
@@ -80,7 +81,7 @@ class Engine {
 -update(float) override: void
 -draw() override: void
 +Engine()
-+Engine(unsigned)
++Engine(std::map<std::string, bool>)
 }
 
 BasicPage <|-- Engine
@@ -139,7 +140,7 @@ class Ball {
 -signX: bool
 -signY: bool
 -speedConst: const float
-+Ball()
++Ball(float, float)
 +reboundSides(): void
 +reboundBatOrTop(): void
 +hitBottom(): void
@@ -154,7 +155,7 @@ class Bat {
 -m_WindowSize: WindowSize
 -moveLeft(): void
 -moveRight(): void
-+Bat()
++Bat(float, float)
 +input(): void
 +update(float): void
 }
@@ -174,7 +175,7 @@ class Pong {
 -input() override: void
 -update(float) override: void
 -draw() override: void
-+Pong()
++Pong(std::map<std::string, bool>)
 }
 
 Bat *-- Pong
