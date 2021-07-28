@@ -9,10 +9,10 @@ using namespace sf;
 using namespace std;
 
 MainMenu::MainMenu() {
-    setWindow("Welcome to this freaky game!!!");
+    createWindow("Welcome to this freaky game!!!");
     // <a href='https://www.freepik.com/vectors/background'>Background vector created by freepik - www.freepik.com</a>
     setSprite("blue-copy-space-digital-background/4882066.jpg");
-    setSong("2020-10-25_NotInAbleton.ogg");
+    loadSong("2020-10-25_NotInAbleton.ogg");
     title.changeColor(Color::Green);
     play.changeColor(Color::Yellow);
 }

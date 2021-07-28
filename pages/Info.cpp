@@ -5,10 +5,10 @@
 #include "Info.hpp"
 
 Info::Info() {
-    setWindow("Information about this game");
+    createWindow("Information about this game");
     // <a href='https://www.freepik.com/vectors/background'>Background vector created by freepik - www.freepik.com</a>
     setSprite("halftone-background-with-circles/5172658.jpg");
-    setSong("2021_05_28_zug_ibk.ogg");
+    loadSong("2021_05_28_zug_ibk.ogg");
 }
 
 void Info::input() {}

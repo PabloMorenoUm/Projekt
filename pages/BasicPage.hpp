@@ -8,9 +8,12 @@
 #include "../helpers/Basic.hpp"
 #include "../helpers/Words.hpp"
 #include <SFML/Audio.hpp>
+#include <string>
+#include <map>
 
 class BasicPage: public Basic {
 protected:
+    std::map<std::string, bool> m_MissionsCompleted;
     sf::RenderWindow m_Window;
     sf::SoundBuffer m_Buffer;
     sf::Sound m_Song;
@@ -20,8 +23,8 @@ protected:
                        "Press 'k' to go to the main menu.",
                        50};
     void modifySong();
-    void setSong(const std::string&);
-    void setWindow(const std::string&);
+    void loadSong(const std::string&);
+    void createWindow(const std::string&);
     void goToMainMenu();
     virtual void input() = 0;
     virtual void update(float) = 0;

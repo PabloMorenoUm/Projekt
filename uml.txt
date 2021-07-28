@@ -29,14 +29,15 @@ class Thing {
 Basic <|-- Thing
 
 class BasicPage {
+#m_MissionsCompleted: std::map<std::string, bool>
 #m_Window: sf::RenderWindow
 #m_Buffer: sf::SoundBuffer
 #m_Song: sf::Sound
 #m_NotesMusic: Words
 #goToMainMenu(): void
 #modifySong(): void
-#setSong(const std::string&): void
-#setWindow(const std::string&): void
+#loadSong(const std::string&): void
+#createWindow(const std::string&): void
 #input() = 0: virtual void
 #update(float) = 0: virtual void
 #draw() = 0: virtual void
@@ -69,6 +70,7 @@ Thing <|--Bob
 Direction *-- Bob
 
 class Engine {
+-m_Succeed: Words
 -m_Bob: Bob
 -m_ThingRight: Thing
 -m_ThingLeft: Thing
@@ -78,6 +80,7 @@ class Engine {
 -update(float) override: void
 -draw() override: void
 +Engine()
++Engine(unsigned)
 }
 
 BasicPage <|-- Engine
@@ -161,6 +164,7 @@ Direction *-- Bat
 WindowSize *-- Bat
 
 class Pong {
+-scoreLimit: const int
 -score: int
 -lives: int
 -bat: Bat

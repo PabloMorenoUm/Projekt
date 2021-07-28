@@ -3,17 +3,23 @@
 //
 
 #include "Pong.hpp"
+#include "Engine.hpp"
 #include <sstream>
 using namespace sf;
 
-Pong::Pong() {
-    setWindow("Pong");
-    setSong("2021_04_07_Helenenmarsch.ogg");
+Pong::Pong(std::map<std::string, bool> missionsCompleted) {
+    m_MissionsCompleted = missionsCompleted;
+    createWindow("Pong");
+    loadSong("2021_04_07_Helenenmarsch.ogg");
 }
 
 std::string Pong::writeScore() const {
     std::stringstream ss;
-    ss << "Score:" << score << "    Lives:" << lives;
+    if (score == scoreLimit) {
+        ss << "Congratulations!\nYou just reached " << score << " points.";
+    } else{
+        ss << "Try to reach " << scoreLimit << " points.\nScore:" << score << "    Lives:" << lives;
+    }
     return ss.str();
 }
 
@@ -22,6 +28,14 @@ void Pong::input() {
 }
 
 void Pong::update(float dtAsSeconds) {
+    if(scoreLimit == score) {
+        m_Song.stop();
+        m_Window.close();
+        m_MissionsCompleted["Pong"] = true;
+        Engine engine{m_MissionsCompleted};
+        engine.start();
+    }
+
     if (ball.getPosition().top > m_WindowSize.getY()) {
         ball.hitBottom();
         lives--;

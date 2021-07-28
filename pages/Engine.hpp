@@ -9,20 +9,28 @@
 #include "BasicPage.hpp"
 
 class Engine: public BasicPage {
+    Words m_Succeed{"", 100, m_WindowSize.getX() * 2 / 3, m_WindowSize.getY() / 6};
     Bob m_Bob;
 
     // Things on the court
-    Thing m_ThingRight{m_WindowSize.getX() * 9 / 10, m_WindowSize.getY() / 2, "Bewerbungsfoto.jpg"};
-    Thing m_ThingLeft{m_WindowSize.getX() / 10, m_WindowSize.getY() / 2, "Bewerbungsfoto.jpg"};
-    Thing m_ThingUp{m_WindowSize.getX() / 2, m_WindowSize.getY() / 10, "Bewerbungsfoto.jpg"};
-    Thing m_ThingDown{m_WindowSize.getX() / 2, m_WindowSize.getY() * 9 / 10, "Bewerbungsfoto.jpg"};
+    // <div>Icons erstellt von <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/de/" title="Flaticon">www.flaticon.com</a></div>
+    Thing m_ThingRight{m_WindowSize.getX() * 7 / 10, m_WindowSize.getY() * 2 / 5,
+                       "haus.png"};
+    Thing m_ThingLeft{m_WindowSize.getX() / 10, m_WindowSize.getY() * 2 / 5,
+                      "haus.png"};
+    Thing m_ThingUp{m_WindowSize.getX() * 3 / 7, m_WindowSize.getY() / 10,
+                    "haus.png"};
+    Thing m_ThingDown{m_WindowSize.getX() * 3 / 7, m_WindowSize.getY() * 7 / 10,
+                      "haus.png"};
 
     void input() override;
     void update(float) override;
     void draw() override;
+    void updateStatus();
 
 public:
     Engine();
+    explicit Engine(std::map<std::string, bool>);
 };
 
 #endif //PROJEKT_ENGINE_HPP
