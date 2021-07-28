@@ -16,7 +16,7 @@ Pong::Pong(std::map<std::string, bool> missionsCompleted) {
 
 std::string Pong::writeScore() const {
     std::stringstream ss;
-    if (score == scoreLimit) {
+    if (scoreLimit == score) {
         ss << "Congratulations!\nYou just reached " << score << " points.";
     } else{
         ss << "Try to reach " << scoreLimit << " points.\nScore:" << score << "    Lives:" << lives;
@@ -72,6 +72,7 @@ void Pong::draw() {
     // Draw our score
     m_Window.draw(hud.getText());
 
+    m_Window.draw(hintEngine.getText());
     m_Window.draw(m_NotesMusic.getText());
     // Show everything we just drew
     m_Window.display();

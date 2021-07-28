@@ -164,9 +164,16 @@ BallBat <|-- Bat
 Direction *-- Bat
 WindowSize *-- Bat
 
+class GamePage {
+#scoreLimit: const unsigned
+#score: unsigned
+#hintEngine: Words
+#writeScore() const: virtual std::string
+}
+
+BasicPage <|-- GamePage
+
 class Pong {
--scoreLimit: const int
--score: int
 -lives: int
 -bat: Bat
 -ball: Ball
@@ -180,6 +187,25 @@ class Pong {
 
 Bat *-- Pong
 Ball *-- Pong
-BasicPage <|--Pong
+GamePage <|--Pong
+
+class Reaction {
+-q: Words
+-w: Words
+-e: Words
+-a: Words
+-s: Words
+-d: Words
+-y: Words
+-x: Words
+-c: Words
+-index: unsigned
+-input() override: void
+-update(float) override: void
+-draw() override: void
++Reaction(std::map<std::string, bool>)
+}
+
+GamePage <|-- Reaction
 
 @enduml

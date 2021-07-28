@@ -5,9 +5,9 @@
 #ifndef PROJEKT_REACTION_HPP
 #define PROJEKT_REACTION_HPP
 
-#include "BasicPage.hpp"
+#include "GamePage.hpp"
 
-class Reaction: public BasicPage {
+class Reaction: public GamePage {
     Words q{"Q", 200, m_WindowSize.getX() / 3, m_WindowSize.getY() / 3};
     Words w{"W", 200, m_WindowSize.getX() * 2 / 3, m_WindowSize.getY() / 3};
     Words e{"E", 200, m_WindowSize.getX(), m_WindowSize.getY() / 3};
@@ -17,7 +17,7 @@ class Reaction: public BasicPage {
     Words y{"Y", 200, m_WindowSize.getX() / 3, m_WindowSize.getY()};
     Words x{"X", 200, m_WindowSize.getX() * 2 / 3, m_WindowSize.getY()};
     Words c{"C", 200, m_WindowSize.getX(), m_WindowSize.getY()};
-    unsigned score = 0, index;
+    unsigned index;
     void input() override;
     void update(float) override;
     void draw() override;

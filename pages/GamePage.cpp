@@ -10,7 +10,7 @@ std::string GamePage::writeScore() const {
     if (score == scoreLimit) {
         ss << "Congratulations!\nYou just reached " << score << " points.";
     } else{
-        ss << "Try to reach " << scoreLimit << " points.\nScore:" << score << "    Lives:" << lives;
+        ss << "Try to reach " << scoreLimit << " points.\nScore:" << score;
     }
     return ss.str();
 }
