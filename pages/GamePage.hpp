@@ -11,7 +11,8 @@ class GamePage: public BasicPage {
 protected:
     const unsigned scoreLimit = 15;
     unsigned score = 0;
-    Words hintEngine{"Get back to Bob's page", 50, m_WindowSize.getX() / 100, m_WindowSize.getY() * 99 / 100};
+    Words hintEngine{"Press [Escape] to get back to Bob's page", 50,
+                     m_WindowSize.getX() * 7 / 11, m_WindowSize.getY() / 40};
     virtual std::string writeScore() const;
 };
 
