@@ -5,7 +5,7 @@
 #include "Ball.hpp"
 
 // This the constructor and it is called when we create an object
-Ball::Ball(float startX, float startY) {
+Ball::Ball(const float &startX, const float &startY) {
     position.x = startX;
     position.y = startY;
     speed = speedConst;
@@ -31,7 +31,7 @@ void Ball::hitBottom() {
     speed = speedConst;
 }
 
-void Ball::update(float) {
+void Ball::update(const float &elapsedTime) {
     // Update the ball position variables
     position.y += (signY ? +1.0f : -1.0f) * speed;
     position.x += (signX ? +1.0f : -1.0f) * speed;

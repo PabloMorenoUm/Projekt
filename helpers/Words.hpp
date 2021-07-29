@@ -12,8 +12,8 @@ class Words {
     sf::Text m_Text;
     sf::Font m_Font;
 public:
-    Words(const std::string &text, unsigned size);
-    Words(const std::string &text, unsigned size, float posX, float posY);
+    Words(const std::string &text, const unsigned &size);
+    Words(const std::string &text, const unsigned &size, const float &posX, const float &posY);
     const sf::Text &getText() const;
     void setString(const std::string &name);
     void changeColor(const sf::Color &color);

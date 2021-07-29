@@ -6,7 +6,7 @@
 using namespace sf;
 
 // This the constructor and it is called when we create an object
-Bat::Bat(float startX, float startY) {
+Bat::Bat(const float &startX, const float &startY) {
     position.x = startX;
     position.y = startY;
     
@@ -18,11 +18,11 @@ Bat::Bat(float startX, float startY) {
     shape.setFillColor(Color::Cyan);
 }
 
-void Bat::moveLeft(float elapsedTime) {
+void Bat::moveLeft(const float &elapsedTime) {
     position.x -= speed * elapsedTime;
 }
 
-void Bat::moveRight(float elapsedTime) {
+void Bat::moveRight(const float &elapsedTime) {
     position.x += speed * elapsedTime;
 }
 
@@ -31,7 +31,7 @@ void Bat::input() {
     m_LeftPressed.handleMoving(Keyboard::isKeyPressed(Keyboard::Left));
 }
 
-void Bat::update(float elapsedTime) {
+void Bat::update(const float &elapsedTime) {
     if (m_LeftPressed.isPressed() && getPosition().left > 0)
         moveLeft(elapsedTime);
     else if (m_RightPressed.isPressed() &&

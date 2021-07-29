@@ -24,12 +24,12 @@ class Engine: public BasicPage {
                       "haus.png"};
 
     void input() override;
-    void update(float dtAsSeconds) override;
+    void update(const float &dtAsSeconds) override;
     void draw() override;
 
 public:
     Engine();
-    explicit Engine(std::map<std::string, bool> missionsCompleted);
+    explicit Engine(std::map<std::string, bool> &missionsCompleted);
 };
 
 #endif //PROJEKT_ENGINE_HPP

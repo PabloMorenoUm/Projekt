@@ -13,7 +13,7 @@ Info::Info() {
 
 void Info::input() {}
 
-void Info::update(float) {}
+void Info::update(const float &dtAsSeconds) {}
 
 void Info::draw() {
     // Rub out the last frame

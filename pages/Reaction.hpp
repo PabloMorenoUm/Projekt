@@ -8,21 +8,21 @@
 #include "GamePage.hpp"
 
 class Reaction: public GamePage {
-    Words q{"Q", 200, m_WindowSize.getX() / 3, m_WindowSize.getY() / 3};
-    Words w{"W", 200, m_WindowSize.getX() * 2 / 3, m_WindowSize.getY() / 3};
-    Words e{"E", 200, m_WindowSize.getX(), m_WindowSize.getY() / 3};
-    Words a{"A", 200, m_WindowSize.getX() / 3, m_WindowSize.getY() * 2 / 3};
-    Words s{"S", 200, m_WindowSize.getX() * 2 / 3, m_WindowSize.getY() * 2 / 3};
-    Words d{"D", 200, m_WindowSize.getX(), m_WindowSize.getY() * 2 / 3};
-    Words y{"Y", 200, m_WindowSize.getX() / 3, m_WindowSize.getY()};
-    Words x{"X", 200, m_WindowSize.getX() * 2 / 3, m_WindowSize.getY()};
-    Words c{"C", 200, m_WindowSize.getX(), m_WindowSize.getY()};
-    unsigned index;
+    Words m_Q{"Q", 400, m_WindowSize.getX() / 4, m_WindowSize.getY() / 3};
+    Words m_W{"W", 400, m_WindowSize.getX() / 2, m_WindowSize.getY() / 3};
+    Words m_E{"E", 400, m_WindowSize.getX() * 3 / 4, m_WindowSize.getY() / 3};
+    Words m_A{"A", 400, m_WindowSize.getX() / 4, m_WindowSize.getY() / 2};
+    Words m_S{"S", 400, m_WindowSize.getX() / 2, m_WindowSize.getY() / 2};
+    Words m_D{"D", 400, m_WindowSize.getX() * 3 / 4, m_WindowSize.getY() / 2};
+    Words m_Y{"Y", 400, m_WindowSize.getX() / 4, m_WindowSize.getY() * 2 / 3};
+    Words m_X{"X", 400, m_WindowSize.getX() / 2, m_WindowSize.getY() * 2 / 3};
+    Words m_C{"C", 400, m_WindowSize.getX() * 3 / 4, m_WindowSize.getY() * 2 / 3};
+    unsigned index, green;
     void input() override;
-    void update(float) override;
+    void update(const float &dtAsSeconds) override;
     void draw() override;
 public:
-    explicit Reaction(std::map<std::string, bool>);
+    explicit Reaction(std::map<std::string, bool> &missionsCompleted);
 };
 
 

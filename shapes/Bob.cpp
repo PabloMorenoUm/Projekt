@@ -18,7 +18,7 @@ void Bob::input() {
     m_DownPressed.handleMoving(Keyboard::isKeyPressed(Keyboard::Down));
 }
 
-void Bob::update(float elapsedTime) {
+void Bob::update(const float &elapsedTime) {
     if (m_RightPressed.isPressed())
         m_Position.x += m_Speed * elapsedTime;
 

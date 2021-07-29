@@ -40,7 +40,7 @@ class BasicPage {
 #loadSong(const std::string& song): void
 #createWindow(const std::string& title): void
 #input() = 0: virtual void
-#update(float dtAsSeconds) = 0: virtual void
+#update(const float &dtAsSeconds) = 0: virtual void
 #draw() = 0: virtual void
 +start(): void
 }
@@ -64,7 +64,7 @@ class Bob {
 -m_Speed: float
 +Bob()
 +input(): void
-+update(float elapsedTime): void
++update(const float &elapsedTime): void
 }
 
 Thing <|--Bob
@@ -78,10 +78,10 @@ class Engine {
 -m_ThingUp: Thing
 -m_ThingDown: Thing
 -input() override: void
--update(float dtAsSeconds) override: void
+-update(const float &dtAsSeconds) override: void
 -draw() override: void
 +Engine()
-+Engine(std::map<std::string, bool> missionsCompleted)
++Engine(std::map<std::string, bool> &missionsCompleted)
 }
 
 BasicPage <|-- Engine
@@ -96,12 +96,13 @@ class MainMenu{
 -quit: Words
 -markItem(Words& toBeMarked, Words& toBeUnmarked1, Words& toBeUnmarked2): static void
 -input() override: void
--update(float) override: void
+-update(const float &dtAsSeconds) override: void
 -draw() override: void
 +MainMenu()
 }
 
 BasicPage <|-- MainMenu
+Engine o-o MainMenu
 
 class Info {
 -itemSize: unsigned
@@ -110,18 +111,19 @@ class Info {
 -moritz: Words
 -pablo: Words
 -input() override: void
--update(float) override: void
+-update(const float &dtAsSeconds) override: void
 -draw() override: void
 +Info()
 }
 
 BasicPage <|-- Info
+MainMenu o-o Info
 
 class Words {
 -m_Text: sf::Text
 -m_Font: sf::Font
-+Words(const std::string& text, unsigned size)
-+Words(const std::string& text, unsigned size, float posX, float posY)
++Words(const std::string& text, const unsigned &size)
++Words(const std::string& text, const unsigned &size, const float &posX, const float &posY)
 +getText() const: const sf::Text&
 +setString(const std::string& name): void
 +changeColor(const sf::Color& color): void
@@ -133,18 +135,18 @@ class BallBat {
 #speed: float
 +getPosition(): sf::FloatRect
 +getShape() const: const sf::RectangleShape&
-+update(float) = 0: virtual void
++update(const float &elapsedTime) = 0: virtual void
 }
 
 class Ball {
 -signX: bool
 -signY: bool
 -speedConst: const float
-+Ball(float, float)
++Ball(const float &startX, const float &startY)
 +reboundSides(): void
 +reboundBatOrTop(): void
 +hitBottom(): void
-+update(float): void
++update(const float &elapsedTime): void
 }
 
 BallBat <|-- Ball
@@ -153,11 +155,11 @@ class Bat {
 -m_RightPressed: Direction
 -m_LeftPressed: Direction
 -m_WindowSize: WindowSize
--moveLeft(float elapsedTime): void
--moveRight(float elapsedTime): void
-+Bat(float startX, float startY)
+-moveLeft(const float &elapsedTime): void
+-moveRight(const float &elapsedTime): void
++Bat(const float &startX, const float &startY)
 +input(): void
-+update(float elapsedTime): void
++update(const float &elapsedTime): void
 }
 
 BallBat <|-- Bat
@@ -167,6 +169,7 @@ WindowSize *-- Bat
 class GamePage {
 #scoreLimit: const unsigned
 #score: unsigned
+#hud: Words
 #hintEngine: Words
 #writeScore() const: virtual std::string
 }
@@ -177,17 +180,17 @@ class Pong {
 -lives: int
 -bat: Bat
 -ball: Ball
--hud: Words
 -writeScore() const: std::string
 -input() override: void
--update(float dtAsSeconds) override: void
+-update(const float &dtAsSeconds) override: void
 -draw() override: void
-+Pong(std::map<std::string, bool> missionsCompleted)
++Pong(std::map<std::string, bool> &missionsCompleted)
 }
 
 Bat *-- Pong
 Ball *-- Pong
 GamePage <|--Pong
+Engine o-o Pong
 
 class Reaction {
 -q: Words
@@ -201,11 +204,12 @@ class Reaction {
 -c: Words
 -index: unsigned
 -input() override: void
--update(float) override: void
+-update(const float &dtAsSeconds) override: void
 -draw() override: void
-+Reaction(std::map<std::string, bool>)
++Reaction(std::map<std::string, bool> &missionsCompleted)
 }
 
 GamePage <|-- Reaction
+Engine o-o Reaction
 
 @enduml

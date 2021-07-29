@@ -15,7 +15,7 @@ protected:
 public:
     sf::FloatRect getPosition();
     const sf::RectangleShape &getShape() const;
-    virtual void update(float) = 0;
+    virtual void update(const float &elapsedTime) = 0;
 };
 
 

@@ -4,6 +4,7 @@
 
 #include "Engine.hpp"
 #include "Pong.hpp"
+#include "Reaction.hpp"
 #include <algorithm>
 #include <utility>
 
@@ -12,7 +13,7 @@ using namespace sf;
 Engine::Engine() {
     m_MissionsCompleted["Pong"] = false;
     m_MissionsCompleted["Game2"] = false;
-    m_MissionsCompleted["Game3"] = false;
+    m_MissionsCompleted["Reaction"] = false;
     m_MissionsCompleted["Game4"] = false;
     createWindow("Simple Game Engine");
     // <a href='https://www.freepik.com/vectors/background'>Background vector created by upklyak - www.freepik.com</a>
@@ -20,12 +21,12 @@ Engine::Engine() {
     loadSong("2020_09_13_rockfunk.ogg");
 }
 
-Engine::Engine(std::map<std::string, bool> missionsCompleted) : Engine() {
+Engine::Engine(std::map<std::string, bool> &missionsCompleted) : Engine() {
     m_MissionsCompleted = std::move(missionsCompleted);
 
     m_ThingUp.setSprite(m_MissionsCompleted["Pong"] ? "icons8-checkmark-480.png" : "haus.png");
     m_ThingDown.setSprite(m_MissionsCompleted["Game2"] ? "icons8-checkmark-480.png" : "haus.png");
-    m_ThingLeft.setSprite(m_MissionsCompleted["Game3"] ? "icons8-checkmark-480.png" : "haus.png");
+    m_ThingLeft.setSprite(m_MissionsCompleted["Reaction"] ? "icons8-checkmark-480.png" : "haus.png");
     m_ThingRight.setSprite(m_MissionsCompleted["Game4"] ? "icons8-checkmark-480.png" : "haus.png");
 
     if (std::all_of(m_MissionsCompleted.begin(), m_MissionsCompleted.end(),
@@ -37,7 +38,7 @@ void Engine::input() {
     m_Bob.input();
 }
 
-void Engine::update(float dtAsSeconds) {
+void Engine::update(const float &dtAsSeconds) {
     m_Bob.update(dtAsSeconds);
 
     if (m_Bob.getBounds().intersects(m_ThingUp.getBounds())) {
@@ -45,6 +46,13 @@ void Engine::update(float dtAsSeconds) {
         m_Window.close();
         Pong pong{m_MissionsCompleted};
         pong.start();
+    }
+
+    if (m_Bob.getBounds().intersects(m_ThingLeft.getBounds())) {
+        m_Song.stop();
+        m_Window.close();
+        Reaction reaction{m_MissionsCompleted};
+        reaction.start();
     }
 }
 

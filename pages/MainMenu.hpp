@@ -17,7 +17,7 @@ class MainMenu: public BasicPage {
     static void markItem(Words &toBeMarked, Words &toBeUnmarked1, Words &toBeUnmarked2);
 
     void input() override;
-    void update(float) override;
+    void update(const float &dtAsSeconds) override;
     void draw() override;
 public:
     MainMenu();

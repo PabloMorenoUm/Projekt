@@ -49,7 +49,7 @@ void MainMenu::input() {
     }
 }
 
-void MainMenu::update(float) {
+void MainMenu::update(const float &dtAsSeconds) {
 }
 
 void MainMenu::draw() {

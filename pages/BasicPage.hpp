@@ -28,7 +28,7 @@ protected:
     void goToMainMenu();
     void goToBob();
     virtual void input() = 0;
-    virtual void update(float) = 0;
+    virtual void update(const float &dtAsSeconds) = 0;
     virtual void draw() = 0;
 public:
     void start();
