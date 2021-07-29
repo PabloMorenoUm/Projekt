@@ -6,9 +6,9 @@
 
 WindowSize::WindowSize() {
     // 2880
-    x = sf::VideoMode::getDesktopMode().width;
+    x = (float) sf::VideoMode::getDesktopMode().width;
     // 1800
-    y = sf::VideoMode::getDesktopMode().height;
+    y = (float) sf::VideoMode::getDesktopMode().height;
 }
 
 float WindowSize::getX() const {

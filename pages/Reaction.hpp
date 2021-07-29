@@ -6,6 +6,7 @@
 #define PROJEKT_REACTION_HPP
 
 #include "GamePage.hpp"
+#include "../helpers/Direction.hpp"
 
 class Reaction: public GamePage {
     Words m_Q{"Q", 400, m_WindowSize.getX() / 4, m_WindowSize.getY() / 3};
@@ -17,7 +18,15 @@ class Reaction: public GamePage {
     Words m_Y{"Y", 400, m_WindowSize.getX() / 4, m_WindowSize.getY() * 2 / 3};
     Words m_X{"X", 400, m_WindowSize.getX() / 2, m_WindowSize.getY() * 2 / 3};
     Words m_C{"C", 400, m_WindowSize.getX() * 3 / 4, m_WindowSize.getY() * 2 / 3};
-    unsigned index, green;
+    Direction m_PressedQ{};
+    Direction m_PressedW{};
+    Direction m_PressedE{};
+    Direction m_PressedA{};
+    Direction m_PressedS{};
+    Direction m_PressedD{};
+    Direction m_PressedY{};
+    Direction m_PressedX{};
+    Direction m_PressedC{};
     void input() override;
     void update(const float &dtAsSeconds) override;
     void draw() override;

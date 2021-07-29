@@ -11,8 +11,8 @@
 #include <SFML/Graphics.hpp>
 
 class Bat: public BallBat {
-    Direction m_RightPressed;
-    Direction m_LeftPressed;
+    Direction m_RightPressed{};
+    Direction m_LeftPressed{};
     WindowSize m_WindowSize;
     void moveLeft(const float &elapsedTime);
     void moveRight(const float &elapsedTime);

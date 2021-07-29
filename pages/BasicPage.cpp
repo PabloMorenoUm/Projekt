@@ -55,7 +55,7 @@ void BasicPage::start() {
     Clock clock;
 
     while (m_Window.isOpen()) {
-        Event event;
+        Event event{};
         while (m_Window.pollEvent(event)) {
             if (event.type == Event::Closed)
                 m_Window.close();

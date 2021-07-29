@@ -17,6 +17,7 @@ protected:
     sf::RenderWindow m_Window;
     sf::SoundBuffer m_Buffer;
     sf::Sound m_Song;
+    sf::Clock m_Clock;
     Words m_NotesMusic{"Press 'm' to stop the song.\n"
                        "Press 'n' to pause the song.\n"
                        "Press 'b' to continue/restart the song.\n"

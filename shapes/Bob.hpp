@@ -6,14 +6,15 @@
 #define PROJEKT_BOB_HPP
 
 #pragma once
+
 #include "Thing.hpp"
 #include "../helpers/Direction.hpp"
 
-class Bob: public Thing {
-    Direction m_RightPressed;
-    Direction m_LeftPressed;
-    Direction m_UpPressed;
-    Direction m_DownPressed;
+class Bob : public Thing {
+    Direction m_RightPressed{};
+    Direction m_LeftPressed{};
+    Direction m_UpPressed{};
+    Direction m_DownPressed{};
     float m_Speed;
 public:
     Bob();
