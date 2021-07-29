@@ -6,14 +6,13 @@
 #include <random>
 
 #define TYPE(LETTER) \
-    m_Pressed##LETTER.handleMoving(Keyboard::isKeyPressed(Keyboard::LETTER));
-#define CHANGECOLOR(LETTER) \
-if (m_Pressed##LETTER.isPressed()){ \
-    if (m_##LETTER.getText().getFillColor() == Color::Green) \
-        ++score; \
-    if (m_##LETTER.getText().getFillColor() == Color::Red && score > 0) \
-        --score; \
-}
+    if (Keyboard::isKeyPressed(Keyboard::LETTER)){ \
+        if (m_##LETTER.getText().getFillColor() == Color::Green) \
+            ++score; \
+        if (m_##LETTER.getText().getFillColor() == Color::Red && score > 0) \
+            --score; \
+        m_##LETTER.changeColor(Color::White); \
+    }
 #define COLOR(LETTER) \
     if (rand01(gen)) \
         m_##LETTER.changeColor(Color::Green); \
@@ -50,16 +49,6 @@ void Reaction::update(const float &dtAsSeconds) {
         m_MissionsCompleted["Reaction"] = true;
         goToBob();
     }
-
-    CHANGECOLOR(Q)
-    CHANGECOLOR(W)
-    CHANGECOLOR(E)
-    CHANGECOLOR(A)
-    CHANGECOLOR(S)
-    CHANGECOLOR(D)
-    CHANGECOLOR(Y)
-    CHANGECOLOR(X)
-    CHANGECOLOR(C)
 
     float timeLeft = m_Clock.getElapsedTime().asSeconds();
     auto timeFloor = (unsigned) floor(timeLeft);
@@ -115,6 +104,8 @@ void Reaction::update(const float &dtAsSeconds) {
         m_X.changeColor(Color::White);
         m_C.changeColor(Color::White);
     }
+
+    hud.setString(writeScore());
 }
 
 void Reaction::draw() {
