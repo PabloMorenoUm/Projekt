@@ -11,7 +11,7 @@ class Direction {
     void move();
     void stop();
 public:
-    void handleMoving(const bool&);
+    void handleMoving(const bool& button);
     bool isPressed() const;
 };
 

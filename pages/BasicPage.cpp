@@ -18,7 +18,7 @@ void BasicPage::modifySong() {
         m_Song.play();
 }
 
-void BasicPage::loadSong(const string& song) {
+void BasicPage::loadSong(const string &song) {
     try{
         m_Buffer.loadFromFile(song);
         m_Song.setBuffer(m_Buffer);
@@ -29,7 +29,7 @@ void BasicPage::loadSong(const string& song) {
     }
 }
 
-void BasicPage::createWindow(const string& title) {
+void BasicPage::createWindow(const string &title) {
     m_Window.create(VideoMode(m_WindowSize.getX(), m_WindowSize.getY()),
                     title,
                     Style::Fullscreen);

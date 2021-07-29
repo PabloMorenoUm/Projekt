@@ -14,12 +14,12 @@ class Bat: public BallBat {
     Direction m_RightPressed;
     Direction m_LeftPressed;
     WindowSize m_WindowSize;
-    void moveLeft(float);
-    void moveRight(float);
+    void moveLeft(float elapsedTime);
+    void moveRight(float elapsedTime);
 public:
     Bat(float startX, float startY);
     void input();
-    void update(float) override;
+    void update(float elapsedTime) override;
 
 };
 

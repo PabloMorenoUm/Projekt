@@ -30,6 +30,7 @@ void MainMenu::input() {
         markItem(info, play, quit);
     if (Keyboard::isKeyPressed(Keyboard::Q))
         markItem(quit, info, play);
+
     if (Keyboard::isKeyPressed(Keyboard::Enter)){
         if (play.getText().getFillColor() == Color::Yellow) {
             m_Song.stop();

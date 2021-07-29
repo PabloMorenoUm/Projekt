@@ -12,16 +12,16 @@ class Basic {
 #m_Sprite: sf::Sprite
 #m_Texture: sf::Texture
 #m_WindowSize: WindowSize
-+setSprite(const std::string&): void
++setSprite(const std::string& filename): void
 }
 
 WindowSize *-- Basic
 
 class Thing {
 #m_Position: sf::Vector2f
-#setPosition(const float&, const float&): void
+#setPosition(const float& posX, const float& posY): void
 +Thing()
-+Thing(const float&, const float&, const std::string&)
++Thing(const float& posX, const float& posY, const std::string& filename)
 +getSprite() const: const sf::Sprite&
 +getBounds() const: sf::FloatRect
 }
@@ -37,10 +37,10 @@ class BasicPage {
 #goToMainMenu(): void
 #goToBob(): void
 #modifySong(): void
-#loadSong(const std::string&): void
-#createWindow(const std::string&): void
+#loadSong(const std::string& song): void
+#createWindow(const std::string& title): void
 #input() = 0: virtual void
-#update(float) = 0: virtual void
+#update(float dtAsSeconds) = 0: virtual void
 #draw() = 0: virtual void
 +start(): void
 }
@@ -52,7 +52,7 @@ class Direction {
 -pressed: bool
 -move(): void
 -stop(): void
-+handleMoving(const bool&): void
++handleMoving(const bool& button): void
 +isPressed() const: bool
 }
 
@@ -64,7 +64,7 @@ class Bob {
 -m_Speed: float
 +Bob()
 +input(): void
-+update(float): void
++update(float elapsedTime): void
 }
 
 Thing <|--Bob
@@ -78,10 +78,10 @@ class Engine {
 -m_ThingUp: Thing
 -m_ThingDown: Thing
 -input() override: void
--update(float) override: void
+-update(float dtAsSeconds) override: void
 -draw() override: void
 +Engine()
-+Engine(std::map<std::string, bool>)
++Engine(std::map<std::string, bool> missionsCompleted)
 }
 
 BasicPage <|-- Engine
@@ -94,7 +94,7 @@ class MainMenu{
 -play: Words
 -info: Words
 -quit: Words
--markItem(Words&, Words&, Words&): static void
+-markItem(Words& toBeMarked, Words& toBeUnmarked1, Words& toBeUnmarked2): static void
 -input() override: void
 -update(float) override: void
 -draw() override: void
@@ -120,11 +120,11 @@ BasicPage <|-- Info
 class Words {
 -m_Text: sf::Text
 -m_Font: sf::Font
-+Words(const std::string&, unsigned)
-+Words(const std::string&, unsigned, float, float)
++Words(const std::string& text, unsigned size)
++Words(const std::string& text, unsigned size, float posX, float posY)
 +getText() const: const sf::Text&
-+setString(const std::string&): void
-+changeColor(const sf::Color&): void
++setString(const std::string& name): void
++changeColor(const sf::Color& color): void
 }
 
 class BallBat {
@@ -153,11 +153,11 @@ class Bat {
 -m_RightPressed: Direction
 -m_LeftPressed: Direction
 -m_WindowSize: WindowSize
--moveLeft(): void
--moveRight(): void
-+Bat(float, float)
+-moveLeft(float elapsedTime): void
+-moveRight(float elapsedTime): void
++Bat(float startX, float startY)
 +input(): void
-+update(float): void
++update(float elapsedTime): void
 }
 
 BallBat <|-- Bat
@@ -180,9 +180,9 @@ class Pong {
 -hud: Words
 -writeScore() const: std::string
 -input() override: void
--update(float) override: void
+-update(float dtAsSeconds) override: void
 -draw() override: void
-+Pong(std::map<std::string, bool>)
++Pong(std::map<std::string, bool> missionsCompleted)
 }
 
 Bat *-- Pong

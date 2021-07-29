@@ -12,11 +12,11 @@ class Words {
     sf::Text m_Text;
     sf::Font m_Font;
 public:
-    Words(const std::string&, unsigned);
-    Words(const std::string&, unsigned, float, float);
+    Words(const std::string &text, unsigned size);
+    Words(const std::string &text, unsigned size, float posX, float posY);
     const sf::Text &getText() const;
-    void setString(const std::string&);
-    void changeColor(const sf::Color&);
+    void setString(const std::string &name);
+    void changeColor(const sf::Color &color);
 };
 
 

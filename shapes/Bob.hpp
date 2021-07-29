@@ -18,7 +18,7 @@ class Bob: public Thing {
 public:
     Bob();
     void input();
-    void update(float);
+    void update(float elapsedTime);
 };
 
 

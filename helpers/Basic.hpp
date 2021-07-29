@@ -14,7 +14,7 @@ protected:
     sf::Texture m_Texture;
     WindowSize m_WindowSize;
 public:
-    void setSprite(const std::string&);
+    void setSprite(const std::string &filename);
 };
 
 

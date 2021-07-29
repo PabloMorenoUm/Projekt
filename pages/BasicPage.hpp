@@ -23,8 +23,8 @@ protected:
                        "Press 'k' to go to the main menu.",
                        50};
     void modifySong();
-    void loadSong(const std::string&);
-    void createWindow(const std::string&);
+    void loadSong(const std::string &song);
+    void createWindow(const std::string &title);
     void goToMainMenu();
     void goToBob();
     virtual void input() = 0;

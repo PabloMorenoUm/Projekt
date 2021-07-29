@@ -14,7 +14,7 @@ class MainMenu: public BasicPage {
     Words play{"Play (press 'p' and [enter])", itemSize, m_WindowSize.getX() / 2, m_WindowSize.getY() * 2 / 5};
     Words info{"Information (press 'i' and [enter])", itemSize, m_WindowSize.getX() / 2, m_WindowSize.getY() * 3 / 5};
     Words quit{"Quit (press 'q' and [enter])", itemSize, m_WindowSize.getX() / 2, m_WindowSize.getY() * 4 / 5};
-    static void markItem(Words&, Words&, Words&);
+    static void markItem(Words &toBeMarked, Words &toBeUnmarked1, Words &toBeUnmarked2);
 
     void input() override;
     void update(float) override;

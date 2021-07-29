@@ -8,7 +8,7 @@
 using namespace std;
 using namespace sf;
 
-Words::Words(const string& text, unsigned size) {
+Words::Words(const string &text, unsigned size) {
     try{
         m_Font.loadFromFile("ds_digital/DS-DIGIT.ttf");
         m_Text.setFont(m_Font);
@@ -22,7 +22,7 @@ Words::Words(const string& text, unsigned size) {
     }
 }
 
-Words::Words(const string& text, unsigned size, float posX, float posY):
+Words::Words(const string &text, unsigned size, float posX, float posY):
         Words(text, size) {
     m_Text.setPosition(posX, posY);
 }

@@ -16,10 +16,10 @@ class Pong: public GamePage {
     Words hud{writeScore(), 200, m_WindowSize.getX() / 4, m_WindowSize.getY() / 10};
     std::string writeScore() const override;
     void input() override;
-    void update(float) override;
+    void update(float dtAsSeconds) override;
     void draw() override;
 public:
-    explicit Pong(std::map<std::string, bool>);
+    explicit Pong(std::map<std::string, bool> missionsCompleted);
 };
 
 

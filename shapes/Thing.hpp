@@ -10,10 +10,10 @@
 class Thing: public Basic {
 protected:
     sf::Vector2f m_Position;
-    void setPosition(const float&, const float&);
+    void setPosition(const float& posX, const float& posY);
 public:
     Thing();
-    Thing(const float&, const float&, const std::string&);
+    Thing(const float &posX, const float &posY, const std::string &filename);
     const sf::Sprite &getSprite() const;
     sf::FloatRect getBounds() const;
 };
