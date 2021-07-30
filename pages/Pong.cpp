@@ -8,7 +8,7 @@
 #include <utility>
 using namespace sf;
 
-Pong::Pong(std::map<std::string, bool> &missionsCompleted) {
+Pong::Pong(std::map<Games, bool> &missionsCompleted) {
     m_MissionsCompleted = std::move(missionsCompleted);
     createWindow("Pong");
     loadSong("2021_04_07_Helenenmarsch.ogg");
@@ -32,7 +32,7 @@ void Pong::input() {
 
 void Pong::update(const float &dtAsSeconds) {
     if(scoreLimit == score) {
-        m_MissionsCompleted["Pong"] = true;
+        m_MissionsCompleted[Games::PONG] = true;
         goToBob();
     }
 

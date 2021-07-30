@@ -21,7 +21,7 @@
 using namespace sf;
 using namespace std;
 
-Reaction::Reaction(map<string, bool> &missionsCompleted) {
+Reaction::Reaction(map<Games, bool> &missionsCompleted) {
     m_MissionsCompleted = move(missionsCompleted);
     createWindow("Reaktionsspiel");
     // <a href='https://www.freepik.com/vectors/background'>Background vector created by upklyak - www.freepik.com</a>
@@ -46,7 +46,7 @@ void Reaction::input() {
 
 void Reaction::update(const float &dtAsSeconds) {
     if (scoreLimit == score) {
-        m_MissionsCompleted["Reaction"] = true;
+        m_MissionsCompleted[Games::REACTION] = true;
         goToBob();
     }
 

@@ -11,23 +11,23 @@
 using namespace sf;
 
 Engine::Engine() {
-    m_MissionsCompleted["Pong"] = false;
-    m_MissionsCompleted["Game2"] = false;
-    m_MissionsCompleted["Reaction"] = false;
-    m_MissionsCompleted["Game4"] = false;
+    m_MissionsCompleted[Games::PONG] = false;
+    m_MissionsCompleted[Games::GAME3] = false;
+    m_MissionsCompleted[Games::REACTION] = false;
+    m_MissionsCompleted[Games::GAME4] = false;
     createWindow("Simple Game Engine");
     // <a href='https://www.freepik.com/vectors/background'>Background vector created by upklyak - www.freepik.com</a>
     setSprite("abstract-grunge-decorative-relief-navy-blue-stucco-wall-texture-wide-angle-rough-colored-background.jpg");
     loadSong("2020_09_13_rockfunk.ogg");
 }
 
-Engine::Engine(std::map<std::string, bool> &missionsCompleted) : Engine() {
+Engine::Engine(std::map<Games, bool> &missionsCompleted) : Engine() {
     m_MissionsCompleted = std::move(missionsCompleted);
 
-    m_ThingUp.setSprite(m_MissionsCompleted["Pong"] ? "icons8-checkmark-480.png" : "haus.png");
-    m_ThingDown.setSprite(m_MissionsCompleted["Game2"] ? "icons8-checkmark-480.png" : "haus.png");
-    m_ThingLeft.setSprite(m_MissionsCompleted["Reaction"] ? "icons8-checkmark-480.png" : "haus.png");
-    m_ThingRight.setSprite(m_MissionsCompleted["Game4"] ? "icons8-checkmark-480.png" : "haus.png");
+    m_ThingUp.setSprite(m_MissionsCompleted[Games::PONG] ? "icons8-checkmark-480.png" : "haus.png");
+    m_ThingDown.setSprite(m_MissionsCompleted[Games::GAME3] ? "icons8-checkmark-480.png" : "haus.png");
+    m_ThingLeft.setSprite(m_MissionsCompleted[Games::REACTION] ? "icons8-checkmark-480.png" : "haus.png");
+    m_ThingRight.setSprite(m_MissionsCompleted[Games::GAME4] ? "icons8-checkmark-480.png" : "haus.png");
 
     if (std::all_of(m_MissionsCompleted.begin(), m_MissionsCompleted.end(),
                     [](const auto &p) { return p.second; }))

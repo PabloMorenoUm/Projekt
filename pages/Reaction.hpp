@@ -22,7 +22,7 @@ class Reaction: public GamePage {
     void update(const float &dtAsSeconds) override;
     void draw() override;
 public:
-    explicit Reaction(std::map<std::string, bool> &missionsCompleted);
+    explicit Reaction(std::map<Games, bool> &missionsCompleted);
 };
 
 

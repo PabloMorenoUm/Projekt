@@ -8,6 +8,13 @@ class WindowSize {
 +getY() const: float
 }
 
+enum Games {
+PONG
+REACTION
+GAME3
+GAME4
+}
+
 class Basic {
 #m_Sprite: sf::Sprite
 #m_Texture: sf::Texture
@@ -29,7 +36,7 @@ class Thing {
 Basic <|-- Thing
 
 class BasicPage {
-#m_MissionsCompleted: std::map<std::string, bool>
+#m_MissionsCompleted: std::map<Games, bool>
 #m_Window: sf::RenderWindow
 #m_Buffer: sf::SoundBuffer
 #m_Song: sf::Sound
@@ -47,6 +54,7 @@ class BasicPage {
 }
 
 Basic <|-- BasicPage
+Games *-- BasicPage
 Words *-- BasicPage
 
 class Direction {
@@ -82,7 +90,7 @@ class Engine {
 -update(const float &dtAsSeconds) override: void
 -draw() override: void
 +Engine()
-+Engine(std::map<std::string, bool> &missionsCompleted)
++Engine(std::map<Games, bool> &missionsCompleted)
 }
 
 BasicPage <|-- Engine
@@ -185,7 +193,7 @@ class Pong {
 -input() override: void
 -update(const float &dtAsSeconds) override: void
 -draw() override: void
-+Pong(std::map<std::string, bool> &missionsCompleted)
++Pong(std::map<Games, bool> &missionsCompleted)
 }
 
 Bat *-- Pong
@@ -206,7 +214,7 @@ class Reaction {
 -input() override: void
 -update(const float &dtAsSeconds) override: void
 -draw() override: void
-+Reaction(std::map<std::string, bool> &missionsCompleted)
++Reaction(std::map<Games, bool> &missionsCompleted)
 }
 
 GamePage <|-- Reaction

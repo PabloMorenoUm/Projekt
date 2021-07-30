@@ -7,13 +7,13 @@
 
 #include "../helpers/Basic.hpp"
 #include "../helpers/Words.hpp"
+#include "../helpers/Games.hpp"
 #include <SFML/Audio.hpp>
-#include <string>
 #include <map>
 
 class BasicPage: public Basic {
 protected:
-    std::map<std::string, bool> m_MissionsCompleted;
+    std::map<Games, bool> m_MissionsCompleted;
     sf::RenderWindow m_Window;
     sf::SoundBuffer m_Buffer;
     sf::Sound m_Song;

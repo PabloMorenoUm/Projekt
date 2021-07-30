@@ -18,7 +18,7 @@ class Pong: public GamePage {
     void update(const float &dtAsSeconds) override;
     void draw() override;
 public:
-    explicit Pong(std::map<std::string, bool> &missionsCompleted);
+    explicit Pong(std::map<Games, bool> &missionsCompleted);
 };
 
 

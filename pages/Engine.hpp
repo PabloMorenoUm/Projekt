@@ -29,7 +29,7 @@ class Engine: public BasicPage {
 
 public:
     Engine();
-    explicit Engine(std::map<std::string, bool> &missionsCompleted);
+    explicit Engine(std::map<Games, bool> &missionsCompleted);
 };
 
 #endif //PROJEKT_ENGINE_HPP
