@@ -1,5 +1,9 @@
 /.idea/
 /cmake-build-debug/CMakeFiles/
+/cmake-build-debug/helpers
+/cmake-build-debug/pages
+/cmake-build-debug/shapes
+/cmake-build-debug/Testing
 /cmake-build-debug/cmake_install.cmake
 /cmake-build-debug/CMakeCache.txt
 /cmake-build-debug/Makefile
@@ -7,7 +11,6 @@
 /cmake-build-debug/Projekt.cbp
 /cmake-build-debug/Projekt_run
 /cmake-build-debug/Projekt_run.cbp
-/cmake-build-debug/Testing
 /cmake-build-debug/Doctest_tests/CMakeFiles
 /cmake-build-debug/Doctest_tests/cmake_install.cmake
 /cmake-build-debug/Doctest_tests/Doctest_tests_run
