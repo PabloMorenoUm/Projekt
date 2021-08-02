@@ -5,7 +5,7 @@
 #ifndef PROJEKT_THING_HPP
 #define PROJEKT_THING_HPP
 
-#include "../helpers/Basic.hpp"
+#include "Basic.hpp"
 
 class Thing: public Basic {
 protected:

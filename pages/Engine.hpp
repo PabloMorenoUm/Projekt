@@ -5,7 +5,7 @@
 #ifndef PROJEKT_ENGINE_HPP
 #define PROJEKT_ENGINE_HPP
 
-#include "../shapes/Bob.hpp"
+#include "Bob.hpp"
 #include "BasicPage.hpp"
 
 class Engine: public BasicPage {

@@ -6,11 +6,10 @@
 #define PROJEKT_BALL_HPP
 
 #include "BallBat.hpp"
-#include <SFML/Graphics.hpp>
 
 class Ball: public BallBat {
     bool signX = true, signY = true;
-    const float speedConst = 1.25f;
+    const float speedConst = 1.0f;
 public:
     Ball(const float &startX, const float &startY);
     void reboundSides();

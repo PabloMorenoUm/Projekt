@@ -8,7 +8,7 @@
 #pragma once
 
 #include "Thing.hpp"
-#include "../helpers/Direction.hpp"
+#include "Direction.hpp"
 
 class Bob : public Thing {
     Direction m_RightPressed{};

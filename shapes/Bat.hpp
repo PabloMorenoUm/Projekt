@@ -6,9 +6,8 @@
 #define PROJEKT_BAT_HPP
 
 #include "BallBat.hpp"
-#include "../helpers/Direction.hpp"
-#include "../helpers/WindowSize.hpp"
-#include <SFML/Graphics.hpp>
+#include "Direction.hpp"
+#include "WindowSize.hpp"
 
 class Bat: public BallBat {
     Direction m_RightPressed{};

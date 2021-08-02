@@ -5,9 +5,9 @@
 #ifndef PROJEKT_BASICPAGE_HPP
 #define PROJEKT_BASICPAGE_HPP
 
-#include "../helpers/Basic.hpp"
-#include "../helpers/Words.hpp"
-#include "../helpers/Games.hpp"
+#include "Basic.hpp"
+#include "Words.hpp"
+#include "Games.hpp"
 #include <SFML/Audio.hpp>
 #include <map>
 

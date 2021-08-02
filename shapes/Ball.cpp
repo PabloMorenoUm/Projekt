@@ -22,7 +22,7 @@ void Ball::reboundSides() {
 void Ball::reboundBatOrTop() {
     signY = not signY;
     position.y += signY ? 2.2f : -2.2f;
-    speed += .2;
+    speed += .05f;
 }
 
 void Ball::hitBottom() {

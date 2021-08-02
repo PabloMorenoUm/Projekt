@@ -6,7 +6,7 @@
 #define PROJEKT_REACTION_HPP
 
 #include "GamePage.hpp"
-#include "../helpers/Direction.hpp"
+#include "Direction.hpp"
 
 class Reaction: public GamePage {
     Words m_Q{"Q", 400, m_WindowSize.getX() / 4, m_WindowSize.getY() / 3};

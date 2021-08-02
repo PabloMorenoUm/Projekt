@@ -6,8 +6,8 @@
 #define PROJEKT_PONG_HPP
 
 #include "GamePage.hpp"
-#include "../shapes/Ball.hpp"
-#include "../shapes/Bat.hpp"
+#include "Ball.hpp"
+#include "Bat.hpp"
 
 class Pong: public GamePage {
     unsigned lives = 3;
