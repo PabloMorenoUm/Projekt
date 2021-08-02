@@ -19,7 +19,6 @@ public:
     Bat(const float &startX, const float &startY);
     void input();
     void update(const float &elapsedTime) override;
-
 };
 
 
