@@ -3,10 +3,7 @@ project(Projekt_run)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(
-        Projekt_run
-        main.cpp
-)
+add_executable(Projekt_run main.cpp)
 
 include_directories(helpers)
 add_subdirectory(helpers)

@@ -11,8 +11,8 @@ class WindowSize {
     float x, y;
 public:
     WindowSize();
-    float getX() const;
-    float getY() const;
+    [[nodiscard]] const float& getX() const;
+    [[nodiscard]] const float& getY() const;
 };
 
 

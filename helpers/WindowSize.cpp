@@ -11,10 +11,10 @@ WindowSize::WindowSize() {
     y = (float) sf::VideoMode::getDesktopMode().height;
 }
 
-float WindowSize::getX() const {
+const float& WindowSize::getX() const {
     return x;
 }
 
-float WindowSize::getY() const {
+const float& WindowSize::getY() const {
     return y;
 }

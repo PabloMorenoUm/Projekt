@@ -14,7 +14,6 @@ MainMenu::MainMenu() {
     setSprite("blue-copy-space-digital-background/4882066.jpg");
     loadSong("2020-10-25_NotInAbleton.ogg");
     title.changeColor(Color::Green);
-    play.changeColor(Color::Yellow);
 }
 
 void MainMenu::markItem(Words &toBeMarked, Words &toBeUnmarked1, Words &toBeUnmarked2) {
