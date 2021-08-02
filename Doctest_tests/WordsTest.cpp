@@ -16,4 +16,22 @@ TEST_CASE("Words") {
         CHECK_EQ(words.getText().getPosition().x, doctest::Approx(400.0f).epsilon(tolerance));
         CHECK_EQ(words.getText().getPosition().y, doctest::Approx(300.0f).epsilon(tolerance));
     }
+
+    SUBCASE("New text") {
+        words.setString("Neuer Text");
+        CHECK_EQ(words.getText().getString(), "Neuer Text");
+        CHECK_EQ(words.getText().getFillColor(), sf::Color::White);
+        CHECK_EQ(words.getText().getCharacterSize(), 50);
+        CHECK_EQ(words.getText().getPosition().x, doctest::Approx(400.0f).epsilon(tolerance));
+        CHECK_EQ(words.getText().getPosition().y, doctest::Approx(300.0f).epsilon(tolerance));
+    }
+
+    SUBCASE("New color") {
+        words.changeColor(sf::Color::Black);
+        CHECK_EQ(words.getText().getString(), "Hello World!");
+        CHECK_EQ(words.getText().getFillColor(), sf::Color::Black);
+        CHECK_EQ(words.getText().getCharacterSize(), 50);
+        CHECK_EQ(words.getText().getPosition().x, doctest::Approx(400.0f).epsilon(tolerance));
+        CHECK_EQ(words.getText().getPosition().y, doctest::Approx(300.0f).epsilon(tolerance));
+    }
 }

@@ -4,8 +4,8 @@ class WindowSize {
 -x: float
 -y: float
 +WindowSize()
-+getX() const: float
-+getY() const: float
++getX() const: const float&
++getY() const: const float&
 }
 
 enum Games {

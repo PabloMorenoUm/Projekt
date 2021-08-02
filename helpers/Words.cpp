@@ -4,7 +4,6 @@
 
 #include "Words.hpp"
 #include <iostream>
-#include <sstream>
 using namespace std;
 using namespace sf;
 
@@ -14,9 +13,7 @@ Words::Words(const string &text, const unsigned &size) {
         m_Text.setFont(m_Font);
         m_Text.setCharacterSize(size);
         m_Text.setFillColor(Color::White);
-        stringstream ss;
-        ss << text;
-        m_Text.setString(ss.str());
+        m_Text.setString(text);
     } catch (exception const& e) {
         cerr << e.what() << endl;
     }

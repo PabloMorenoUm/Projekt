@@ -8,7 +8,7 @@ using namespace sf;
 Bob::Bob() {
     m_Speed = 1000.1f;
     setSprite("bob.png");
-    setPosition(m_WindowSize.getX() * 2 / 5, m_WindowSize.getX() * 2 / 5);
+    setPosition(m_WindowSize.getX() / 2, m_WindowSize.getY() / 2);
 }
 
 void Bob::input() {
