@@ -5,6 +5,7 @@
 #include "Engine.hpp"
 #include "Pong.hpp"
 #include "Reaction.hpp"
+#include "ConnectFour.hpp"
 #include <algorithm>
 #include <utility>
 
@@ -12,7 +13,7 @@ using namespace sf;
 
 Engine::Engine() {
     m_MissionsCompleted[Games::PONG] = false;
-    m_MissionsCompleted[Games::GAME3] = false;
+    m_MissionsCompleted[Games::CONNECTFOUR] = false;
     m_MissionsCompleted[Games::REACTION] = false;
     m_MissionsCompleted[Games::GAME4] = false;
     createWindow("Simple Game Engine");
@@ -25,7 +26,7 @@ Engine::Engine(std::map<Games, bool> &missionsCompleted) : Engine() {
     m_MissionsCompleted = std::move(missionsCompleted);
 
     m_ThingUp.setSprite(m_MissionsCompleted[Games::PONG] ? "icons8-checkmark-480.png" : "haus.png");
-    m_ThingDown.setSprite(m_MissionsCompleted[Games::GAME3] ? "icons8-checkmark-480.png" : "haus.png");
+    m_ThingDown.setSprite(m_MissionsCompleted[Games::CONNECTFOUR] ? "icons8-checkmark-480.png" : "haus.png");
     m_ThingLeft.setSprite(m_MissionsCompleted[Games::REACTION] ? "icons8-checkmark-480.png" : "haus.png");
     m_ThingRight.setSprite(m_MissionsCompleted[Games::GAME4] ? "icons8-checkmark-480.png" : "haus.png");
 
@@ -53,6 +54,13 @@ void Engine::update(const float &dtAsSeconds) {
         m_Window.close();
         Reaction reaction{m_MissionsCompleted};
         reaction.start();
+    }
+
+    if (m_Bob.getBounds().intersects(m_ThingDown.getBounds())) {
+        m_Song.stop();
+        m_Window.close();
+        ConnectFour connectFour{m_MissionsCompleted};
+        connectFour.start();
     }
 }
 

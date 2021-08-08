@@ -8,6 +8,7 @@ set(SOURCE_FILES
         MainMenu.cpp
         Pong.cpp
         Reaction.cpp
+        ConnectFour.cpp
         )
 
 add_library(pages STATIC ${SOURCE_FILES})

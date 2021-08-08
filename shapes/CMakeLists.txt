@@ -6,6 +6,7 @@ set(SOURCE_FILES
         Bat.cpp
         Bob.cpp
         Thing.cpp
+        Coin.cpp
         )
 
 add_library(shapes STATIC ${SOURCE_FILES})

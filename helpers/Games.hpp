@@ -7,7 +7,7 @@
 
 
 enum Games {
-    PONG, REACTION, GAME3, GAME4
+    PONG, REACTION, CONNECTFOUR, GAME4
 };
 
 
