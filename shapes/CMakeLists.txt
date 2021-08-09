@@ -7,6 +7,7 @@ set(SOURCE_FILES
         Bob.cpp
         Thing.cpp
         Coin.cpp
+        Board.cpp
         )
 
 add_library(shapes STATIC ${SOURCE_FILES})

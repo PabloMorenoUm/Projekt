@@ -7,6 +7,7 @@
 
 #include "GamePage.hpp"
 #include "Coin.hpp"
+#include "Board.hpp"
 
 class ConnectFour: public GamePage {
     sf::Color neutralColor = sf::Color::Blue;
@@ -15,7 +16,7 @@ class ConnectFour: public GamePage {
     sf::Color computerColor = sf::Color::Yellow;
     static constexpr unsigned nrows = 6, ncols = 7;
     Coin coins[nrows][ncols];
-    Coin coinsOptions[ncols];
+    Coin hiddenCoins[ncols];
     Words numbers[ncols];
     void input() override;
     void update(const float &dtAsSeconds) override;

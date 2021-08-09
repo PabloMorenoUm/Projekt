@@ -41,10 +41,10 @@ ConnectFour::ConnectFour(std::map<Games, bool> &missionsCompleted) {
                            m_WindowSize.getY() * 19 / 20);
 
         // Anzeige "Auswahlmöglichkeit Spalte" über dem Spielfeld:
-        Coin &optionalCoin = coinsOptions[j];
-        optionalCoin.changeColor(hiddenColor);
-        optionalCoin.setRadius(100);
-        optionalCoin.setPosition(m_WindowSize.getX() * ((float) j + .3) / ncols,
+        Coin &hiddenCoin = hiddenCoins[j];
+        hiddenCoin.changeColor(hiddenColor);
+        hiddenCoin.setRadius(100);
+        hiddenCoin.setPosition(m_WindowSize.getX() * ((float) j + .3) / ncols,
                                  m_WindowSize.getY() * .8 / (nrows + 2));
     }
 
@@ -62,71 +62,71 @@ void ConnectFour::input() {
 
     if (Keyboard::isKeyPressed(Keyboard::Num1)) {
         int tobeChanged = 0;
-        coinsOptions[tobeChanged].changeColor(userColor);
+        hiddenCoins[tobeChanged].changeColor(userColor);
         for (int j = 0; j < ncols; ++j) {
             if (j != tobeChanged)
-                coinsOptions[j].changeColor(hiddenColor);
+                hiddenCoins[j].changeColor(hiddenColor);
         }
     }
 
     if (Keyboard::isKeyPressed(Keyboard::Num2)) {
         int tobeChanged = 1;
-        coinsOptions[tobeChanged].changeColor(userColor);
+        hiddenCoins[tobeChanged].changeColor(userColor);
         for (int j = 0; j < ncols; ++j) {
             if (j != tobeChanged)
-                coinsOptions[j].changeColor(hiddenColor);
+                hiddenCoins[j].changeColor(hiddenColor);
         }
     }
 
     if (Keyboard::isKeyPressed(Keyboard::Num3)) {
         int tobeChanged = 2;
-        coinsOptions[tobeChanged].changeColor(userColor);
+        hiddenCoins[tobeChanged].changeColor(userColor);
         for (int j = 0; j < ncols; ++j) {
             if (j != tobeChanged)
-                coinsOptions[j].changeColor(hiddenColor);
+                hiddenCoins[j].changeColor(hiddenColor);
         }
     }
 
     if (Keyboard::isKeyPressed(Keyboard::Num4)) {
         int tobeChanged = 3;
-        coinsOptions[tobeChanged].changeColor(userColor);
+        hiddenCoins[tobeChanged].changeColor(userColor);
         for (int j = 0; j < ncols; ++j) {
             if (j != tobeChanged)
-                coinsOptions[j].changeColor(hiddenColor);
+                hiddenCoins[j].changeColor(hiddenColor);
         }
     }
 
     if (Keyboard::isKeyPressed(Keyboard::Num5)) {
         int tobeChanged = 4;
-        coinsOptions[tobeChanged].changeColor(userColor);
+        hiddenCoins[tobeChanged].changeColor(userColor);
         for (int j = 0; j < ncols; ++j) {
             if (j != tobeChanged)
-                coinsOptions[j].changeColor(hiddenColor);
+                hiddenCoins[j].changeColor(hiddenColor);
         }
     }
 
     if (Keyboard::isKeyPressed(Keyboard::Num6)) {
         int tobeChanged = 5;
-        coinsOptions[tobeChanged].changeColor(userColor);
+        hiddenCoins[tobeChanged].changeColor(userColor);
         for (int j = 0; j < ncols; ++j) {
             if (j != tobeChanged)
-                coinsOptions[j].changeColor(hiddenColor);
+                hiddenCoins[j].changeColor(hiddenColor);
         }
     }
 
     if (Keyboard::isKeyPressed(Keyboard::Num7)) {
         int tobeChanged = 6;
-        coinsOptions[tobeChanged].changeColor(userColor);
+        hiddenCoins[tobeChanged].changeColor(userColor);
         for (int j = 0; j < ncols; ++j) {
             if (j != tobeChanged)
-                coinsOptions[j].changeColor(hiddenColor);
+                hiddenCoins[j].changeColor(hiddenColor);
         }
     }
 
     if(Keyboard::isKeyPressed(Keyboard::Enter)){
         for (int j = 0; j < ncols; ++j) {
             // Suche nach der markierten Spalte:
-            Coin &optionalCoin = coinsOptions[j];
+            Coin &optionalCoin = hiddenCoins[j];
             if(optionalCoin.getShape().getFillColor() == userColor) {
                 optionalCoin.changeColor(hiddenColor);
                 // Münze einwerfen. Die soll so weit UNTEN liegen wie möglich!
@@ -155,7 +155,7 @@ void ConnectFour::draw() {
             m_Window.draw(coinsRow[j].getShape());
         }
         m_Window.draw(numbers[j].getText());
-        m_Window.draw(coinsOptions[j].getShape());
+        m_Window.draw(hiddenCoins[j].getShape());
     }
     m_Window.draw(hud.getText());
     m_Window.draw(hintEngine.getText());

@@ -237,12 +237,12 @@ class Coin {
 class ConnectFour {
 -neutralColor: sf::Color
 -hiddenColor: sf::Color
--userColor: sf::Color
--computerColor: sf::Color
+-playerColor: sf::Color
+-opponentColor: sf::Color
 -nrows: static constexpr unsigned
 -ncols: static constexpr unsigned
 -coins[nrows][ncols]: Coin
--coinsOptions[ncols]: Coin
+-hiddenCoins[ncols]: Coin
 -numbers[ncols]: Words
 -input() override: void
 -update(const float &dtAsSeconds) override: void
