@@ -26,9 +26,8 @@ public:
     int goRightDown(const Coin &actualCoin, int t);
     int goLeftUp(const Coin &actualCoin, int t);
     int goLeftDown(const Coin &actualCoin, int t);
-    double checkForGood();
-    double checkForDangerous();
-    double evaluate();
+    double evaluatePosition(const int coinsInRow, const Coin &coin);
+    double evaluateBoard();
     void addCoin(const unsigned &col, bool &playersTurn);
     void removeCoin(const unsigned &col);
 };

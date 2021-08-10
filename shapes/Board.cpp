@@ -3,6 +3,7 @@
 //
 
 #include "Board.hpp"
+#include<iostream>
 
 unsigned Board::getRow(const unsigned int &id) {
     unsigned value = id % nrows;
@@ -103,19 +104,48 @@ int Board::goLeftDown(const Coin &actualCoin, int t) {
     return t;
 }
 
-double Board::checkForGood() {
-    // still to be done
-    return -1;
+double Board::evaluatePosition(const int coinsInRow , const Coin &coin) {
+    // get the fill color
+    const sf::Color coinColor = coin.getShape().getFillColor();
+    const sf::Color questColorPlayer = coin.getPlayerColor();
+    const sf::Color questColorOpponent = coin.getOpponentColor();
+    const sf::Color questColorNeutral = coin.getNeutralColor();
+
+    if (coinColor == questColorPlayer){
+        if (coinsInRow == 4){
+            return 1;
+        } else if (coinsInRow == 3){
+            return 0.1;
+        } else if (coinsInRow == 2){
+            return 0.01;
+        }
+    } else if (coinColor == questColorOpponent) {
+        if (coinsInRow == 4){
+            return -1;
+        } else if (coinsInRow == 3){
+            return -0.1;
+        } else if (coinsInRow == 2){
+            return -0.02; // 0.02 on purpose different from 0.01
+        }
+    } else if (coinColor == questColorNeutral) {
+        return 0;
+    }
 }
 
-double Board::checkForDangerous() {
-    // still to be done
-    return -1;
-}
-
-double Board::evaluate() {
-    // still to be done
-    return -1;
+double Board::evaluateBoard() {
+    double value {};
+    for(int ii = 1 ; ii <= nrows*ncols ; ii++) {
+        Coin actualCoin = coins[getRow(ii)][getColumn(ii)];
+        value = value + Board::evaluatePosition(actualCoin.getRightNeighbor(),actualCoin) +
+                Board::evaluatePosition(actualCoin.getLeftNeighbor(),actualCoin) +
+                Board::evaluatePosition(actualCoin.getUpperNeighbor(),actualCoin) +
+                Board::evaluatePosition(actualCoin.getLowerNeighbor(),actualCoin) +
+                Board::evaluatePosition(actualCoin.getRightUpperNeighbor(),actualCoin) +
+                Board::evaluatePosition(actualCoin.getRightLowerNeighbor(),actualCoin) +
+                Board::evaluatePosition(actualCoin.getLeftUpperNeighbor(),actualCoin) +
+                Board::evaluatePosition(actualCoin.getLeftLowerNeighbor(),actualCoin); // check all lines
+    }
+    return value;
 }
 
 void Board::addCoin(const unsigned int &col, bool &playersTurn) {
