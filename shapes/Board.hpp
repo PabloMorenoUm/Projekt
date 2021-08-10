@@ -10,11 +10,16 @@
 #include "Words.hpp"
 
 class Board {
+    // Bildschirmmaße:
     WindowSize m_WindowSize;
+    // Dimension des Spielfelds:
     static constexpr unsigned nrows = 6, ncols = 7;
     const int tmax = 3;
+    // Spielfeldmünzen:
     Coin coins[nrows][ncols];
+    // Unsichtbare Münzen als Spaltenmarker, damit der User weiß, welche Spalte gerade ausgewählt ist:
     Coin hiddenCoins[ncols];
+    // Spaltennummerierung, damit der User weiß, wo er tippen soll ;-):
     Words numbers[ncols];
 
     int goRight(const unsigned &i, const unsigned &j, const int &t);

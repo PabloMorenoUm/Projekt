@@ -9,7 +9,7 @@ using namespace std;
 
 Board::Board() {
     for (int j = 0; j < ncols; ++j) {
-        // Münzen auf dem Spielfeld:
+        // Münzen auf dem Spielfeld mit GUI-Koordinaten relativ zu den Bildschirmmaßen versehen:
         for (int i = 0; i < nrows; ++i) {
             Coin &coin = coins[i][j];
             coin.makeNeutral();
@@ -17,7 +17,7 @@ Board::Board() {
             coin.setPosition(m_WindowSize.getX() * ((float) j + .3) / ncols,
                              m_WindowSize.getY() * ((float) i + 1.8) / (nrows + 2));
         }
-        // Beschriftung ganz unten:
+        // Beschriftung unter den Spielfeldmünzen:
         std::stringstream ss;
         ss << j + 1;
         Words &number = numbers[j];
@@ -220,12 +220,12 @@ void Board::input() {
         markColumn(6);
 
     if(Keyboard::isKeyPressed(Keyboard::Enter)){
+        // Player wirft Münze ein.
         for (int j = 0; j < ncols; ++j) {
             // Suche nach der markierten Spalte:
             Coin &hiddenCoin = hiddenCoins[j];
             if(hiddenCoin == hiddenCoin.getPlayerColor()) {
                 hiddenCoin.makeHidden();
-                // Player wirft Münze ein.
                 addCoin(j, true);
                 break;
             }
@@ -235,10 +235,13 @@ void Board::input() {
 
 void Board::draw(RenderWindow &window) {
     for (int j = 0; j < ncols; ++j) {
+        // Spielfeldmünzen in die GUI bringen
         for (auto &coinsRow : coins) {
             window.draw(coinsRow[j].getShape());
         }
+        // Spaltenbeschriftung in die GUI bringen
         window.draw(numbers[j].getText());
+        // Spaltenmarker in die GUI bringen
         window.draw(hiddenCoins[j].getShape());
     }
 }
