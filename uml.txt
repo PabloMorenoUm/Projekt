@@ -224,33 +224,68 @@ GamePage <|-- Reaction
 Engine o-o Reaction
 
 class Coin {
--shape: sf::CircleShape
--id: unsigned
-+getShape() const: const sf::CircleShape&
-+getId() const: unsigned int
-+setId(const unsigned int &id): void
-+changeColor(const sf::Color &color): void
-+setPosition(const float &posX, const float &posY): void
-+setRadius(const float &radius): void
-}
-
-class ConnectFour {
 -neutralColor: sf::Color
 -hiddenColor: sf::Color
 -playerColor: sf::Color
 -opponentColor: sf::Color
--nrows: static constexpr unsigned
+-shape: sf::CircleShape
++getNeutralColor() const: const sf::Color&
++getHiddenColor() const: const sf::Color&
++getPlayerColor() const: const sf::Color&
++getOpponentColor() const: const sf::Color&
++getShape() const: const sf::CircleShape&
++makeNeutral(): void
++makeHidden(): void
++makePlayer(): void
++makeOpponent(): void
++setPosition(const float &posX, const float &posY): void
++setRadius(const float &radius): void
++operator==(const sf::Color &color) const: bool
++operator!=(const sf::Color &color) const: bool
++operator==(const Coin &rhs) const: bool
++operator!=(const Coin &rhs) const: bool
+}
+
+class Board {
+-m_WindowSize: WindowSize
+-nrows:  static constexpr unsigned
 -ncols: static constexpr unsigned
+-tmax: const int
 -coins[nrows][ncols]: Coin
 -hiddenCoins[ncols]: Coin
 -numbers[ncols]: Words
+-goRight(const unsigned &i, const unsigned &j, const int &t): int
+-goLeft(const unsigned &i, const unsigned &j, const int &t): int
+-goUp(const unsigned &i, const unsigned &j, const int &t): int
+-goDown(const unsigned &i, const unsigned &j, const int &t): int
+-goRightUp(const unsigned &i, const unsigned &j, const int &t): int
+-goRightDown(const unsigned &i, const unsigned &j, const int &t): int
+-goLeftUp(const unsigned &i, const unsigned &j, const int &t): int
+-goLeftDown(const unsigned &i, const unsigned &j, const int &t): int
+-markColumn(const int &col): void
+-addCoin(const unsigned &col, const bool &playersTurn): void
+-removeCoin(const unsigned &col): void
+public:
++Board()
++evaluatePosition(const int &coinsInRow, const Coin &coin): double
++evaluateBoard(): double
++input(): void
++draw(sf::RenderWindow &window): void
+}
+
+Coin *-- Board
+WindowSize *-- Board
+Words *-- Board
+
+class ConnectFour {
+-board: Board
 -input() override: void
 -update(const float &dtAsSeconds) override: void
 -draw() override: void
 +ConnectFour(std::map<Games, bool> &missionsCompleted)
 }
 
-Coin *-- ConnectFour
+Board *-- ConnectFour
 GamePage <|-- ConnectFour
 Engine o-o ConnectFour
 
