@@ -53,7 +53,6 @@ Gleichzeitig wirft der Computer seine gelbe Münze in eine Spalte.
 Dabei handelt der Computer nach dem [Minimax-Algorithmus](https://de.wikipedia.org/wiki/Minimax-Algorithmus) 
 und durchsucht in jedem Zug mehrere [Spielbäume](https://de.wikipedia.org/wiki/Tiefensuche#Programmierung).
 
-#Danksagung
-
+# Danksagung
 Außerordenlichen Dank möchte ich Andreas Peterson und insbesondere Benedikt Schenk aussprechen für ihre
 Hilfsbereitschaft und Geduld bei Fragen verschiedenster Art!!!
