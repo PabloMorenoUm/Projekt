@@ -19,13 +19,10 @@
 using namespace sf;
 
 ConnectFour::ConnectFour(std::map<Games, bool> &missionsCompleted) {
-    unsigned id = 0;
     for (int j = 0; j < ncols; ++j) {
         // Münzen auf dem Spielfeld:
         for (int i = 0; i < nrows; ++i) {
-            ++id;
             Coin &coin = coins[i][j];
-            coin.setId(id);
             coin.changeColor(neutralColor);
             coin.setRadius(100);
             coin.setPosition(m_WindowSize.getX() * ((float) j + .3) / ncols,

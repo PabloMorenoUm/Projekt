@@ -3,113 +3,85 @@
 //
 
 #include "Board.hpp"
-#include<iostream>
 
-unsigned Board::getRow(const unsigned int &id) {
-    unsigned value = id % nrows;
-    if (value != 0)
-        return value - 1;
-    return 5;
-}
-
-unsigned Board::getColumn(const unsigned int &id) {
-    return (id - 1) / nrows;
-}
-
-int Board::goRight(const Coin &actualCoin, int t) {
-    if(t < tmax && actualCoin.getRightNeighbor() != -1) {
-        unsigned id = actualCoin.getRightNeighbor();
-        Coin &neighbor = coins[getRow(id)][getColumn(id)];
-        if (neighbor.getShape().getFillColor() == actualCoin.getShape().getFillColor()) {
-            return goRight(neighbor, t + 1);
+int Board::goRight(const unsigned &i, const unsigned &j, const int &t) {
+    if(t < tmax && j < ncols - 1) {
+        if (coins[i][j + 1].getShape().getFillColor() == coins[i][j].getShape().getFillColor()) {
+            return goRight(i, j + 1, t + 1);
         }
     }
     return t;
 }
 
-int Board::goLeft(const Coin &actualCoin, int t) {
-    if(t < tmax && actualCoin.getLeftNeighbor() != -1) {
-        unsigned id = actualCoin.getLeftNeighbor();
-        Coin &neighbor = coins[getRow(id)][getColumn(id)];
-        if (neighbor.getShape().getFillColor() == actualCoin.getShape().getFillColor()) {
-            return goLeft(neighbor, t + 1);
+int Board::goLeft(const unsigned &i, const unsigned &j, const int &t) {
+    if(t < tmax && j > 0) {
+        if (coins[i][j - 1].getShape().getFillColor() == coins[i][j].getShape().getFillColor()) {
+            return goLeft(i, j - 1, t + 1);
         }
     }
     return t;
 }
 
-int Board::goUp(const Coin &actualCoin, int t) {
-    if(t < tmax && actualCoin.getUpperNeighbor() != -1) {
-        unsigned id = actualCoin.getUpperNeighbor();
-        Coin &neighbor = coins[getRow(id)][getColumn(id)];
-        if (neighbor.getShape().getFillColor() == actualCoin.getShape().getFillColor()) {
-            return goUp(neighbor, t + 1);
+int Board::goUp(const unsigned &i, const unsigned &j, const int &t) {
+    if(t < tmax && i > 0) {
+        if (coins[i - 1][j].getShape().getFillColor() == coins[i][j].getShape().getFillColor()) {
+            return goUp(i - 1, j, t + 1);
         }
     }
     return t;
 }
 
-int Board::goDown(const Coin &actualCoin, int t) {
-    if(t < tmax && actualCoin.getLowerNeighbor() != -1) {
-        unsigned id = actualCoin.getLowerNeighbor();
-        Coin &neighbor = coins[getRow(id)][getColumn(id)];
-        if (neighbor.getShape().getFillColor() == actualCoin.getShape().getFillColor()) {
-            return goDown(neighbor, t + 1);
+int Board::goDown(const unsigned &i, const unsigned &j, const int &t) {
+    if(t < tmax && i < nrows - 1) {
+        if (coins[i + 1][j].getShape().getFillColor() == coins[i][j].getShape().getFillColor()) {
+            return goDown(i + 1, j, t + 1);
         }
     }
     return t;
 }
 
-int Board::goRightUp(const Coin &actualCoin, int t) {
-    if(t < tmax && actualCoin.getRightUpperNeighbor() != -1) {
-        unsigned id = actualCoin.getRightUpperNeighbor();
-        Coin &neighbor = coins[getRow(id)][getColumn(id)];
-        if (neighbor.getShape().getFillColor() == actualCoin.getShape().getFillColor()) {
-            return goRightUp(neighbor, t + 1);
+int Board::goRightUp(const unsigned &i, const unsigned &j, const int &t) {
+    if(t < tmax && i > 0 && j < ncols - 1) {
+        if (coins[i - 1][j + 1].getShape().getFillColor() == coins[i][j].getShape().getFillColor()) {
+            return goRightUp(i - 1, j + 1, t + 1);
         }
     }
     return t;
 }
 
-int Board::goRightDown(const Coin &actualCoin, int t) {
-    if(t < tmax && actualCoin.getRightLowerNeighbor() != -1) {
-        unsigned id = actualCoin.getRightLowerNeighbor();
-        Coin &neighbor = coins[getRow(id)][getColumn(id)];
-        if (neighbor.getShape().getFillColor() == actualCoin.getShape().getFillColor()) {
-            return goRightDown(neighbor, t + 1);
+int Board::goRightDown(const unsigned &i, const unsigned &j, const int &t) {
+    if(t < tmax && i < nrows - 1 && j < ncols - 1) {
+        if (coins[i + 1][j + 1].getShape().getFillColor() == coins[i][j].getShape().getFillColor()) {
+            return goRightDown(i + 1, j + 1, t + 1);
         }
     }
     return t;
 }
 
-int Board::goLeftUp(const Coin &actualCoin, int t) {
-    if(t < tmax && actualCoin.getLeftUpperNeighbor() != -1) {
-        unsigned id = actualCoin.getLeftUpperNeighbor();
-        Coin &neighbor = coins[getRow(id)][getColumn(id)];
-        if (neighbor.getShape().getFillColor() == actualCoin.getShape().getFillColor()) {
-            return goLeftUp(neighbor, t + 1);
+int Board::goLeftUp(const unsigned &i, const unsigned &j, const int &t) {
+    if(t < tmax && i > 0 && j > 0) {
+        if (coins[i - 1][j - 1].getShape().getFillColor() == coins[i][j].getShape().getFillColor()) {
+            return goLeftUp(i - 1, j - 1, t + 1);
         }
     }
     return t;
 }
 
-int Board::goLeftDown(const Coin &actualCoin, int t) {
-    if(t < tmax && actualCoin.getLeftLowerNeighbor() != -1) {
-        unsigned id = actualCoin.getLeftLowerNeighbor();
-        Coin &neighbor = coins[getRow(id)][getColumn(id)];
-        if (neighbor.getShape().getFillColor() == actualCoin.getShape().getFillColor()) {
-            return goLeftDown(neighbor, t + 1);
+int Board::goLeftDown(const unsigned &i, const unsigned &j, const int &t) {
+    if(t < tmax && i < nrows - 1 && j > 0) {
+        if (coins[i + 1][j - 1].getShape().getFillColor() == coins[i][j].getShape().getFillColor()) {
+            return goLeftDown(i + 1, j - 1, t + 1);
         }
     }
     return t;
 }
 
-double Board::evaluatePosition(const int coinsInRow , const Coin &coin) {
+double Board::evaluatePosition(const int &coinsInRow, const Coin &coin) {
     // get the fill color
-    const sf::Color coinColor = coin.getShape().getFillColor();
-    const sf::Color questColorPlayer = coin.getPlayerColor();
-    const sf::Color questColorOpponent = coin.getOpponentColor();
-    const sf::Color questColorNeutral = coin.getNeutralColor();
+    const sf::Color &coinColor = coin.getShape().getFillColor();
+    const sf::Color &questColorPlayer = coin.getPlayerColor();
+    const sf::Color &questColorOpponent = coin.getOpponentColor();
+    const sf::Color &questColorNeutral = coin.getNeutralColor();
 
     if (coinColor == questColorPlayer){
         if (coinsInRow == 4){
@@ -133,17 +105,20 @@ double Board::evaluatePosition(const int coinsInRow , const Coin &coin) {
 }
 
 double Board::evaluateBoard() {
+    int tStart = 1;
     double value {};
-    for(int ii = 1 ; ii <= nrows*ncols ; ii++) {
-        Coin actualCoin = coins[getRow(ii)][getColumn(ii)];
-        value = value + Board::evaluatePosition(actualCoin.getRightNeighbor(),actualCoin) +
-                Board::evaluatePosition(actualCoin.getLeftNeighbor(),actualCoin) +
-                Board::evaluatePosition(actualCoin.getUpperNeighbor(),actualCoin) +
-                Board::evaluatePosition(actualCoin.getLowerNeighbor(),actualCoin) +
-                Board::evaluatePosition(actualCoin.getRightUpperNeighbor(),actualCoin) +
-                Board::evaluatePosition(actualCoin.getRightLowerNeighbor(),actualCoin) +
-                Board::evaluatePosition(actualCoin.getLeftUpperNeighbor(),actualCoin) +
-                Board::evaluatePosition(actualCoin.getLeftLowerNeighbor(),actualCoin); // check all lines
+    for(int i = 0 ; i < nrows ; ++i) {
+        for (int j = 0; j < ncols; ++j) {
+            Coin &actualCoin = coins[i][j];
+            value = value + Board::evaluatePosition(goRight(i, j, tStart),actualCoin) +
+                    Board::evaluatePosition(goLeft(i, j, tStart),actualCoin) +
+                    Board::evaluatePosition(goUp(i, j, tStart),actualCoin) +
+                    Board::evaluatePosition(goDown(i, j, tStart),actualCoin) +
+                    Board::evaluatePosition(goRightUp(i, j, tStart),actualCoin) +
+                    Board::evaluatePosition(goRightDown(i, j, tStart),actualCoin) +
+                    Board::evaluatePosition(goLeftUp(i, j, tStart),actualCoin) +
+                    Board::evaluatePosition(goLeftDown(i, j, tStart),actualCoin); // check all lines
+        }
     }
     return value;
 }
@@ -173,13 +148,10 @@ void Board::removeCoin(const unsigned int &col) {
 }
 
 Board::Board() {
-    unsigned idTemp = 0;
     for (int j = 0; j < ncols; ++j) {
         // Münzen auf dem Spielfeld:
         for (int i = 0; i < nrows; ++i) {
-            ++idTemp;
             Coin &coin = coins[i][j];
-            coin.setId(idTemp);
             coin.makeNeutral();
             coin.setRadius(100);
             coin.setPosition(m_WindowSize.getX() * ((float) j + .3) / ncols,
