@@ -1,11 +1,11 @@
 #include "pages/MainMenu.hpp"
 #include "Board.hpp"
 #include "WindowSize.hpp"
-#include <iostream>*/
+#include <iostream>
 
 int main() {
-//    MainMenu game;
-//    game.start();
+    MainMenu game;
+    game.start();
     // Erster Test, ob sich das Board bewerten lässt.
 
     /*WindowSize m_WindowSize;

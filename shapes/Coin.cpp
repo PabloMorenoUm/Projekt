@@ -4,12 +4,24 @@
 
 #include "Coin.hpp"
 
-const sf::CircleShape &Coin::getShape() const {
-    return shape;
+const sf::Color &Coin::getNeutralColor() const {
+    return neutralColor;
 }
 
-void Coin::changeColor(const sf::Color &color) {
-    shape.setFillColor(color);
+const sf::Color &Coin::getHiddenColor() const {
+    return hiddenColor;
+}
+
+const sf::Color &Coin::getPlayerColor() const {
+    return playerColor;
+}
+
+const sf::Color &Coin::getOpponentColor() const {
+    return opponentColor;
+}
+
+const sf::CircleShape &Coin::getShape() const {
+    return shape;
 }
 
 void Coin::setPosition(const float &posX, const float &posY) {
@@ -36,18 +48,18 @@ void Coin::makeOpponent() {
     shape.setFillColor(opponentColor);
 }
 
-const sf::Color &Coin::getNeutralColor() const {
-    return neutralColor;
+bool Coin::operator==(const sf::Color &color) const {
+    return shape.getFillColor() == color;
 }
 
-const sf::Color &Coin::getHiddenColor() const {
-    return hiddenColor;
+bool Coin::operator!=(const sf::Color &color) const {
+    return !(*this == color);
 }
 
-const sf::Color &Coin::getPlayerColor() const {
-    return playerColor;
+bool Coin::operator==(const Coin &rhs) const {
+    return shape.getFillColor() == rhs.shape.getFillColor();
 }
 
-const sf::Color &Coin::getOpponentColor() const {
-    return opponentColor;
+bool Coin::operator!=(const Coin &rhs) const {
+    return !(rhs == *this);
 }
