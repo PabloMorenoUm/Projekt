@@ -54,5 +54,6 @@ Dabei handelt der Computer nach dem [Minimax-Algorithmus](https://de.wikipedia.o
 und durchsucht in jedem Zug mehrere [Spielbäume](https://de.wikipedia.org/wiki/Tiefensuche#Programmierung).
 
 #Danksagung
+
 Außerordenlichen Dank möchte ich Andreas Peterson und insbesondere Benedikt Schenk aussprechen für ihre
 Hilfsbereitschaft und Geduld bei Fragen verschiedenster Art!!!
