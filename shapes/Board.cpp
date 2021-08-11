@@ -260,6 +260,10 @@ double Board::evaluateBoard() {
     return value;
 }
 
+int Board::findBestPosition() {
+
+}
+
 void Board::markColumn(const int &col) {
     // Wie viele neutral gefärbte Münzen sind in der Spalte?
     int countNeutralCoins = 0;
@@ -277,6 +281,26 @@ void Board::markColumn(const int &col) {
             hiddenCoin.makeHidden();
         }
         hiddenCoins[col].makePlayer();
+    }
+}
+
+void Board::markColumnComputer(const int &col) {
+    // Wie viele neutral gefärbte Münzen sind in der Spalte?
+    int countNeutralCoins = 0;
+    for (auto &coinsRow : coins) {
+        Coin &coin = coinsRow[col];
+        countNeutralCoins += (coin == coin.getNeutralColor()) ? 1 : 0;
+    }
+    /* Falls es keine neutralen Münzen gibt, ist die Spalte voll
+     * => Die Spalte soll NICHT markiert werden
+     * => Die folgende if-Bedingung soll NICHT aufgerufen werden.
+     * Ansonsten soll die Spalte schon markiert werden.
+     */
+    if (countNeutralCoins) {
+        for (auto & hiddenCoin : hiddenCoins) {
+            hiddenCoin.makeHidden();
+        }
+        hiddenCoins[col].makeOpponent();
     }
 }
 
@@ -333,6 +357,20 @@ void Board::input() {
             if(hiddenCoin == hiddenCoin.getPlayerColor()) {
                 hiddenCoin.makeHidden();
                 addCoin(j, true);
+                break;
+            }
+        }
+
+        // Computer's turn
+        int c = std::rand()%6; // Hier ist das Problem. Da die Enter-Taste für den rechner vielfach gedrückt wird,
+        // wird auch vielfach markCollumnComputer aufgerufen. Hier brauchen wir ein Workaround.
+        markColumnComputer(c);
+        for (int j = 0; j < ncols; ++j) {
+            // Suche nach der markierten Spalte:
+            Coin &hiddenCoin = hiddenCoins[j];
+            if (hiddenCoin == hiddenCoin.getOpponentColor()) {
+                hiddenCoin.makeHidden();
+                addCoin(j, false);
                 break;
             }
         }

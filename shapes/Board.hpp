@@ -41,9 +41,10 @@ class Board {
     int goLeftDown(const unsigned &i, const unsigned &j, const int &t);
 
     void markColumn(const int &col);
-
+    void markColumnComputer(const int &col);
     void addCoin(const unsigned &col, const bool &playersTurn);
     void removeCoin(const unsigned &col);
+    int findBestPosition();
 public:
     Board();
     int evaluatePositionWinLoose(const int &coinsInLine, const Coin &coin);
