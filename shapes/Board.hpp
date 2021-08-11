@@ -29,6 +29,7 @@ class Board {
     const double THIRDWORSTEVAL {-0.02};
     const double SECONDWORSTEVAL {-0.1};
     const int WORSTEVAL {-1};
+    const int SEARCHTREEDEPTH {4};
 
 
     int goRight(const unsigned &i, const unsigned &j, const int &t);
@@ -39,16 +40,16 @@ class Board {
     int goRightDown(const unsigned &i, const unsigned &j, const int &t);
     int goLeftUp(const unsigned &i, const unsigned &j, const int &t);
     int goLeftDown(const unsigned &i, const unsigned &j, const int &t);
-
+    std::vector<int> detectAvailableCols();
+    int searchDepthFirst(int currentDepth);
     void markColumn(const int &col);
-    void markColumnComputer(const int &col);
     void addCoin(const unsigned &col, const bool &playersTurn);
     void removeCoin(const unsigned &col);
     int findBestPosition();
 public:
     Board();
     int evaluatePositionWinLoose(const int &coinsInLine, const Coin &coin);
-    int checkBoardWinLoose();
+    int checkBoardWinLose();
     double evaluatePosition(const int &coinsInLine, const Coin &coin);
     double evaluateBoard();
     void input();

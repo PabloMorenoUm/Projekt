@@ -26,7 +26,7 @@ int main() {
     }
      */
     Board board;
-    double output = board.checkBoardWinLoose();
+    double output = board.checkBoardWinLose();
     std::cout << output << std::endl;
 
     return 0;

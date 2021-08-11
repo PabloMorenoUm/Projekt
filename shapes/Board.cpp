@@ -4,6 +4,7 @@
 
 #include "Board.hpp"
 #include <sstream>
+#include <algorithm>
 using namespace sf;
 using namespace std;
 
@@ -126,9 +127,9 @@ int Board::evaluatePositionWinLoose(const int &coinsInLine, const Coin &coin) {
     return 0;
 }
 
-int Board::checkBoardWinLoose() {
+int Board::checkBoardWinLose() {
     int tStart = 1;
-    double value {};
+    int value {};
     for(int i = 0 ; i < nrows ; ++i) {
         for (int j = 0; j < ncols; ++j) {
             Coin &actualCoin = coins[i][j];
@@ -242,7 +243,7 @@ double Board::evaluatePosition(const int &coinsInLine, const Coin &coin) {
 }
 
 double Board::evaluateBoard() {
-    int tStart = 1;
+    int tStart = 0;
     double value {};
     for(int i = 0 ; i < nrows ; ++i) {
         for (int j = 0; j < ncols; ++j) {
@@ -264,6 +265,99 @@ int Board::findBestPosition() {
 
 }
 
+vector<int> Board::detectAvailableCols() {
+    vector<int> output;
+    for (int jj = 0; jj < ncols; ++jj) {
+        for (auto & coinRow : coins) {
+            Coin &actualCoin = coinRow[jj];
+            if(actualCoin == actualCoin.getNeutralColor()) {
+                output.push_back(jj);
+                break;
+            }
+        }
+        continue;
+    }
+    return output;
+}
+
+
+int Board::searchDepthFirst(int currentDepth) {
+
+    double temp {};
+    int numOfSigCol {0};
+    if (currentDepth % 2){
+        temp = -1;
+    } else {
+        temp = 1;
+    }
+
+    vector<int> availCols = detectAvailableCols();
+
+    if (currentDepth < SEARCHTREEDEPTH ){
+
+
+        for (int col: availCols){
+            if (currentDepth%2 == 0){
+                // computers turn
+                addCoin(col,false);
+            } else {
+                // virtual player's turn
+                addCoin(col,true);
+            }
+
+
+
+        }
+
+        int tempBranch = searchDepthFirst(currentDepth + 1);
+
+    } else if (currentDepth == SEARCHTREEDEPTH) {
+
+        double value {};
+
+        for (int col: availCols){
+
+            // insert coin
+            if (currentDepth%2 == 0){
+                // computers turn
+                addCoin(col,false);
+            } else {
+                // virtual player's turn
+                addCoin(col,true);
+            }
+
+            // evaluate
+            // at first, check if 4 coins are connected
+            double valueCurrentBoard {};
+            int checkBoardWinLose();
+            if (checkBoardWinLose() == -1) {
+                valueCurrentBoard =  -1;
+            } else if (checkBoardWinLose() == 1) {
+                valueCurrentBoard = 1;
+            } else if(checkBoardWinLose() == 0) {
+                valueCurrentBoard = evaluateBoard();
+            }
+            // minMax algorithm
+            temp =  (currentDepth%2) ? min(valueCurrentBoard,temp) : max(valueCurrentBoard,temp);
+
+            if (currentDepth%2 == 0) {
+                if (valueCurrentBoard > temp) {
+                    numOfSigCol = col;
+                    temp = valueCurrentBoard;
+                }
+                //temp = max(valueCurrentBoard,temp);
+            } else {
+                if (valueCurrentBoard < temp) {
+                    numOfSigCol = col;
+                    temp = valueCurrentBoard;
+                }
+            }
+        }
+    }
+    return -99;
+}
+
+
 void Board::markColumn(const int &col) {
     // Wie viele neutral gefärbte Münzen sind in der Spalte?
     int countNeutralCoins = 0;
@@ -281,26 +375,6 @@ void Board::markColumn(const int &col) {
             hiddenCoin.makeHidden();
         }
         hiddenCoins[col].makePlayer();
-    }
-}
-
-void Board::markColumnComputer(const int &col) {
-    // Wie viele neutral gefärbte Münzen sind in der Spalte?
-    int countNeutralCoins = 0;
-    for (auto &coinsRow : coins) {
-        Coin &coin = coinsRow[col];
-        countNeutralCoins += (coin == coin.getNeutralColor()) ? 1 : 0;
-    }
-    /* Falls es keine neutralen Münzen gibt, ist die Spalte voll
-     * => Die Spalte soll NICHT markiert werden
-     * => Die folgende if-Bedingung soll NICHT aufgerufen werden.
-     * Ansonsten soll die Spalte schon markiert werden.
-     */
-    if (countNeutralCoins) {
-        for (auto & hiddenCoin : hiddenCoins) {
-            hiddenCoin.makeHidden();
-        }
-        hiddenCoins[col].makeOpponent();
     }
 }
 
@@ -357,20 +431,11 @@ void Board::input() {
             if(hiddenCoin == hiddenCoin.getPlayerColor()) {
                 hiddenCoin.makeHidden();
                 addCoin(j, true);
-                break;
-            }
-        }
-
-        // Computer's turn
-        int c = std::rand()%6; // Hier ist das Problem. Da die Enter-Taste für den rechner vielfach gedrückt wird,
-        // wird auch vielfach markCollumnComputer aufgerufen. Hier brauchen wir ein Workaround.
-        markColumnComputer(c);
-        for (int j = 0; j < ncols; ++j) {
-            // Suche nach der markierten Spalte:
-            Coin &hiddenCoin = hiddenCoins[j];
-            if (hiddenCoin == hiddenCoin.getOpponentColor()) {
-                hiddenCoin.makeHidden();
-                addCoin(j, false);
+                // computer turn
+                //int c = rand()%ncols; //searchDepthFirst();
+                int level {0};
+                int c = searchDepthFirst(level);
+                addCoin(c, false);
                 break;
             }
         }
