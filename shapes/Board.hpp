@@ -22,6 +22,15 @@ class Board {
     // Spaltennummerierung, damit der User weiß, wo er tippen soll ;-):
     Words numbers[ncols];
 
+    // Konstanten:
+    const int BESTEVAL {1};
+    const double SECONDBESTEVAL {0.1};
+    const double THIRDBESTEVAL {0.01};
+    const double THIRDWORSTEVAL {-0.02};
+    const double SECONDWORSTEVAL {-0.1};
+    const int WORSTEVAL {-1};
+
+
     int goRight(const unsigned &i, const unsigned &j, const int &t);
     int goLeft(const unsigned &i, const unsigned &j, const int &t);
     int goUp(const unsigned &i, const unsigned &j, const int &t);
@@ -37,8 +46,9 @@ class Board {
     void removeCoin(const unsigned &col);
 public:
     Board();
-
-    double evaluatePosition(const int &coinsInRow, const Coin &coin);
+    int evaluatePositionWinLoose(const int &coinsInLine, const Coin &coin);
+    int checkBoardWinLoose();
+    double evaluatePosition(const int &coinsInLine, const Coin &coin);
     double evaluateBoard();
     void input();
     void draw(sf::RenderWindow &window);

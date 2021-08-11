@@ -107,7 +107,117 @@ int Board::goLeftDown(const unsigned &i, const unsigned &j, const int &t) {
     return t;
 }
 
-double Board::evaluatePosition(const int &coinsInRow, const Coin &coin) {
+int Board::evaluatePositionWinLoose(const int &coinsInLine, const Coin &coin) {
+// get the fill color
+    const sf::Color &coinColor = coin.getShape().getFillColor();
+    const sf::Color &questColorPlayer = coin.getPlayerColor();
+    const sf::Color &questColorOpponent = coin.getOpponentColor();
+    const sf::Color &questColorNeutral = coin.getNeutralColor();
+
+    if (coinColor == questColorPlayer){
+        if (coinsInLine == 4){
+            return BESTEVAL;
+        }
+    } else if (coinColor == questColorOpponent) {
+        if (coinsInLine == 4){ // besser: if winningConstellation
+            return WORSTEVAL;
+        }
+    }
+    return 0;
+}
+
+int Board::checkBoardWinLoose() {
+    int tStart = 1;
+    double value {};
+    for(int i = 0 ; i < nrows ; ++i) {
+        for (int j = 0; j < ncols; ++j) {
+            Coin &actualCoin = coins[i][j];
+            value = evaluatePositionWinLoose(goRight(i, j, tStart),actualCoin);
+            if (value == WORSTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goLeft(i, j, tStart),actualCoin);
+            if (value == WORSTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goUp(i, j, tStart),actualCoin);
+            if (value == WORSTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goDown(i, j, tStart),actualCoin);
+            if (value == WORSTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goRightUp(i, j, tStart),actualCoin);
+            if (value == WORSTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goRightDown(i, j, tStart),actualCoin);
+            if (value == WORSTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goLeftUp(i, j, tStart),actualCoin);
+            if (value == WORSTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goLeftDown(i, j, tStart),actualCoin);
+            if (value == WORSTEVAL){
+                return value;
+            }
+
+            // if no losing configuration is detected, check for winning configuration
+            value = evaluatePositionWinLoose(goRight(i, j, tStart),actualCoin);
+            if (value == BESTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goLeft(i, j, tStart),actualCoin);
+            if (value == BESTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goUp(i, j, tStart),actualCoin);
+            if (value == BESTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goDown(i, j, tStart),actualCoin);
+            if (value == BESTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goRightUp(i, j, tStart),actualCoin);
+            if (value == BESTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goRightDown(i, j, tStart),actualCoin);
+            if (value == BESTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goLeftUp(i, j, tStart),actualCoin);
+            if (value == BESTEVAL){
+                return value;
+            }
+
+            value = evaluatePositionWinLoose(goLeftDown(i, j, tStart),actualCoin);
+            if (value == BESTEVAL){
+                return value;
+            }
+        }
+    }
+    return 0;
+}
+
+double Board::evaluatePosition(const int &coinsInLine, const Coin &coin) {
     // get the fill color
     const sf::Color &coinColor = coin.getShape().getFillColor();
     const sf::Color &questColorPlayer = coin.getPlayerColor();
@@ -115,20 +225,16 @@ double Board::evaluatePosition(const int &coinsInRow, const Coin &coin) {
     const sf::Color &questColorNeutral = coin.getNeutralColor();
 
     if (coinColor == questColorPlayer){
-        if (coinsInRow == 4){
-            return 1;
-        } else if (coinsInRow == 3){
-            return 0.1;
-        } else if (coinsInRow == 2){
-            return 0.01;
+        if (coinsInLine == 3){
+            return SECONDBESTEVAL;
+        } else if (coinsInLine == 2){
+            return THIRDBESTEVAL;
         }
     } else if (coinColor == questColorOpponent) {
-        if (coinsInRow == 4){
-            return -1;
-        } else if (coinsInRow == 3){
-            return -0.1;
-        } else if (coinsInRow == 2){
-            return -0.02; // 0.02 on purpose different from 0.01
+        if (coinsInLine == 3){
+            return SECONDWORSTEVAL;
+        } else if (coinsInLine == 2){
+            return THIRDWORSTEVAL; // 0.02 on purpose different from 0.01 because negative positions are rated harder
         }
     } else if (coinColor == questColorNeutral) {
         return 0;
@@ -141,14 +247,14 @@ double Board::evaluateBoard() {
     for(int i = 0 ; i < nrows ; ++i) {
         for (int j = 0; j < ncols; ++j) {
             Coin &actualCoin = coins[i][j];
-            value = value + Board::evaluatePosition(goRight(i, j, tStart),actualCoin) +
-                    Board::evaluatePosition(goLeft(i, j, tStart),actualCoin) +
-                    Board::evaluatePosition(goUp(i, j, tStart),actualCoin) +
-                    Board::evaluatePosition(goDown(i, j, tStart),actualCoin) +
-                    Board::evaluatePosition(goRightUp(i, j, tStart),actualCoin) +
-                    Board::evaluatePosition(goRightDown(i, j, tStart),actualCoin) +
-                    Board::evaluatePosition(goLeftUp(i, j, tStart),actualCoin) +
-                    Board::evaluatePosition(goLeftDown(i, j, tStart),actualCoin); // check all lines
+            value = value + evaluatePosition(goRight(i, j, tStart),actualCoin) +
+                    evaluatePosition(goLeft(i, j, tStart),actualCoin) +
+                    evaluatePosition(goUp(i, j, tStart),actualCoin) +
+                    evaluatePosition(goDown(i, j, tStart),actualCoin) +
+                    evaluatePosition(goRightUp(i, j, tStart),actualCoin) +
+                    evaluatePosition(goRightDown(i, j, tStart),actualCoin) +
+                    evaluatePosition(goLeftUp(i, j, tStart),actualCoin) +
+                    evaluatePosition(goLeftDown(i, j, tStart),actualCoin); // check all lines
         }
     }
     return value;

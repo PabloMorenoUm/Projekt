@@ -24,9 +24,10 @@ int main() {
                              m_WindowSize.getY() * ((float) i + 1.8) / (nrows + 2));
         }
     }
+     */
     Board board;
-    double output = board.evaluateBoard();
-    std::cout << output << std::endl;*/
+    double output = board.checkBoardWinLoose();
+    std::cout << output << std::endl;
 
     return 0;
 }
