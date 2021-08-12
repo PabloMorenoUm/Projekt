@@ -15,6 +15,7 @@ class Board {
     // Dimension des Spielfelds:
     static constexpr unsigned nrows = 6, ncols = 7;
     const int tmax = 3;
+    const int tMaxCheckConnectFour = 4;
     // Spielfeldmünzen:
     Coin coins[nrows][ncols];
     // Unsichtbare Münzen als Spaltenmarker, damit der User weiß, welche Spalte gerade ausgewählt ist:
@@ -32,21 +33,26 @@ class Board {
     const int SEARCHTREEDEPTH {4};
 
 
-    int goRight(const unsigned &i, const unsigned &j, const int &t);
-    int goLeft(const unsigned &i, const unsigned &j, const int &t);
-    int goUp(const unsigned &i, const unsigned &j, const int &t);
-    int goDown(const unsigned &i, const unsigned &j, const int &t);
-    int goRightUp(const unsigned &i, const unsigned &j, const int &t);
-    int goRightDown(const unsigned &i, const unsigned &j, const int &t);
-    int goLeftUp(const unsigned &i, const unsigned &j, const int &t);
-    int goLeftDown(const unsigned &i, const unsigned &j, const int &t);
+    int goRight(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
+    int goLeft(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
+    int goUp(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
+    int goDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
+    int goRightUp(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
+    int goRightDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
+    int goLeftUp(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
+    int goLeftDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
     std::vector<int> detectAvailableCols();
     void markColumn(const int &col);
-    void addCoin(const unsigned &col, const bool &playersTurn);
-    void removeCoin(const unsigned &col);
-    int findBestPosition();
+    //void addCoin(const unsigned &col, const bool &playersTurn);
+    //void removeCoin(const unsigned &col);
 public:
     Board();
+
+    // temporary!
+    void addCoin(const unsigned &col, const bool &playersTurn);
+    void removeCoin(const unsigned &col);
+
+    void displayBoard();
     int evaluatePositionWinLose(const int &coinsInLine, const Coin &coin) const;
     int checkBoardWinLose();
     double searchDepthFirst(int currentDepth);
