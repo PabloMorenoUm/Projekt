@@ -41,15 +41,15 @@ class Board {
     int goLeftUp(const unsigned &i, const unsigned &j, const int &t);
     int goLeftDown(const unsigned &i, const unsigned &j, const int &t);
     std::vector<int> detectAvailableCols();
-    int searchDepthFirst(int currentDepth);
     void markColumn(const int &col);
     void addCoin(const unsigned &col, const bool &playersTurn);
     void removeCoin(const unsigned &col);
     int findBestPosition();
 public:
     Board();
-    int evaluatePositionWinLoose(const int &coinsInLine, const Coin &coin);
+    int evaluatePositionWinLose(const int &coinsInLine, const Coin &coin) const;
     int checkBoardWinLose();
+    double searchDepthFirst(int currentDepth);
     double evaluatePosition(const int &coinsInLine, const Coin &coin);
     double evaluateBoard();
     void input();

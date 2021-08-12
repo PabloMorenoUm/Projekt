@@ -6,6 +6,7 @@
 int main() {
     MainMenu game;
     game.start();
+
     // Erster Test, ob sich das Board bewerten lässt.
 
     /*WindowSize m_WindowSize;
@@ -25,9 +26,9 @@ int main() {
         }
     }
      */
-    Board board;
-    double output = board.checkBoardWinLose();
-    std::cout << output << std::endl;
+/*    Board board;
+    double output = board.searchDepthFirst(0);
+    std::cout << output << std::endl;*/
 
     return 0;
 }

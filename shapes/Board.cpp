@@ -5,6 +5,7 @@
 #include "Board.hpp"
 #include <sstream>
 #include <algorithm>
+
 using namespace sf;
 using namespace std;
 
@@ -37,7 +38,7 @@ Board::Board() {
 }
 
 int Board::goRight(const unsigned &i, const unsigned &j, const int &t) {
-    if(t < tmax && j < ncols - 1) {
+    if (t < tmax && j < ncols - 1) {
         if (coins[i][j + 1] == coins[i][j]) {
             return goRight(i, j + 1, t + 1);
         }
@@ -46,7 +47,7 @@ int Board::goRight(const unsigned &i, const unsigned &j, const int &t) {
 }
 
 int Board::goLeft(const unsigned &i, const unsigned &j, const int &t) {
-    if(t < tmax && j > 0) {
+    if (t < tmax && j > 0) {
         if (coins[i][j - 1] == coins[i][j]) {
             return goLeft(i, j - 1, t + 1);
         }
@@ -55,7 +56,7 @@ int Board::goLeft(const unsigned &i, const unsigned &j, const int &t) {
 }
 
 int Board::goUp(const unsigned &i, const unsigned &j, const int &t) {
-    if(t < tmax && i > 0) {
+    if (t < tmax && i > 0) {
         if (coins[i - 1][j] == coins[i][j]) {
             return goUp(i - 1, j, t + 1);
         }
@@ -64,7 +65,7 @@ int Board::goUp(const unsigned &i, const unsigned &j, const int &t) {
 }
 
 int Board::goDown(const unsigned &i, const unsigned &j, const int &t) {
-    if(t < tmax && i < nrows - 1) {
+    if (t < tmax && i < nrows - 1) {
         if (coins[i + 1][j] == coins[i][j]) {
             return goDown(i + 1, j, t + 1);
         }
@@ -73,7 +74,7 @@ int Board::goDown(const unsigned &i, const unsigned &j, const int &t) {
 }
 
 int Board::goRightUp(const unsigned &i, const unsigned &j, const int &t) {
-    if(t < tmax && i > 0 && j < ncols - 1) {
+    if (t < tmax && i > 0 && j < ncols - 1) {
         if (coins[i - 1][j + 1] == coins[i][j]) {
             return goRightUp(i - 1, j + 1, t + 1);
         }
@@ -82,7 +83,7 @@ int Board::goRightUp(const unsigned &i, const unsigned &j, const int &t) {
 }
 
 int Board::goRightDown(const unsigned &i, const unsigned &j, const int &t) {
-    if(t < tmax && i < nrows - 1 && j < ncols - 1) {
+    if (t < tmax && i < nrows - 1 && j < ncols - 1) {
         if (coins[i + 1][j + 1] == coins[i][j]) {
             return goRightDown(i + 1, j + 1, t + 1);
         }
@@ -91,7 +92,7 @@ int Board::goRightDown(const unsigned &i, const unsigned &j, const int &t) {
 }
 
 int Board::goLeftUp(const unsigned &i, const unsigned &j, const int &t) {
-    if(t < tmax && i > 0 && j > 0) {
+    if (t < tmax && i > 0 && j > 0) {
         if (coins[i - 1][j - 1] == coins[i][j]) {
             return goLeftUp(i - 1, j - 1, t + 1);
         }
@@ -100,7 +101,7 @@ int Board::goLeftUp(const unsigned &i, const unsigned &j, const int &t) {
 }
 
 int Board::goLeftDown(const unsigned &i, const unsigned &j, const int &t) {
-    if(t < tmax && i < nrows - 1 && j > 0) {
+    if (t < tmax && i < nrows - 1 && j > 0) {
         if (coins[i + 1][j - 1] == coins[i][j]) {
             return goLeftDown(i + 1, j - 1, t + 1);
         }
@@ -108,19 +109,19 @@ int Board::goLeftDown(const unsigned &i, const unsigned &j, const int &t) {
     return t;
 }
 
-int Board::evaluatePositionWinLoose(const int &coinsInLine, const Coin &coin) {
+int Board::evaluatePositionWinLose(const int &coinsInLine, const Coin &coin) const {
 // get the fill color
     const sf::Color &coinColor = coin.getShape().getFillColor();
     const sf::Color &questColorPlayer = coin.getPlayerColor();
     const sf::Color &questColorOpponent = coin.getOpponentColor();
     const sf::Color &questColorNeutral = coin.getNeutralColor();
 
-    if (coinColor == questColorPlayer){
-        if (coinsInLine == 4){
+    if (coinColor == questColorPlayer) {
+        if (coinsInLine == 4) {
             return BESTEVAL;
         }
     } else if (coinColor == questColorOpponent) {
-        if (coinsInLine == 4){ // besser: if winningConstellation
+        if (coinsInLine == 4) { // besser: if winningConstellation
             return WORSTEVAL;
         }
     }
@@ -130,87 +131,87 @@ int Board::evaluatePositionWinLoose(const int &coinsInLine, const Coin &coin) {
 int Board::checkBoardWinLose() {
     int tStart = 1;
     int value {};
-    for(int i = 0 ; i < nrows ; ++i) {
+    for (int i = 0; i < nrows; ++i) {
         for (int j = 0; j < ncols; ++j) {
             Coin &actualCoin = coins[i][j];
-            value = evaluatePositionWinLoose(goRight(i, j, tStart),actualCoin);
-            if (value == WORSTEVAL){
+            value = evaluatePositionWinLose(goRight(i, j, tStart), actualCoin);
+            if (value == WORSTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goLeft(i, j, tStart),actualCoin);
-            if (value == WORSTEVAL){
+            value = evaluatePositionWinLose(goLeft(i, j, tStart), actualCoin);
+            if (value == WORSTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goUp(i, j, tStart),actualCoin);
-            if (value == WORSTEVAL){
+            value = evaluatePositionWinLose(goUp(i, j, tStart), actualCoin);
+            if (value == WORSTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goDown(i, j, tStart),actualCoin);
-            if (value == WORSTEVAL){
+            value = evaluatePositionWinLose(goDown(i, j, tStart), actualCoin);
+            if (value == WORSTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goRightUp(i, j, tStart),actualCoin);
-            if (value == WORSTEVAL){
+            value = evaluatePositionWinLose(goRightUp(i, j, tStart), actualCoin);
+            if (value == WORSTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goRightDown(i, j, tStart),actualCoin);
-            if (value == WORSTEVAL){
+            value = evaluatePositionWinLose(goRightDown(i, j, tStart), actualCoin);
+            if (value == WORSTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goLeftUp(i, j, tStart),actualCoin);
-            if (value == WORSTEVAL){
+            value = evaluatePositionWinLose(goLeftUp(i, j, tStart), actualCoin);
+            if (value == WORSTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goLeftDown(i, j, tStart),actualCoin);
-            if (value == WORSTEVAL){
+            value = evaluatePositionWinLose(goLeftDown(i, j, tStart), actualCoin);
+            if (value == WORSTEVAL) {
                 return value;
             }
 
             // if no losing configuration is detected, check for winning configuration
-            value = evaluatePositionWinLoose(goRight(i, j, tStart),actualCoin);
-            if (value == BESTEVAL){
+            value = evaluatePositionWinLose(goRight(i, j, tStart), actualCoin);
+            if (value == BESTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goLeft(i, j, tStart),actualCoin);
-            if (value == BESTEVAL){
+            value = evaluatePositionWinLose(goLeft(i, j, tStart), actualCoin);
+            if (value == BESTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goUp(i, j, tStart),actualCoin);
-            if (value == BESTEVAL){
+            value = evaluatePositionWinLose(goUp(i, j, tStart), actualCoin);
+            if (value == BESTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goDown(i, j, tStart),actualCoin);
-            if (value == BESTEVAL){
+            value = evaluatePositionWinLose(goDown(i, j, tStart), actualCoin);
+            if (value == BESTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goRightUp(i, j, tStart),actualCoin);
-            if (value == BESTEVAL){
+            value = evaluatePositionWinLose(goRightUp(i, j, tStart), actualCoin);
+            if (value == BESTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goRightDown(i, j, tStart),actualCoin);
-            if (value == BESTEVAL){
+            value = evaluatePositionWinLose(goRightDown(i, j, tStart), actualCoin);
+            if (value == BESTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goLeftUp(i, j, tStart),actualCoin);
-            if (value == BESTEVAL){
+            value = evaluatePositionWinLose(goLeftUp(i, j, tStart), actualCoin);
+            if (value == BESTEVAL) {
                 return value;
             }
 
-            value = evaluatePositionWinLoose(goLeftDown(i, j, tStart),actualCoin);
-            if (value == BESTEVAL){
+            value = evaluatePositionWinLose(goLeftDown(i, j, tStart), actualCoin);
+            if (value == BESTEVAL) {
                 return value;
             }
         }
@@ -225,16 +226,16 @@ double Board::evaluatePosition(const int &coinsInLine, const Coin &coin) {
     const sf::Color &questColorOpponent = coin.getOpponentColor();
     const sf::Color &questColorNeutral = coin.getNeutralColor();
 
-    if (coinColor == questColorPlayer){
-        if (coinsInLine == 3){
+    if (coinColor == questColorPlayer) {
+        if (coinsInLine == 3) {
             return SECONDBESTEVAL;
-        } else if (coinsInLine == 2){
+        } else if (coinsInLine == 2) {
             return THIRDBESTEVAL;
         }
     } else if (coinColor == questColorOpponent) {
-        if (coinsInLine == 3){
+        if (coinsInLine == 3) {
             return SECONDWORSTEVAL;
-        } else if (coinsInLine == 2){
+        } else if (coinsInLine == 2) {
             return THIRDWORSTEVAL; // 0.02 on purpose different from 0.01 because negative positions are rated harder
         }
     } else if (coinColor == questColorNeutral) {
@@ -244,33 +245,29 @@ double Board::evaluatePosition(const int &coinsInLine, const Coin &coin) {
 
 double Board::evaluateBoard() {
     int tStart = 0;
-    double value {};
-    for(int i = 0 ; i < nrows ; ++i) {
+    double value{};
+    for (int i = 0; i < nrows; ++i) {
         for (int j = 0; j < ncols; ++j) {
             Coin &actualCoin = coins[i][j];
-            value = value + evaluatePosition(goRight(i, j, tStart),actualCoin) +
-                    evaluatePosition(goLeft(i, j, tStart),actualCoin) +
-                    evaluatePosition(goUp(i, j, tStart),actualCoin) +
-                    evaluatePosition(goDown(i, j, tStart),actualCoin) +
-                    evaluatePosition(goRightUp(i, j, tStart),actualCoin) +
-                    evaluatePosition(goRightDown(i, j, tStart),actualCoin) +
-                    evaluatePosition(goLeftUp(i, j, tStart),actualCoin) +
-                    evaluatePosition(goLeftDown(i, j, tStart),actualCoin); // check all lines
+            value = value + evaluatePosition(goRight(i, j, tStart), actualCoin) +
+                    evaluatePosition(goLeft(i, j, tStart), actualCoin) +
+                    evaluatePosition(goUp(i, j, tStart), actualCoin) +
+                    evaluatePosition(goDown(i, j, tStart), actualCoin) +
+                    evaluatePosition(goRightUp(i, j, tStart), actualCoin) +
+                    evaluatePosition(goRightDown(i, j, tStart), actualCoin) +
+                    evaluatePosition(goLeftUp(i, j, tStart), actualCoin) +
+                    evaluatePosition(goLeftDown(i, j, tStart), actualCoin); // check all lines
         }
     }
     return value;
 }
 
-int Board::findBestPosition() {
-
-}
-
 vector<int> Board::detectAvailableCols() {
     vector<int> output;
     for (int jj = 0; jj < ncols; ++jj) {
-        for (auto & coinRow : coins) {
+        for (auto &coinRow : coins) {
             Coin &actualCoin = coinRow[jj];
-            if(actualCoin == actualCoin.getNeutralColor()) {
+            if (actualCoin == actualCoin.getNeutralColor()) {
                 output.push_back(jj);
                 break;
             }
@@ -281,11 +278,12 @@ vector<int> Board::detectAvailableCols() {
 }
 
 
-int Board::searchDepthFirst(int currentDepth) {
+double Board::searchDepthFirst(int currentDepth) {
 
-    double temp {};
-    int numOfSigCol {0};
-    if (currentDepth % 2){
+    double temp{};
+    int numOfSigCol{0};
+
+    if (currentDepth % 2) {
         temp = -1;
     } else {
         temp = 1;
@@ -293,67 +291,99 @@ int Board::searchDepthFirst(int currentDepth) {
 
     vector<int> availCols = detectAvailableCols();
 
-    if (currentDepth < SEARCHTREEDEPTH ){
+    if (currentDepth < SEARCHTREEDEPTH) {
 
+        double valueCurrentBoard{};
 
-        for (int col: availCols){
-            if (currentDepth%2 == 0){
-                // computers turn
-                addCoin(col,false);
+        for (int col: availCols) {
+
+            // insert coin
+            if (currentDepth % 2 == 0) {
+                // virtual computers turn
+                addCoin(col, false);
             } else {
                 // virtual player's turn
-                addCoin(col,true);
+                addCoin(col, true);
             }
 
+            // go search path and return value
+            valueCurrentBoard = searchDepthFirst(currentDepth + 1);
 
+            if (currentDepth == 0) {
+                if (valueCurrentBoard > temp) {
+                    numOfSigCol = col;
+                    temp = col;
+                }
+            } else {
+                if (currentDepth % 2 == 0) {
+                    // computers turn
+                    temp = max(temp,valueCurrentBoard);
+                } else {
+                    // virtual player turn
+                    temp = min(temp,valueCurrentBoard);
+                }
+            } // if
 
-        }
-
-        int tempBranch = searchDepthFirst(currentDepth + 1);
+            // remove coin added last:
+            if (currentDepth % 2 == 0) {
+                // computers turn
+                removeCoin(col);
+            } else {
+                // virtual player's turn
+                removeCoin(col);
+            } // if
+        } // for
+        return temp;
 
     } else if (currentDepth == SEARCHTREEDEPTH) {
 
-        double value {};
-
-        for (int col: availCols){
+        for (int col: availCols) {
 
             // insert coin
-            if (currentDepth%2 == 0){
+            if (currentDepth % 2 == 0) {
                 // computers turn
-                addCoin(col,false);
+                addCoin(col, false);
             } else {
                 // virtual player's turn
-                addCoin(col,true);
+                addCoin(col, true);
             }
 
             // evaluate
             // at first, check if 4 coins are connected
-            double valueCurrentBoard {};
-            int checkBoardWinLose();
+            double valueCurrentBoard{};
+            //int checkBoardWinLose();
             if (checkBoardWinLose() == -1) {
-                valueCurrentBoard =  -1;
+                valueCurrentBoard = -1;
             } else if (checkBoardWinLose() == 1) {
                 valueCurrentBoard = 1;
-            } else if(checkBoardWinLose() == 0) {
+            } else if (checkBoardWinLose() == 0) {
                 valueCurrentBoard = evaluateBoard();
             }
             // minMax algorithm
-            temp =  (currentDepth%2) ? min(valueCurrentBoard,temp) : max(valueCurrentBoard,temp);
+            temp = (currentDepth % 2) ? min(valueCurrentBoard, temp) : max(valueCurrentBoard, temp);
 
-            if (currentDepth%2 == 0) {
+            if (currentDepth % 2 == 0) {
                 if (valueCurrentBoard > temp) {
-                    numOfSigCol = col;
+                    //numOfSigCol = col;
                     temp = valueCurrentBoard;
                 }
-                //temp = max(valueCurrentBoard,temp);
             } else {
                 if (valueCurrentBoard < temp) {
-                    numOfSigCol = col;
+                    //numOfSigCol = col;
                     temp = valueCurrentBoard;
                 }
             }
-        }
-    }
+            // remove coin added last:
+            if (currentDepth % 2 == 0) {
+                // computers turn
+                removeCoin(col);
+            } else {
+                // virtual player's turn
+                removeCoin(col);
+            } // if
+        } // for
+        return temp;
+    } // if
     return -99;
 }
 
@@ -371,7 +401,7 @@ void Board::markColumn(const int &col) {
      * Ansonsten soll die Spalte schon markiert werden.
      */
     if (countNeutralCoins) {
-        for (auto & hiddenCoin : hiddenCoins) {
+        for (auto &hiddenCoin : hiddenCoins) {
             hiddenCoin.makeHidden();
         }
         hiddenCoins[col].makePlayer();
@@ -392,7 +422,7 @@ void Board::addCoin(const unsigned int &col, const bool &playersTurn) {
 }
 
 void Board::removeCoin(const unsigned int &col) {
-    for (auto & coinsRow : coins) {
+    for (auto &coinsRow : coins) {
         Coin &coin = coinsRow[col];
         if (coin != coin.getNeutralColor()) {
             coin.makeNeutral();
@@ -423,17 +453,17 @@ void Board::input() {
     if (Keyboard::isKeyPressed(Keyboard::Num7))
         markColumn(6);
 
-    if(Keyboard::isKeyPressed(Keyboard::Enter)){
+    if (Keyboard::isKeyPressed(Keyboard::Enter)) {
         // Player wirft Münze ein.
         for (int j = 0; j < ncols; ++j) {
             // Suche nach der markierten Spalte:
             Coin &hiddenCoin = hiddenCoins[j];
-            if(hiddenCoin == hiddenCoin.getPlayerColor()) {
+            if (hiddenCoin == hiddenCoin.getPlayerColor()) {
                 hiddenCoin.makeHidden();
                 addCoin(j, true);
                 // computer turn
                 //int c = rand()%ncols; //searchDepthFirst();
-                int level {0};
+                int level{0};
                 int c = searchDepthFirst(level);
                 addCoin(c, false);
                 break;
