@@ -119,8 +119,8 @@ void Board::displayBoard() {
     std::cout << "Das aktuelle Spielfeld " << std::endl;
     std::cout << endl;
 
-    for (int ii = 0; ii <= nrows-1; ++ii) {
-        for (int jj = 0; jj <= ncols-1; ++jj) {
+    for (int ii = 0; ii <= nrows - 1; ++ii) {
+        for (int jj = 0; jj <= ncols - 1; ++jj) {
 
             const sf::Color &coinColor = coins[ii][jj].getShape().getFillColor();
             const sf::Color &questColorPlayer = coins[ii][jj].getPlayerColor();
@@ -139,7 +139,7 @@ void Board::displayBoard() {
             }
             cout << " " << arr[ii][jj] << " ";
         } // for
-        cout<<"\n";
+        cout << "\n";
     } // for
     std::cout << endl;
 }
@@ -148,17 +148,17 @@ void Board::displayBoard() {
 int Board::evaluatePositionWinLose(const int &coinsInLine, const Coin &coin) const {
 // get the fill color
     const sf::Color &coinColor = coin.getShape().getFillColor();
-    const sf::Color &questColorPlayer = coin.getPlayerColor();
-    const sf::Color &questColorOpponent = coin.getOpponentColor();
+    const sf::Color &questColorVirtualComp = coin.getOpponentColor();
+    const sf::Color &questColorVirtualPlayer = coin.getPlayerColor();
     const sf::Color &questColorNeutral = coin.getNeutralColor();
 
-    if (coinColor == questColorPlayer) {
+    if (coinColor == questColorVirtualComp) {
         if (coinsInLine == 4) {
-            return WORSTEVAL;
-        }
-    } else if (coinColor == questColorOpponent) {
-        if (coinsInLine == 4) { // besser: if winningConstellation
             return BESTEVAL;
+        }
+    } else if (coinColor == questColorVirtualPlayer) {
+        if (coinsInLine == 4) { // besser: if winningConstellation
+            return WORSTEVAL;
         }
     }
     return 0;
@@ -259,21 +259,22 @@ int Board::checkBoardWinLose() {
 double Board::evaluatePosition(const int &coinsInLine, const Coin &coin) {
     // get the fill color
     const sf::Color &coinColor = coin.getShape().getFillColor();
-    const sf::Color &questColorPlayer = coin.getPlayerColor();
-    const sf::Color &questColorOpponent = coin.getOpponentColor();
+    const sf::Color &questColorVirtualComp = coin.getOpponentColor();
+    const sf::Color &questColorVirtualPlayer = coin.getPlayerColor();
     const sf::Color &questColorNeutral = coin.getNeutralColor();
 
-    if (coinColor == questColorPlayer) {
-        if (coinsInLine == 2) { // bin mir hier nicht 100% sicher. wenn coinsInLine = 2, habe ich eigentlich 3in line, weil ich mit einer farbigen Münze beginne, und die nachfoolgenden zwei auf diese Farbe prüfe
-            return SECONDWORSTEVAL; //SECONDBESTEVAL;
+    if (coinColor == questColorVirtualComp) {
+        if (coinsInLine ==
+            2) { // bin mir hier nicht 100% sicher. wenn coinsInLine = 2, habe ich eigentlich 3in line, weil ich mit einer farbigen Münze beginne, und die nachfoolgenden zwei auf diese Farbe prüfe
+            return SECONDBESTEVAL;
         } else if (coinsInLine == 1) {
-            return THIRDWORSTEVAL; //THIRDBESTEVAL;
+            return THIRDBESTEVAL;
         }
-    } else if (coinColor == questColorOpponent) {
+    } else if (coinColor == questColorVirtualPlayer) {
         if (coinsInLine == 2) {
-            return SECONDBESTEVAL; //SECONDWORSTEVAL;
+            return SECONDWORSTEVAL;
         } else if (coinsInLine == 1) {
-            return THIRDBESTEVAL; //THIRDWORSTEVAL; // 0.02 on purpose different from 0.01 because negative positions are rated harder
+            return THIRDWORSTEVAL; // 0.02 on purpose different from 0.01 because negative positions are rated harder
         }
     } else if (coinColor == questColorNeutral) {
         return 0;
@@ -381,47 +382,19 @@ double Board::searchDepthFirst(int currentDepth) {
 
     } else if (currentDepth == SEARCHTREEDEPTH) {
 
-        for (int col: availCols) {
+        // just evaluate board
+        double valueCurrentBoard{};
+        if (checkBoardWinLose() == -1) {
+            valueCurrentBoard = -1;
+        } else if (checkBoardWinLose() == 1) {
+            valueCurrentBoard = 1;
+        } else if (checkBoardWinLose() == 0) {
+            valueCurrentBoard = evaluateBoard();
+        }
 
-            // insert coin
-//            if (currentDepth % 2 == 0) {
-//                // computers turn
-//                addCoin(col, false);
-//            } else {
-//                // virtual player's turn
-//                addCoin(col, true);
-//            }
-
-            // evaluate
-            // at first, check if 4 coins are connected
-            double valueCurrentBoard{};
-            if (checkBoardWinLose() == -1) {
-                valueCurrentBoard = -1;
-            } else if (checkBoardWinLose() == 1) {
-                valueCurrentBoard = 1;
-            } else if (checkBoardWinLose() == 0) {
-                valueCurrentBoard = evaluateBoard();
-            }
-            // minMax algorithm
-            temp = (currentDepth % 2) ? min(valueCurrentBoard, temp) : max(valueCurrentBoard, temp);
-            displayBoard();
-
-            if (currentDepth % 2 == 0) {
-                if (valueCurrentBoard > temp) {
-                    //numOfSigCol = col;
-                    temp = valueCurrentBoard;
-                }
-            } else {
-                if (valueCurrentBoard < temp) {
-                    //numOfSigCol = col;
-                    temp = valueCurrentBoard;
-                }
-            }
-
-//            // remove coin added last:
-//            removeCoin(col);
-
-        } // for
+        displayBoard();
+        std::cout << valueCurrentBoard << std::endl;
+        temp = valueCurrentBoard;
         return temp;
     } // if
     return -99;
