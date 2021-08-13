@@ -319,7 +319,8 @@ vector<int> Board::detectAvailableCols() {
 
 double Board::searchDepthFirst(int currentDepth) {
 
-    double temp{};
+    double temp {};
+    int temp2 {};
     int numOfSigCol{0};
 
     if (currentDepth % 2 == 0) {
@@ -348,37 +349,42 @@ double Board::searchDepthFirst(int currentDepth) {
             // check if four were connected by this coin:
             if (checkBoardWinLose() == -1) {
                 valueCurrentBoard = -1;
-                removeCoin(col);
-                continue;
             } else if (checkBoardWinLose() == 1) {
                 valueCurrentBoard = 1;
-                removeCoin(col);
-                continue;
             } else if (checkBoardWinLose() == 0) {
                 valueCurrentBoard = searchDepthFirst(currentDepth + 1);
             }
 
-            if (currentDepth == 0) {
-                if (valueCurrentBoard > temp) {
-                    numOfSigCol = col;
-                    temp = col;
-                }
-            } else {
-                if (currentDepth % 2 == 0) {
-                    // computers turn
+            if (currentDepth % 2 == 0) {
+                // computers turn
+                if (currentDepth == 0){
+                    if (valueCurrentBoard > temp) {
+                        temp2 = col; // schreckliches Gebastel...
+                    }
                     temp = max(temp, valueCurrentBoard);
                 } else {
-                    // virtual player turn
-                    temp = min(temp, valueCurrentBoard);
+                    temp = max(temp, valueCurrentBoard);
                 }
-            } // if
+            } else {
+                // virtual player turn
+                temp = min(temp, valueCurrentBoard);
+            }
+
+            // for display:
+//            displayBoard();
+//            std::cout << valueCurrentBoard << std::endl;
+//            std::cout << col << std::endl;
 
             // remove coin added last:
             removeCoin(col);
 
         } // for
-        return temp;
-        int a = 1;
+
+        if (currentDepth ==  0){
+            return temp2;
+        } else {
+            return temp;
+        }
 
     } else if (currentDepth == SEARCHTREEDEPTH) {
 
@@ -392,9 +398,8 @@ double Board::searchDepthFirst(int currentDepth) {
             valueCurrentBoard = evaluateBoard();
         }
 
-        displayBoard();
-        std::cout << valueCurrentBoard << std::endl;
         temp = valueCurrentBoard;
+
         return temp;
     } // if
     return -99;

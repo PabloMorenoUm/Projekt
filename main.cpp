@@ -5,8 +5,8 @@
 
 int main() {
 
-//    MainMenu game;
-//    game.start();
+    MainMenu game;
+    game.start();
 
     /*WindowSize m_WindowSize;
     static constexpr unsigned nrows = 6, ncols = 7;
@@ -32,15 +32,15 @@ int main() {
 //    board.addCoin(2,true);
 //    board.addCoin(2,true);
 
-    board.addCoin(2,false);
-    board.addCoin(2,false);
-    board.addCoin(2,false);
+//    board.addCoin(2,false);
+//    board.addCoin(2,false);
+//    board.addCoin(2,false);
 
 
 //    board.addCoin(4,false);
 //    board.addCoin(4,false);
 
-    board.displayBoard();
+//    board.displayBoard();
 //
 //    double value, value2 {};
 //    value = board.checkBoardWinLose();
@@ -49,8 +49,8 @@ int main() {
 //    std::cout << value2 << std::endl;
 
 
-    double output = board.searchDepthFirst(0);
-    std::cout << output << std::endl;
+//    double output = board.searchDepthFirst(0);
+//    std::cout << output << std::endl;
 
     return 0;
 }
