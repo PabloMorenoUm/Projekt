@@ -26,7 +26,7 @@ int main() {
     }
      */
 
-    Board board;
+//    Board board;
 //  erzeuge 4 derselben Farbe Münzen in einer Spalte
 //    board.addCoin(2,true);
 //    board.addCoin(2,true);
@@ -40,7 +40,7 @@ int main() {
 //    board.addCoin(4,false);
 //    board.addCoin(4,false);
 
-//    board.displayBoard();
+//    board.displayBoardOnConsole();
 //
 //    double value, value2 {};
 //    value = board.checkBoardWinLose();

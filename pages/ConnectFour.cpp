@@ -19,11 +19,14 @@ void ConnectFour::input() {
     if (Keyboard::isKeyPressed(Keyboard::Escape))
         goToBob();
 
-    board.input();
+    board.input(hud);
 }
 
 void ConnectFour::update(const float &dtAsSeconds) {
-    // Do nothing :-)
+    if (board.isWin()) {
+        m_MissionsCompleted[Games::CONNECTFOUR] = true;
+        goToBob();
+    }
 }
 
 void ConnectFour::draw() {

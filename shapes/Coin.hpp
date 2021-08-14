@@ -8,19 +8,20 @@
 #include <SFML/Graphics.hpp>
 
 class Coin {
-    sf::Color neutralColor = sf::Color::Blue;
-    sf::Color hiddenColor = sf::Color::Transparent;
-    sf::Color playerColor = sf::Color::Red;
-    sf::Color opponentColor = sf::Color::Yellow;
+
+    sf::Color neutral = sf::Color::Blue;
+    sf::Color hidden = sf::Color::Transparent;
+    sf::Color player = sf::Color::Red;
+    sf::Color opponent = sf::Color::Yellow;
     sf::CircleShape shape;
 
 public:
-    const sf::Color &getNeutralColor() const;
-    const sf::Color &getHiddenColor() const;
-    const sf::Color &getPlayerColor() const;
-    const sf::Color &getOpponentColor() const;
-
     const sf::CircleShape &getShape() const;
+
+    bool isNeutral();
+    bool isHidden();
+    bool isPlayer();
+    bool isOpponent();
 
     void makeNeutral();
     void makeHidden();
@@ -29,10 +30,6 @@ public:
 
     void setPosition(const float &posX, const float &posY);
     void setRadius(const float &radius);
-
-    // Münze und Farbe abgleichen:
-    bool operator==(const sf::Color &color) const;
-    bool operator!=(const sf::Color &color) const;
 
     // Zwei Münzen sind gleich, wenn sie dieselbe Farbe haben:
     bool operator==(const Coin &rhs) const;

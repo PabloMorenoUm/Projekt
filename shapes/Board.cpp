@@ -110,7 +110,7 @@ int Board::goLeftDown(const unsigned &i, const unsigned &j, const int &t, const 
     return t;
 }
 
-void Board::displayBoard() {
+void Board::displayBoardOnConsole() {
 
     string color{};
 
@@ -122,19 +122,15 @@ void Board::displayBoard() {
     for (int ii = 0; ii <= nrows - 1; ++ii) {
         for (int jj = 0; jj <= ncols - 1; ++jj) {
 
-            const sf::Color &coinColor = coins[ii][jj].getShape().getFillColor();
-            const sf::Color &questColorPlayer = coins[ii][jj].getPlayerColor();
-            const sf::Color &questColorOpponent = coins[ii][jj].getOpponentColor();
-            const sf::Color &questColorNeutral = coins[ii][jj].getNeutralColor();
-            const sf::Color &questColorHidden = coins[ii][jj].getHiddenColor();
+            Coin &coin = coins[ii][jj];
 
-            if (coinColor == questColorPlayer) {
+            if (coin.isPlayer()) {
                 arr[ii][jj] = 'r';
-            } else if (coinColor == questColorOpponent) {
+            } else if (coin.isOpponent()) {
                 arr[ii][jj] = 'y';
-            } else if (coinColor == questColorNeutral) {
+            } else if (coin.isNeutral()) {
                 arr[ii][jj] = '-';
-            } else if (coinColor == questColorHidden) {
+            } else if (coin.isHidden()) {
                 arr[ii][jj] = 'x';
             }
             cout << " " << arr[ii][jj] << " ";
@@ -144,19 +140,13 @@ void Board::displayBoard() {
     std::cout << endl;
 }
 
+int Board::evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const {
 
-int Board::evaluatePositionWinLose(const int &coinsInLine, const Coin &coin) const {
-// get the fill color
-    const sf::Color &coinColor = coin.getShape().getFillColor();
-    const sf::Color &questColorVirtualComp = coin.getOpponentColor();
-    const sf::Color &questColorVirtualPlayer = coin.getPlayerColor();
-    const sf::Color &questColorNeutral = coin.getNeutralColor();
-
-    if (coinColor == questColorVirtualComp) {
+    if (coin.isOpponent()) {
         if (coinsInLine == 4) {
             return BESTEVAL;
         }
-    } else if (coinColor == questColorVirtualPlayer) {
+    } else if (coin.isPlayer()) {
         if (coinsInLine == 4) { // besser: if winningConstellation
             return WORSTEVAL;
         }
@@ -256,27 +246,22 @@ int Board::checkBoardWinLose() {
     return 0;
 }
 
-double Board::evaluatePosition(const int &coinsInLine, const Coin &coin) {
-    // get the fill color
-    const sf::Color &coinColor = coin.getShape().getFillColor();
-    const sf::Color &questColorVirtualComp = coin.getOpponentColor();
-    const sf::Color &questColorVirtualPlayer = coin.getPlayerColor();
-    const sf::Color &questColorNeutral = coin.getNeutralColor();
+double Board::evaluatePosition(const int &coinsInLine, Coin &coin) const {
 
-    if (coinColor == questColorVirtualComp) {
+    if (coin.isOpponent()) {
         if (coinsInLine ==
             2) { // bin mir hier nicht 100% sicher. wenn coinsInLine = 2, habe ich eigentlich 3in line, weil ich mit einer farbigen Münze beginne, und die nachfoolgenden zwei auf diese Farbe prüfe
             return SECONDBESTEVAL;
         } else if (coinsInLine == 1) {
             return THIRDBESTEVAL;
         }
-    } else if (coinColor == questColorVirtualPlayer) {
+    } else if (coin.isPlayer()) {
         if (coinsInLine == 2) {
             return SECONDWORSTEVAL;
         } else if (coinsInLine == 1) {
             return THIRDWORSTEVAL; // 0.02 on purpose different from 0.01 because negative positions are rated harder
         }
-    } else if (coinColor == questColorNeutral) {
+    } else if (coin.isNeutral()) {
         return 0;
     }
 }
@@ -305,17 +290,14 @@ vector<int> Board::detectAvailableCols() {
     vector<int> output;
     for (int jj = 0; jj < ncols; ++jj) {
         for (auto &coinRow : coins) {
-            Coin &actualCoin = coinRow[jj];
-            if (actualCoin == actualCoin.getNeutralColor()) {
+            if (coinRow[jj].isNeutral()) {
                 output.push_back(jj);
                 break;
             }
         }
-        continue;
     }
     return output;
 }
-
 
 double Board::searchDepthFirst(int currentDepth) {
 
@@ -370,11 +352,6 @@ double Board::searchDepthFirst(int currentDepth) {
                 temp = min(temp, valueCurrentBoard);
             }
 
-            // for display:
-//            displayBoard();
-//            std::cout << valueCurrentBoard << std::endl;
-//            std::cout << col << std::endl;
-
             // remove coin added last:
             removeCoin(col);
 
@@ -405,13 +382,12 @@ double Board::searchDepthFirst(int currentDepth) {
     return -99;
 }
 
-
 void Board::markColumn(const int &col) {
     // Wie viele neutral gefärbte Münzen sind in der Spalte?
     int countNeutralCoins = 0;
     for (auto &coinsRow : coins) {
         Coin &coin = coinsRow[col];
-        countNeutralCoins += (coin == coin.getNeutralColor()) ? 1 : 0;
+        countNeutralCoins += (coin.isNeutral()) ? 1 : 0;
     }
     /* Falls es keine neutralen Münzen gibt, ist die Spalte voll
      * => Die Spalte soll NICHT markiert werden
@@ -429,7 +405,7 @@ void Board::markColumn(const int &col) {
 void Board::addCoin(const unsigned int &col, const bool &playersTurn) {
     for (int i = nrows - 1; i >= 0; --i) {
         Coin &coin = coins[i][col];
-        if (coin == coin.getNeutralColor()) {
+        if (coin.isNeutral()) {
             if (playersTurn)
                 coin.makePlayer();
             else
@@ -442,14 +418,14 @@ void Board::addCoin(const unsigned int &col, const bool &playersTurn) {
 void Board::removeCoin(const unsigned int &col) {
     for (auto &coinsRow : coins) {
         Coin &coin = coinsRow[col];
-        if (coin != coin.getNeutralColor()) {
+        if (!coin.isNeutral()) {
             coin.makeNeutral();
             break;
         }
     }
 }
 
-void Board::input() {
+void Board::input(Words &words) {
     if (Keyboard::isKeyPressed(Keyboard::Num1))
         markColumn(0);
 
@@ -476,15 +452,25 @@ void Board::input() {
         for (int j = 0; j < ncols; ++j) {
             // Suche nach der markierten Spalte:
             Coin &hiddenCoin = hiddenCoins[j];
-            if (hiddenCoin == hiddenCoin.getPlayerColor()) {
+            if (hiddenCoin.isPlayer()) {
                 hiddenCoin.makeHidden();
                 addCoin(j, true);
+                // check if player has won:
+                if (checkBoardWinLose() == -1){
+                    words.setString("Player wins!");
+                    win = true;
+                }
+
                 // computer turn
                 //int c = rand()%ncols; //searchDepthFirst();
                 int level{0};
                 int c = searchDepthFirst(level);
                 addCoin(c, false);
+                if (checkBoardWinLose() == 1){
+                    words.setString("Suck it Bitch!");
+                }
                 break;
+
             }
         }
     }
@@ -501,4 +487,8 @@ void Board::draw(RenderWindow &window) {
         // Spaltenmarker in die GUI bringen
         window.draw(hiddenCoins[j].getShape());
     }
+}
+
+bool Board::isWin() const {
+    return win;
 }

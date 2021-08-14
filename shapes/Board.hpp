@@ -23,6 +23,8 @@ class Board {
     // Spaltennummerierung, damit der User weiß, wo er tippen soll ;-):
     Words numbers[ncols];
 
+    bool win = false;
+
     // Konstanten:
     const int BESTEVAL {1};
     const double SECONDBESTEVAL {0.1};
@@ -43,23 +45,21 @@ class Board {
     int goLeftDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
     std::vector<int> detectAvailableCols();
     void markColumn(const int &col);
-    //void addCoin(const unsigned &col, const bool &playersTurn);
-    //void removeCoin(const unsigned &col);
-public:
-    Board();
-
-    // temporary!
     void addCoin(const unsigned &col, const bool &playersTurn);
     void removeCoin(const unsigned &col);
 
-    void displayBoard();
-    int evaluatePositionWinLose(const int &coinsInLine, const Coin &coin) const;
+public:
+    Board();
+    void displayBoardOnConsole(); // Konsolenanzeige des Spielfelds:
+    int evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const;
     int checkBoardWinLose();
     double searchDepthFirst(int currentDepth);
-    double evaluatePosition(const int &coinsInLine, const Coin &coin);
+    double evaluatePosition(const int &coinsInLine, Coin &coin) const;
     double evaluateBoard();
-    void input();
+    void input(Words &words);
     void draw(sf::RenderWindow &window);
+
+    bool isWin() const;
 };
 
 
