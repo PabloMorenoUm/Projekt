@@ -302,7 +302,7 @@ vector<int> Board::detectAvailableCols() {
 double Board::searchDepthFirst(int currentDepth) {
 
     double temp {};
-    int temp2 {};
+    int temp2 {-1};
     int numOfSigCol{0};
 
     if (currentDepth % 2 == 0) {
@@ -358,6 +358,28 @@ double Board::searchDepthFirst(int currentDepth) {
         } // for
 
         if (currentDepth ==  0){
+            // return the collum with the best chance
+
+            // it can happen that the algorithm returns 0, but collum 0 is full
+            // this means, that there is no chance of winning any more
+            // 0 is an unavailable collumn however. In this case, return the first available position,
+            // even if it means defeat for the computer
+
+            // BIN NOCH NICHT SICHER, OB ICH ES HIERMIT NICHT KAPUTT MACHE!!
+
+            std::vector<int> availablePos = Board::detectAvailableCols();
+            bool available {false};
+            for (int ii = 1 ; ii < availablePos.size() ; ii++) { // start by 1 on purpose, because I want to avoid 0
+                if (ii == temp2){
+                    available = true;
+                    break; // collumn is available
+                }
+            }
+            if (!available){
+                // set the coin on the first available position
+                temp2 = availablePos[0];
+            }
+
             return temp2;
         } else {
             return temp;
@@ -462,15 +484,15 @@ void Board::input(Words &words) {
                 }
 
                 // computer turn
-                //int c = rand()%ncols; //searchDepthFirst();
                 int level{0};
                 int c = searchDepthFirst(level);
+
+                // add the coin
                 addCoin(c, false);
                 if (checkBoardWinLose() == 1){
                     words.setString("Suck it Bitch!");
                 }
                 break;
-
             }
         }
     }

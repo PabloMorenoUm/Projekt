@@ -43,13 +43,20 @@ class Board {
     int goRightDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
     int goLeftUp(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
     int goLeftDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
+//    std::vector<int> detectAvailableCols();
+//    void markColumn(const int &col);
+//    void addCoin(const unsigned &col, const bool &playersTurn);
+//    void removeCoin(const unsigned &col);
+
+public:
+    Board();
+
+    // temporary:
     std::vector<int> detectAvailableCols();
     void markColumn(const int &col);
     void addCoin(const unsigned &col, const bool &playersTurn);
     void removeCoin(const unsigned &col);
 
-public:
-    Board();
     void displayBoardOnConsole(); // Konsolenanzeige des Spielfelds:
     int evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const;
     int checkBoardWinLose();

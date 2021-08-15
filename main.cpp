@@ -8,38 +8,52 @@ int main() {
     MainMenu game;
     game.start();
 
-    /*WindowSize m_WindowSize;
-    static constexpr unsigned nrows = 6, ncols = 7;
-    Coin coins[nrows][ncols];
-    unsigned idTemp = 0;
-    for (int j = 0; j < ncols; ++j) {
-        // Münzen auf dem Spielfeld:
-        for (int i = 0; i < nrows; ++i) {
-            ++idTemp;
-            Coin &coin = coins[i][j];
-            coin.setId(idTemp);
-            coin.makeNeutral();
-            coin.setRadius(100);
-            coin.setPosition(m_WindowSize.getX() * ((float) j + .3) / ncols,
-                             m_WindowSize.getY() * ((float) i + 1.8) / (nrows + 2));
-        }
-    }
-     */
 
+//    // Test mit kritischem Board:
 //    Board board;
-//  erzeuge 4 derselben Farbe Münzen in einer Spalte
-//    board.addCoin(2,true);
-//    board.addCoin(2,true);
-//    board.addCoin(2,true);
-
+//    // Spalte 1:
+//    board.addCoin(0,false);
+//    board.addCoin(0,false);
+//    board.addCoin(0,false);
+//    board.addCoin(0,true);
+//    board.addCoin(0,false);
+//    board.addCoin(0,true);
+//
+//    // Spalte 2:
+//    board.addCoin(1,false);
+//    board.addCoin(1,false);
+//    board.addCoin(1,true);
+//
+//    // Spalte 3:
 //    board.addCoin(2,false);
 //    board.addCoin(2,false);
 //    board.addCoin(2,false);
-
-
-//    board.addCoin(4,false);
-//    board.addCoin(4,false);
-
+//    board.addCoin(2,true);
+//    board.addCoin(2,true);
+//    board.addCoin(2,true);
+//
+//    // Spalte 4:
+//    board.addCoin(3,true);
+//    board.addCoin(3,true);
+//    board.addCoin(3,false);
+//    board.addCoin(3,true);
+//    board.addCoin(3,true);
+//    board.addCoin(3,true);
+//
+//    // Spalte 6:
+//    board.addCoin(5,false);
+//    board.addCoin(5,true);
+//    board.addCoin(5,true);
+//    board.addCoin(5,false);
+//    board.addCoin(5,true);
+//    board.addCoin(5,true);
+//
+//    // Spalte 7:
+//    board.addCoin(6,false);
+//    board.addCoin(6,false);
+//    board.addCoin(6,false);
+//    board.addCoin(6,true);
+//
 //    board.displayBoardOnConsole();
 //
 //    double value, value2 {};
@@ -47,9 +61,9 @@ int main() {
 //    std::cout << value << std::endl;
 //    value2 = board.evaluateBoard();
 //    std::cout << value2 << std::endl;
-
-
+//
 //    double output = board.searchDepthFirst(0);
+//    std::cout << "I will insert into collumn: " << std::endl;
 //    std::cout << output << std::endl;
 
     return 0;
