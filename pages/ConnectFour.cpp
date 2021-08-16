@@ -27,6 +27,8 @@ void ConnectFour::update(const float &dtAsSeconds) {
         m_MissionsCompleted[Games::CONNECTFOUR] = true;
         goToBob();
     }
+    if (board.isLose())
+        goToBob();
 }
 
 void ConnectFour::draw() {

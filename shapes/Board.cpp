@@ -156,7 +156,7 @@ int Board::evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const {
 
 int Board::checkBoardWinLose() {
     int tStart = 1;
-    int value{};
+    int value;
     int tEnd = tMaxCheckConnectFour;
     for (int i = 0; i < nrows; ++i) {
         for (int j = 0; j < ncols; ++j) {
@@ -249,8 +249,10 @@ int Board::checkBoardWinLose() {
 double Board::evaluatePosition(const int &coinsInLine, Coin &coin) const {
 
     if (coin.isOpponent()) {
-        if (coinsInLine ==
-            2) { // bin mir hier nicht 100% sicher. wenn coinsInLine = 2, habe ich eigentlich 3in line, weil ich mit einer farbigen Münze beginne, und die nachfoolgenden zwei auf diese Farbe prüfe
+        /* bin mir hier nicht 100% sicher. wenn coinsInLine = 2, habe ich eigentlich 3in line,
+         * weil ich mit einer farbigen Münze beginne, und die nachfoolgenden zwei auf diese Farbe prüfe
+         */
+        if (coinsInLine == 2) {
             return SECONDBESTEVAL;
         } else if (coinsInLine == 1) {
             return THIRDBESTEVAL;
@@ -261,9 +263,8 @@ double Board::evaluatePosition(const int &coinsInLine, Coin &coin) const {
         } else if (coinsInLine == 1) {
             return THIRDWORSTEVAL; // 0.02 on purpose different from 0.01 because negative positions are rated harder
         }
-    } else if (coin.isNeutral()) {
-        return 0;
     }
+    return 0;
 }
 
 double Board::evaluateBoard() {
@@ -301,41 +302,30 @@ vector<int> Board::detectAvailableCols() {
 
 double Board::searchDepthFirst(int currentDepth) {
 
-    double temp {};
+    double temp = (currentDepth % 2 == 0) ? -1 : 1;
     int temp2 {-1};
-    int numOfSigCol{0};
-
-    if (currentDepth % 2 == 0) {
-        temp = -1;
-    } else {
-        temp = 1;
-    }
 
     vector<int> availCols = detectAvailableCols();
 
     if (currentDepth < SEARCHTREEDEPTH) {
 
-        double valueCurrentBoard{};
+        double valueCurrentBoard;
 
         for (int col: availCols) {
 
             // insert coin
-            if (currentDepth % 2 == 0) {
+            if (currentDepth % 2 == 0)
                 // virtual computers turn
                 addCoin(col, false);
-            } else {
+            else
                 // virtual player's turn
                 addCoin(col, true);
-            }
 
             // check if four were connected by this coin:
-            if (checkBoardWinLose() == -1) {
-                valueCurrentBoard = -1;
-            } else if (checkBoardWinLose() == 1) {
-                valueCurrentBoard = 1;
-            } else if (checkBoardWinLose() == 0) {
+            if (checkBoardWinLose() != 0)
+                valueCurrentBoard = checkBoardWinLose();
+            else
                 valueCurrentBoard = searchDepthFirst(currentDepth + 1);
-            }
 
             if (currentDepth % 2 == 0) {
                 // computers turn
@@ -343,10 +333,8 @@ double Board::searchDepthFirst(int currentDepth) {
                     if (valueCurrentBoard > temp) {
                         temp2 = col; // schreckliches Gebastel...
                     }
-                    temp = max(temp, valueCurrentBoard);
-                } else {
-                    temp = max(temp, valueCurrentBoard);
                 }
+                temp = max(temp, valueCurrentBoard);
             } else {
                 // virtual player turn
                 temp = min(temp, valueCurrentBoard);
@@ -366,42 +354,24 @@ double Board::searchDepthFirst(int currentDepth) {
             // even if it means defeat for the computer
 
             // BIN NOCH NICHT SICHER, OB ICH ES HIERMIT NICHT KAPUTT MACHE!!
-
-            std::vector<int> availablePos = Board::detectAvailableCols();
-            bool available {false};
-            for (int ii = 1 ; ii < availablePos.size() ; ii++) { // start by 1 on purpose, because I want to avoid 0
-                if (ii == temp2){
-                    available = true;
-                    break; // collumn is available
-                }
-            }
-            if (!available){
-                // set the coin on the first available position
-                temp2 = availablePos[0];
-            }
+            if (find(availCols.begin(), availCols.end(), temp2) == availCols.end())
+                temp2 = availCols.at(0);
 
             return temp2;
         } else {
             return temp;
         }
 
-    } else if (currentDepth == SEARCHTREEDEPTH) {
+    } else {
 
         // just evaluate board
-        double valueCurrentBoard{};
-        if (checkBoardWinLose() == -1) {
-            valueCurrentBoard = -1;
-        } else if (checkBoardWinLose() == 1) {
-            valueCurrentBoard = 1;
-        } else if (checkBoardWinLose() == 0) {
-            valueCurrentBoard = evaluateBoard();
-        }
-
-        temp = valueCurrentBoard;
+        if (checkBoardWinLose() != 0)
+            temp = checkBoardWinLose();
+        else
+            temp = evaluateBoard();
 
         return temp;
-    } // if
-    return -99;
+    }
 }
 
 void Board::markColumn(const int &col) {
@@ -416,7 +386,7 @@ void Board::markColumn(const int &col) {
      * => Die folgende if-Bedingung soll NICHT aufgerufen werden.
      * Ansonsten soll die Spalte schon markiert werden.
      */
-    if (countNeutralCoins) {
+    if (countNeutralCoins && !winState && !loseState) {
         for (auto &hiddenCoin : hiddenCoins) {
             hiddenCoin.makeHidden();
         }
@@ -469,6 +439,11 @@ void Board::input(Words &words) {
     if (Keyboard::isKeyPressed(Keyboard::Num7))
         markColumn(6);
 
+    if (Keyboard::isKeyPressed(Keyboard::P)){
+        win = winState;
+        lose = loseState;
+    }
+
     if (Keyboard::isKeyPressed(Keyboard::Enter)) {
         // Player wirft Münze ein.
         for (int j = 0; j < ncols; ++j) {
@@ -479,8 +454,8 @@ void Board::input(Words &words) {
                 addCoin(j, true);
                 // check if player has won:
                 if (checkBoardWinLose() == -1){
-                    words.setString("Player wins!");
-                    win = true;
+                    words.setString("Player wins! Press [P].");
+                    winState = true;
                 }
 
                 // computer turn
@@ -490,7 +465,8 @@ void Board::input(Words &words) {
                 // add the coin
                 addCoin(c, false);
                 if (checkBoardWinLose() == 1){
-                    words.setString("Suck it Bitch!");
+                    words.setString("Suck it Bitch! Press [P].");
+                    loseState = true;
                 }
                 break;
             }
@@ -513,4 +489,8 @@ void Board::draw(RenderWindow &window) {
 
 bool Board::isWin() const {
     return win;
+}
+
+bool Board::isLose() const {
+    return lose;
 }

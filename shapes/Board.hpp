@@ -23,7 +23,7 @@ class Board {
     // Spaltennummerierung, damit der User weiß, wo er tippen soll ;-):
     Words numbers[ncols];
 
-    bool win = false;
+    bool win = false, lose = false, winState = false, loseState = false;
 
     // Konstanten:
     const int BESTEVAL {1};
@@ -67,6 +67,8 @@ public:
     void draw(sf::RenderWindow &window);
 
     bool isWin() const;
+
+    bool isLose() const;
 };
 
 
