@@ -14,8 +14,7 @@ class Board {
     WindowSize m_WindowSize;
     // Dimension des Spielfelds:
     static constexpr unsigned nrows = 6, ncols = 7;
-    const int tmax = 3;
-    const int tMaxCheckConnectFour = 4;
+    const int tStart = 0, tmax = 3;
     // Spielfeldmünzen:
     Coin coins[nrows][ncols];
     // Unsichtbare Münzen als Spaltenmarker, damit der User weiß, welche Spalte gerade ausgewählt ist:

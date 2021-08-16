@@ -143,11 +143,11 @@ void Board::displayBoardOnConsole() {
 int Board::evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const {
 
     if (coin.isOpponent()) {
-        if (coinsInLine == 4) {
+        if (coinsInLine == tmax) {
             return BESTEVAL;
         }
     } else if (coin.isPlayer()) {
-        if (coinsInLine == 4) { // besser: if winningConstellation
+        if (coinsInLine == tmax) { // besser: if winningConstellation
             return WORSTEVAL;
         }
     }
@@ -155,9 +155,8 @@ int Board::evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const {
 }
 
 int Board::checkBoardWinLose() {
-    int tStart = 1;
     int value;
-    int tEnd = tMaxCheckConnectFour;
+    int tEnd = tmax;
     for (int i = 0; i < nrows; ++i) {
         for (int j = 0; j < ncols; ++j) {
             Coin &actualCoin = coins[i][j];
@@ -268,7 +267,6 @@ double Board::evaluatePosition(const int &coinsInLine, Coin &coin) const {
 }
 
 double Board::evaluateBoard() {
-    int tStart = 0;
     int tEnd = tmax;
     double value{0};
     for (int i = 0; i < nrows; ++i) {
