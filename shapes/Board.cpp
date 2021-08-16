@@ -38,74 +38,42 @@ Board::Board() {
     }
 }
 
-int Board::goRight(const unsigned &i, const unsigned &j, const int &t, const int &tEnd) {
-    if (t < tEnd && j < ncols - 1) {
-        if (coins[i][j + 1] == coins[i][j]) {
-            return goRight(i, j + 1, t + 1, tEnd);
-        }
-    }
-    return t;
-}
+int Board::go(const unsigned int &i, const unsigned int &j, const int &t, const Orientation &horizontal,
+              const Orientation &vertical) {
+    bool horizCond, verticCond;
+    unsigned iNew, jNew;
 
-int Board::goLeft(const unsigned &i, const unsigned &j, const int &t, const int &tEnd) {
-    if (t < tEnd && j > 0) {
-        if (coins[i][j - 1] == coins[i][j]) {
-            return goLeft(i, j - 1, t + 1, tEnd);
-        }
+    switch (horizontal) {
+        case RIGHT:
+            horizCond = j < ncols - 1;
+            jNew = j + 1;
+            break;
+        case LEFT:
+            horizCond = j > 0;
+            jNew = j - 1;
+            break;
+        default:
+            horizCond = true;
+            jNew = j;
     }
-    return t;
-}
 
-int Board::goUp(const unsigned &i, const unsigned &j, const int &t, const int &tEnd) {
-    if (t < tEnd && i > 0) {
-        if (coins[i - 1][j] == coins[i][j]) {
-            return goUp(i - 1, j, t + 1, tEnd);
-        }
+    switch (vertical) {
+        case DOWN:
+            verticCond = i < nrows - 1;
+            iNew = i + 1;
+            break;
+        case UP:
+            verticCond = i > 0;
+            iNew = i - 1;
+            break;
+        default:
+            verticCond = true;
+            iNew = i;
     }
-    return t;
-}
 
-int Board::goDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd) {
-    if (t < tEnd && i < nrows - 1) {
-        if (coins[i + 1][j] == coins[i][j]) {
-            return goDown(i + 1, j, t + 1, tEnd);
-        }
-    }
-    return t;
-}
-
-int Board::goRightUp(const unsigned &i, const unsigned &j, const int &t, const int &tEnd) {
-    if (t < tEnd && i > 0 && j < ncols - 1) {
-        if (coins[i - 1][j + 1] == coins[i][j]) {
-            return goRightUp(i - 1, j + 1, t + 1, tEnd);
-        }
-    }
-    return t;
-}
-
-int Board::goRightDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd) {
-    if (t < tEnd && i < nrows - 1 && j < ncols - 1) {
-        if (coins[i + 1][j + 1] == coins[i][j]) {
-            return goRightDown(i + 1, j + 1, t + 1, tEnd);
-        }
-    }
-    return t;
-}
-
-int Board::goLeftUp(const unsigned &i, const unsigned &j, const int &t, const int &tEnd) {
-    if (t < tEnd && i > 0 && j > 0) {
-        if (coins[i - 1][j - 1] == coins[i][j]) {
-            return goLeftUp(i - 1, j - 1, t + 1, tEnd);
-        }
-    }
-    return t;
-}
-
-int Board::goLeftDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd) {
-    if (t < tEnd && i < nrows - 1 && j > 0) {
-        if (coins[i + 1][j - 1] == coins[i][j]) {
-            return goLeftDown(i + 1, j - 1, t + 1, tEnd);
-        }
+    if (t < tmax && horizCond && verticCond) {
+        if (coins[iNew][jNew] == coins[i][j])
+            return go(iNew, jNew, t + 1, horizontal, vertical);
     }
     return t;
 }
@@ -156,89 +124,28 @@ int Board::evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const {
 
 int Board::checkBoardWinLose() {
     int value;
-    int tEnd = tmax;
     for (int i = 0; i < nrows; ++i) {
         for (int j = 0; j < ncols; ++j) {
             Coin &actualCoin = coins[i][j];
-            value = evaluatePositionWinLose(goRight(i, j, tStart, tEnd), actualCoin);
-            if (value == WORSTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goLeft(i, j, tStart, tEnd), actualCoin);
-            if (value == WORSTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goUp(i, j, tStart, tEnd), actualCoin);
-            if (value == WORSTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goDown(i, j, tStart, tEnd), actualCoin);
-            if (value == WORSTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goRightUp(i, j, tStart, tEnd), actualCoin);
-            if (value == WORSTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goRightDown(i, j, tStart, tEnd), actualCoin);
-            if (value == WORSTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goLeftUp(i, j, tStart, tEnd), actualCoin);
-            if (value == WORSTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goLeftDown(i, j, tStart, tEnd), actualCoin);
-            if (value == WORSTEVAL) {
-                return value;
+            for (auto &horiz: horizStates) {
+                for (auto &vertic: verticStates) {
+                    if (horiz != NONE || vertic != NONE) {
+                        value = evaluatePositionWinLose(go(i, j, tStart, horiz, vertic), actualCoin);
+                        if (value == WORSTEVAL)
+                            return value;
+                    }
+                }
             }
 
             // if no losing configuration is detected, check for winning configuration
-            value = evaluatePositionWinLose(goRight(i, j, tStart, tEnd), actualCoin);
-            if (value == BESTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goLeft(i, j, tStart, tEnd), actualCoin);
-            if (value == BESTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goUp(i, j, tStart, tEnd), actualCoin);
-            if (value == BESTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goDown(i, j, tStart, tEnd), actualCoin);
-            if (value == BESTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goRightUp(i, j, tStart, tEnd), actualCoin);
-            if (value == BESTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goRightDown(i, j, tStart, tEnd), actualCoin);
-            if (value == BESTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goLeftUp(i, j, tStart, tEnd), actualCoin);
-            if (value == BESTEVAL) {
-                return value;
-            }
-
-            value = evaluatePositionWinLose(goLeftDown(i, j, tStart, tEnd), actualCoin);
-            if (value == BESTEVAL) {
-                return value;
+            for (auto &horiz: horizStates) {
+                for (auto &vertic: verticStates) {
+                    if (horiz != NONE || vertic != NONE) {
+                        value = evaluatePositionWinLose(go(i, j, tStart, horiz, vertic), actualCoin);
+                        if (value == BESTEVAL)
+                            return value;
+                    }
+                }
             }
         } // for jj
     } // for ii
@@ -267,19 +174,15 @@ double Board::evaluatePosition(const int &coinsInLine, Coin &coin) const {
 }
 
 double Board::evaluateBoard() {
-    int tEnd = tmax;
     double value{0};
     for (int i = 0; i < nrows; ++i) {
         for (int j = 0; j < ncols; ++j) {
-            Coin &actualCoin = coins[i][j];
-            value = value + evaluatePosition(goRight(i, j, tStart, tEnd), actualCoin) +
-                    evaluatePosition(goLeft(i, j, tStart, tEnd), actualCoin) +
-                    evaluatePosition(goUp(i, j, tStart, tEnd), actualCoin) +
-                    evaluatePosition(goDown(i, j, tStart, tEnd), actualCoin) +
-                    evaluatePosition(goRightUp(i, j, tStart, tEnd), actualCoin) +
-                    evaluatePosition(goRightDown(i, j, tStart, tEnd), actualCoin) +
-                    evaluatePosition(goLeftUp(i, j, tStart, tEnd), actualCoin) +
-                    evaluatePosition(goLeftDown(i, j, tStart, tEnd), actualCoin); // check all lines
+            for (auto &horiz: horizStates) {
+                for (auto &vertic: verticStates) {
+                    if (horiz != NONE || vertic != NONE)
+                        value += evaluatePosition(go(i, j, tStart, horiz, vertic), coins[i][j]);
+                }
+            }
         }
     }
     return value;

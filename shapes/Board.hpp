@@ -6,6 +6,7 @@
 #define PROJEKT_RUN_BOARD_HPP
 
 #include "Coin.hpp"
+#include "Orientation.hpp"
 #include "WindowSize.hpp"
 #include "Words.hpp"
 
@@ -22,6 +23,8 @@ class Board {
     // Spaltennummerierung, damit der User weiß, wo er tippen soll ;-):
     Words numbers[ncols];
 
+    std::vector<Orientation> horizStates = {RIGHT, LEFT, NONE};
+    std::vector<Orientation> verticStates = {UP, DOWN, NONE};
     bool win = false, lose = false, winState = false, loseState = false;
 
     // Konstanten:
@@ -33,15 +36,9 @@ class Board {
     const int WORSTEVAL {-1};
     const int SEARCHTREEDEPTH {4};
 
+    int go(const unsigned &i, const unsigned &j, const int &t, const Orientation &horizontal,
+           const Orientation &vertical);
 
-    int goRight(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
-    int goLeft(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
-    int goUp(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
-    int goDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
-    int goRightUp(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
-    int goRightDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
-    int goLeftUp(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
-    int goLeftDown(const unsigned &i, const unsigned &j, const int &t, const int &tEnd);
 //    std::vector<int> detectAvailableCols();
 //    void markColumn(const int &col);
 //    void addCoin(const unsigned &col, const bool &playersTurn);
