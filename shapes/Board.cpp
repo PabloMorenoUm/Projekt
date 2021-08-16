@@ -303,7 +303,7 @@ vector<int> Board::detectAvailableCols() {
 double Board::searchDepthFirst(int currentDepth) {
 
     double temp = (currentDepth % 2 == 0) ? -1 : 1;
-    int temp2 {-1};
+    int temp2{-1};
 
     vector<int> availCols = detectAvailableCols();
 
@@ -329,28 +329,25 @@ double Board::searchDepthFirst(int currentDepth) {
 
             if (currentDepth % 2 == 0) {
                 // computers turn
-                if (currentDepth == 0){
-                    if (valueCurrentBoard > temp) {
-                        temp2 = col; // schreckliches Gebastel...
-                    }
-                }
+                if (currentDepth == 0 && valueCurrentBoard > temp)
+                    temp2 = col; // schreckliches Gebastel...
+
                 temp = max(temp, valueCurrentBoard);
-            } else {
+            } else
                 // virtual player turn
                 temp = min(temp, valueCurrentBoard);
-            }
 
             // remove coin added last:
             removeCoin(col);
 
         } // for
 
-        if (currentDepth ==  0){
-            // return the collum with the best chance
+        if (currentDepth == 0) {
+            // return the column with the best chance
 
-            // it can happen that the algorithm returns 0, but collum 0 is full
+            // it can happen that the algorithm returns 0, but column 0 is full
             // this means, that there is no chance of winning any more
-            // 0 is an unavailable collumn however. In this case, return the first available position,
+            // 0 is an unavailable column, however. In this case, return the first available position,
             // even if it means defeat for the computer
 
             // BIN NOCH NICHT SICHER, OB ICH ES HIERMIT NICHT KAPUTT MACHE!!
@@ -439,7 +436,7 @@ void Board::input(Words &words) {
     if (Keyboard::isKeyPressed(Keyboard::Num7))
         markColumn(6);
 
-    if (Keyboard::isKeyPressed(Keyboard::P)){
+    if (Keyboard::isKeyPressed(Keyboard::P)) {
         win = winState;
         lose = loseState;
     }
@@ -453,7 +450,7 @@ void Board::input(Words &words) {
                 hiddenCoin.makeHidden();
                 addCoin(j, true);
                 // check if player has won:
-                if (checkBoardWinLose() == -1){
+                if (checkBoardWinLose() == -1) {
                     words.setString("Player wins! Press [P].");
                     winState = true;
                 }
@@ -464,7 +461,7 @@ void Board::input(Words &words) {
 
                 // add the coin
                 addCoin(c, false);
-                if (checkBoardWinLose() == 1){
+                if (checkBoardWinLose() == 1) {
                     words.setString("Suck it Bitch! Press [P].");
                     loseState = true;
                 }
