@@ -187,8 +187,7 @@ vector<int> Board::detectAvailableCols() {
 
 double Board::searchDepthFirst(int currentDepth) {
 
-    bool computersTurn = currentDepth % 2 == 0, gameFinished = checkBoardWinLose() != 0,
-            depth0 = currentDepth == 0;
+    bool computersTurn = currentDepth % 2 == 0, gameFinished, depth0 = currentDepth == 0;
 
     double temp = computersTurn ? -1 : 1;
     int temp2{-1};
@@ -205,6 +204,7 @@ double Board::searchDepthFirst(int currentDepth) {
             addCoin(col, not computersTurn);
 
             // check if four were connected by this coin:
+            gameFinished = checkBoardWinLose() != 0;
             valueCurrentBoard = gameFinished ? checkBoardWinLose() : searchDepthFirst(currentDepth + 1);
 
             if (computersTurn) {
@@ -239,6 +239,7 @@ double Board::searchDepthFirst(int currentDepth) {
 
     } else {
         // just evaluate board
+        gameFinished = checkBoardWinLose() != 0;
         return gameFinished ? checkBoardWinLose() : evaluateBoard();
     }
 }
