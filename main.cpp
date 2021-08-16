@@ -63,7 +63,7 @@ int main() {
 //    std::cout << value2 << std::endl;
 //
 //    double output = board.searchDepthFirst(0);
-//    std::cout << "I will insert into collumn: " << std::endl;
+//    std::cout << "I will insert into column: " << std::endl;
 //    std::cout << output << std::endl;
 
     return 0;

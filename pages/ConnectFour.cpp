@@ -23,11 +23,11 @@ void ConnectFour::input() {
 }
 
 void ConnectFour::update(const float &dtAsSeconds) {
-    if (board.isWin()) {
+    if (board.isPlayerWins()) {
         m_MissionsCompleted[Games::CONNECTFOUR] = true;
         goToBob();
     }
-    if (board.isLose())
+    if (board.isPlayerLoses())
         goToBob();
 }
 

@@ -80,28 +80,15 @@ int Board::go(const unsigned int &i, const unsigned int &j, const int &t, const 
 
 void Board::displayBoardOnConsole() {
 
-    string color{};
-
-    char arr[nrows][ncols];
-
-    std::cout << "Das aktuelle Spielfeld " << std::endl;
-    std::cout << endl;
+    cout << "Das aktuelle Spielfeld " << endl;
+    cout << endl;
 
     for (int ii = 0; ii <= nrows - 1; ++ii) {
         for (int jj = 0; jj <= ncols - 1; ++jj) {
 
             Coin &coin = coins[ii][jj];
 
-            if (coin.isPlayer()) {
-                arr[ii][jj] = 'r';
-            } else if (coin.isOpponent()) {
-                arr[ii][jj] = 'y';
-            } else if (coin.isNeutral()) {
-                arr[ii][jj] = '-';
-            } else if (coin.isHidden()) {
-                arr[ii][jj] = 'x';
-            }
-            cout << " " << arr[ii][jj] << " ";
+            cout << " " << (coin.isPlayer() ? 'r' : (coin.isOpponent() ? 'y' : (coin.isNeutral() ? '-' : 'x'))) << " ";
         } // for
         cout << "\n";
     } // for
@@ -110,14 +97,11 @@ void Board::displayBoardOnConsole() {
 
 int Board::evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const {
 
-    if (coin.isOpponent()) {
-        if (coinsInLine == tmax) {
+    if (coinsInLine == tmax) { // besser: if winningConstellation
+        if (coin.isOpponent())
             return BESTEVAL;
-        }
-    } else if (coin.isPlayer()) {
-        if (coinsInLine == tmax) { // besser: if winningConstellation
+        else if (coin.isPlayer())
             return WORSTEVAL;
-        }
     }
     return 0;
 }
@@ -154,21 +138,17 @@ int Board::checkBoardWinLose() {
 
 double Board::evaluatePosition(const int &coinsInLine, Coin &coin) const {
 
+    bool secondCondition = coinsInLine == tmax - 1;
+    bool thirdCondition = coinsInLine == tmax - 2;
+
     if (coin.isOpponent()) {
         /* bin mir hier nicht 100% sicher. wenn coinsInLine = 2, habe ich eigentlich 3in line,
          * weil ich mit einer farbigen Münze beginne, und die nachfoolgenden zwei auf diese Farbe prüfe
          */
-        if (coinsInLine == 2) {
-            return SECONDBESTEVAL;
-        } else if (coinsInLine == 1) {
-            return THIRDBESTEVAL;
-        }
+        return secondCondition ? SECONDBESTEVAL : (thirdCondition ? THIRDBESTEVAL : 0);
     } else if (coin.isPlayer()) {
-        if (coinsInLine == 2) {
-            return SECONDWORSTEVAL;
-        } else if (coinsInLine == 1) {
-            return THIRDWORSTEVAL; // 0.02 on purpose different from 0.01 because negative positions are rated harder
-        }
+        // 0.02 on purpose different from 0.01 because negative positions are rated harder
+        return secondCondition ? SECONDWORSTEVAL : (thirdCondition ? THIRDWORSTEVAL : 0);
     }
     return 0;
 }
@@ -203,7 +183,10 @@ vector<int> Board::detectAvailableCols() {
 
 double Board::searchDepthFirst(int currentDepth) {
 
-    double temp = (currentDepth % 2 == 0) ? -1 : 1;
+    bool computersTurn = currentDepth % 2 == 0, gameFinished = checkBoardWinLose() != 0,
+    depth0 = currentDepth == 0;
+
+    double temp = computersTurn ? -1 : 1;
     int temp2{-1};
 
     vector<int> availCols = detectAvailableCols();
@@ -212,10 +195,10 @@ double Board::searchDepthFirst(int currentDepth) {
 
         double valueCurrentBoard;
 
-        for (int col: availCols) {
+        for (auto &col: availCols) {
 
             // insert coin
-            if (currentDepth % 2 == 0)
+            if (computersTurn)
                 // virtual computers turn
                 addCoin(col, false);
             else
@@ -223,14 +206,10 @@ double Board::searchDepthFirst(int currentDepth) {
                 addCoin(col, true);
 
             // check if four were connected by this coin:
-            if (checkBoardWinLose() != 0)
-                valueCurrentBoard = checkBoardWinLose();
-            else
-                valueCurrentBoard = searchDepthFirst(currentDepth + 1);
+            valueCurrentBoard = gameFinished ? checkBoardWinLose() : searchDepthFirst(currentDepth + 1);
 
-            if (currentDepth % 2 == 0) {
-                // computers turn
-                if (currentDepth == 0 && valueCurrentBoard > temp)
+            if (computersTurn) {
+                if (depth0 && valueCurrentBoard > temp)
                     temp2 = col; // schreckliches Gebastel...
 
                 temp = max(temp, valueCurrentBoard);
@@ -243,7 +222,7 @@ double Board::searchDepthFirst(int currentDepth) {
 
         } // for
 
-        if (currentDepth == 0) {
+        if (depth0) {
             // return the column with the best chance
 
             // it can happen that the algorithm returns 0, but column 0 is full
@@ -256,17 +235,12 @@ double Board::searchDepthFirst(int currentDepth) {
                 temp2 = availCols.at(0);
 
             return temp2;
-        } else {
+        } else
             return temp;
-        }
 
     } else {
-
         // just evaluate board
-        if (checkBoardWinLose() != 0)
-            temp = checkBoardWinLose();
-        else
-            temp = evaluateBoard();
+        temp = gameFinished ? checkBoardWinLose() : evaluateBoard();
 
         return temp;
     }
@@ -284,7 +258,7 @@ void Board::markColumn(const int &col) {
      * => Die folgende if-Bedingung soll NICHT aufgerufen werden.
      * Ansonsten soll die Spalte schon markiert werden.
      */
-    if (countNeutralCoins && !winState && !loseState) {
+    if (countNeutralCoins && !playerWinState && !playerLoseState) {
         for (auto &hiddenCoin : hiddenCoins) {
             hiddenCoin.makeHidden();
         }
@@ -338,8 +312,8 @@ void Board::input(Words &words) {
         markColumn(6);
 
     if (Keyboard::isKeyPressed(Keyboard::P)) {
-        win = winState;
-        lose = loseState;
+        playerWins = playerWinState;
+        playerLoses = playerLoseState;
     }
 
     if (Keyboard::isKeyPressed(Keyboard::Enter)) {
@@ -353,18 +327,16 @@ void Board::input(Words &words) {
                 // check if player has won:
                 if (checkBoardWinLose() == -1) {
                     words.setString("Player wins! Press [P].");
-                    winState = true;
+                    playerWinState = true;
                 }
 
                 // computer turn
-                int level{0};
-                int c = searchDepthFirst(level);
-
-                // add the coin
-                addCoin(c, false);
-                if (checkBoardWinLose() == 1) {
-                    words.setString("Suck it Bitch! Press [P].");
-                    loseState = true;
+                if (!playerWinState) {
+                    addCoin((int) searchDepthFirst(0), false);
+                    if (checkBoardWinLose() == 1) {
+                        words.setString("Suck it, Bitch! Press [P].");
+                        playerLoseState = true;
+                    }
                 }
                 break;
             }
@@ -385,10 +357,10 @@ void Board::draw(RenderWindow &window) {
     }
 }
 
-bool Board::isWin() const {
-    return win;
+bool Board::isPlayerWins() const {
+    return playerWins;
 }
 
-bool Board::isLose() const {
-    return lose;
+bool Board::isPlayerLoses() const {
+    return playerLoses;
 }

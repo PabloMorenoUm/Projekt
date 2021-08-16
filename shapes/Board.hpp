@@ -15,7 +15,6 @@ class Board {
     WindowSize m_WindowSize;
     // Dimension des Spielfelds:
     static constexpr unsigned nrows = 6, ncols = 7;
-    const int tStart = 0, tmax = 3;
     // Spielfeldmünzen:
     Coin coins[nrows][ncols];
     // Unsichtbare Münzen als Spaltenmarker, damit der User weiß, welche Spalte gerade ausgewählt ist:
@@ -23,18 +22,12 @@ class Board {
     // Spaltennummerierung, damit der User weiß, wo er tippen soll ;-):
     Words numbers[ncols];
 
-    std::vector<Orientation> horizStates = {RIGHT, LEFT, NONE};
-    std::vector<Orientation> verticStates = {UP, DOWN, NONE};
-    bool win = false, lose = false, winState = false, loseState = false;
+    std::vector<Orientation> horizStates = {RIGHT, LEFT, NONE}, verticStates = {UP, DOWN, NONE};
+    bool playerWins = false, playerLoses = false, playerWinState = false, playerLoseState = false;
 
     // Konstanten:
-    const int BESTEVAL {1};
-    const double SECONDBESTEVAL {0.1};
-    const double THIRDBESTEVAL {0.01};
-    const double THIRDWORSTEVAL {-0.02};
-    const double SECONDWORSTEVAL {-0.1};
-    const int WORSTEVAL {-1};
-    const int SEARCHTREEDEPTH {4};
+    const int tStart = 0, tmax = 3, BESTEVAL {1}, WORSTEVAL {-1}, SEARCHTREEDEPTH {4};
+    const double SECONDBESTEVAL {0.1}, THIRDBESTEVAL {0.01}, THIRDWORSTEVAL {-0.02}, SECONDWORSTEVAL {-0.1};
 
     int go(const unsigned &i, const unsigned &j, const int &t, const Orientation &horizontal,
            const Orientation &vertical);
@@ -62,9 +55,8 @@ public:
     void input(Words &words);
     void draw(sf::RenderWindow &window);
 
-    bool isWin() const;
-
-    bool isLose() const;
+    bool isPlayerWins() const;
+    bool isPlayerLoses() const;
 };
 
 
