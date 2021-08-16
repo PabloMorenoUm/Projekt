@@ -45,9 +45,11 @@ public:
     void markColumn(const int &col);
     void addCoin(const unsigned &col, const bool &playersTurn);
     void removeCoin(const unsigned &col);
+    bool isTie();
 
     void displayBoardOnConsole(); // Konsolenanzeige des Spielfelds:
     int evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const;
+    int checkDirections(const int &i, const int &j, const int &val);
     int checkBoardWinLose();
     double searchDepthFirst(int currentDepth);
     double evaluatePosition(const int &coinsInLine, Coin &coin) const;

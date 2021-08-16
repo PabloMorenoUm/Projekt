@@ -106,30 +106,34 @@ int Board::evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const {
     return 0;
 }
 
+int Board::checkDirections(const int &i, const int &j, const int &val) {
+    int value;
+
+    for (auto &horiz: horizStates) {
+        for (auto &vertic: verticStates) {
+            if (horiz != NONE || vertic != NONE) {
+                value = evaluatePositionWinLose(go(i, j, tStart, horiz, vertic), coins[i][j]);
+                if (value == val)
+                    return value;
+            }
+        }
+    }
+    return 0;
+}
+
 int Board::checkBoardWinLose() {
     int value;
     for (int i = 0; i < nrows; ++i) {
         for (int j = 0; j < ncols; ++j) {
-            Coin &actualCoin = coins[i][j];
-            for (auto &horiz: horizStates) {
-                for (auto &vertic: verticStates) {
-                    if (horiz != NONE || vertic != NONE) {
-                        value = evaluatePositionWinLose(go(i, j, tStart, horiz, vertic), actualCoin);
-                        if (value == WORSTEVAL)
-                            return value;
-                    }
-                }
+            value = checkDirections(i, j, WORSTEVAL);
+            if (value != 0) {
+                return value;
             }
 
             // if no losing configuration is detected, check for winning configuration
-            for (auto &horiz: horizStates) {
-                for (auto &vertic: verticStates) {
-                    if (horiz != NONE || vertic != NONE) {
-                        value = evaluatePositionWinLose(go(i, j, tStart, horiz, vertic), actualCoin);
-                        if (value == BESTEVAL)
-                            return value;
-                    }
-                }
+            value = checkDirections(i, j, BESTEVAL);
+            if (value != 0) {
+                return value;
             }
         } // for jj
     } // for ii
@@ -184,7 +188,7 @@ vector<int> Board::detectAvailableCols() {
 double Board::searchDepthFirst(int currentDepth) {
 
     bool computersTurn = currentDepth % 2 == 0, gameFinished = checkBoardWinLose() != 0,
-    depth0 = currentDepth == 0;
+            depth0 = currentDepth == 0;
 
     double temp = computersTurn ? -1 : 1;
     int temp2{-1};
@@ -198,12 +202,7 @@ double Board::searchDepthFirst(int currentDepth) {
         for (auto &col: availCols) {
 
             // insert coin
-            if (computersTurn)
-                // virtual computers turn
-                addCoin(col, false);
-            else
-                // virtual player's turn
-                addCoin(col, true);
+            addCoin(col, not computersTurn);
 
             // check if four were connected by this coin:
             valueCurrentBoard = gameFinished ? checkBoardWinLose() : searchDepthFirst(currentDepth + 1);
@@ -240,9 +239,7 @@ double Board::searchDepthFirst(int currentDepth) {
 
     } else {
         // just evaluate board
-        temp = gameFinished ? checkBoardWinLose() : evaluateBoard();
-
-        return temp;
+        return gameFinished ? checkBoardWinLose() : evaluateBoard();
     }
 }
 
@@ -287,6 +284,16 @@ void Board::removeCoin(const unsigned int &col) {
             break;
         }
     }
+}
+
+bool Board::isTie() {
+    unsigned numNeutralCoins = 0;
+    for (auto &coinsRow: coins) {
+        for (auto &coin : coinsRow) {
+            numNeutralCoins += coin.isNeutral();
+        }
+    }
+    return (numNeutralCoins == 0) && !playerWinState && !playerLoseState;
 }
 
 void Board::input(Words &words) {
@@ -341,6 +348,10 @@ void Board::input(Words &words) {
                 break;
             }
         }
+    }
+
+    if (isTie()) {
+        words.setString("Tie. Press [Esc].");
     }
 }
 
