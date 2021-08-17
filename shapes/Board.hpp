@@ -32,34 +32,30 @@ class Board {
     int go(const unsigned &i, const unsigned &j, const int &t, const Orientation &horizontal,
            const Orientation &vertical);
 
-//    std::vector<int> detectAvailableCols();
-//    void markColumn(const int &col);
-//    void addCoin(const unsigned &col, const bool &playersTurn);
-//    void removeCoin(const unsigned &col);
+    std::vector<int> detectAvailableCols();
+    void markColumn(const int &col);
+    void removeCoin(const unsigned &col);
+
+    int evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const;
+    int checkDirections(const int &i, const int &j, const int &val);
+    double evaluatePosition(const int &coinsInLine, Coin &coin) const;
 
 public:
     Board();
 
-    // temporary:
-    std::vector<int> detectAvailableCols();
-    void markColumn(const int &col);
     void addCoin(const unsigned &col, const bool &playersTurn);
-    void removeCoin(const unsigned &col);
-    bool isTie();
 
     void displayBoard(std::ostream &os); // Konsolenanzeige des Spielfelds:
-    int evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const;
-    int checkDirections(const int &i, const int &j, const int &val);
     int checkBoardWinLose();
-    double searchDepthFirst(int currentDepth);
-    double evaluatePosition(const int &coinsInLine, Coin &coin) const;
     double evaluateBoard();
+    double searchDepthFirst(int currentDepth);
+
     void input(Words &words);
     void draw(sf::RenderWindow &window);
 
+    bool isTie();
     bool isPlayerWins() const;
     bool isPlayerLoses() const;
 };
-
 
 #endif //PROJEKT_RUN_BOARD_HPP
