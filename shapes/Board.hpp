@@ -47,7 +47,7 @@ public:
     void removeCoin(const unsigned &col);
     bool isTie();
 
-    void displayBoardOnConsole(std::ostream &os); // Konsolenanzeige des Spielfelds:
+    void displayBoard(std::ostream &os); // Konsolenanzeige des Spielfelds:
     int evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const;
     int checkDirections(const int &i, const int &j, const int &val);
     int checkBoardWinLose();

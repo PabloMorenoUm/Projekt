@@ -54,7 +54,7 @@ TEST_CASE("Board") {
     board.addCoin(6,true);
 
     std::stringstream ss;
-    board.displayBoardOnConsole(ss);
+    board.displayBoard(ss);
     std::string expectedString =
             "Das aktuelle Spielfeld \n\n"
             " r  -  r  r  -  r  - \n"
@@ -70,11 +70,11 @@ TEST_CASE("Board") {
     double value =
             - .02 + .1 * 2 + .01 * 3 + .1 + .1 * 3
             - .02 - .1 + .01 * 7 + .01 * 4 + .1
-            - .02 * 2 - .1 - .02 * 5 - .02 * 3 - .1 + .01 + .1 * 2 + .01 * 4 * .1 + .1 * 3
+            - .02 * 2 - .1 - .02 * 5 - .02 * 3 - .1 + .01 + .1 * 2 + .01 * 4 + .1 + .1 * 3
             - .02 * 2 - .1 - .02 * 4 - .1 - .02 * 2 - .1 + .01 + .1 - .02 - .02
             - .02 - .02 * 2 + .01 - .02 * 2 - .02 + .01 * 2
             - .02 * 2 + .01 + .1 + .01 * 3 + .01 + .1;
-    CHECK_EQ(board.evaluateBoard(), doctest::Approx(.68).epsilon(.00001));
+    CHECK_EQ(board.evaluateBoard(), doctest::Approx(value).epsilon(.00001));
 
     // Insert into second column:
     CHECK_EQ(board.searchDepthFirst(0), 1);

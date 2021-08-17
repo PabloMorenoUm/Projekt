@@ -77,7 +77,7 @@ int Board::go(const unsigned int &i, const unsigned int &j, const int &t, const 
     return t;
 }
 
-void Board::displayBoardOnConsole(ostream &os) {
+void Board::displayBoard(ostream &os) {
 
     os << "Das aktuelle Spielfeld " << endl;
     os << endl;
