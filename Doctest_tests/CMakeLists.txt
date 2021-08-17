@@ -3,6 +3,7 @@ add_executable(
         BallTest.cpp
         BatTest.cpp
         BobTest.cpp
+        BoardTest.cpp
         DirectionTest.cpp
         ThingTest.cpp
         WordsTest.cpp

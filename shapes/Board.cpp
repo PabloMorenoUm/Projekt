@@ -5,7 +5,6 @@
 #include "Board.hpp"
 #include <sstream>
 #include <algorithm>
-#include <iostream>
 
 using namespace sf;
 using namespace std;
@@ -78,21 +77,21 @@ int Board::go(const unsigned int &i, const unsigned int &j, const int &t, const 
     return t;
 }
 
-void Board::displayBoardOnConsole() {
+void Board::displayBoardOnConsole(ostream &os) {
 
-    cout << "Das aktuelle Spielfeld " << endl;
-    cout << endl;
+    os << "Das aktuelle Spielfeld " << endl;
+    os << endl;
 
     for (int ii = 0; ii <= nrows - 1; ++ii) {
         for (int jj = 0; jj <= ncols - 1; ++jj) {
 
             Coin &coin = coins[ii][jj];
 
-            cout << " " << (coin.isPlayer() ? 'r' : (coin.isOpponent() ? 'y' : (coin.isNeutral() ? '-' : 'x'))) << " ";
+            os << " " << (coin.isPlayer() ? 'r' : (coin.isOpponent() ? 'y' : (coin.isNeutral() ? '-' : 'x'))) << " ";
         } // for
-        cout << "\n";
+        os << "\n";
     } // for
-    std::cout << endl;
+    os << endl;
 }
 
 int Board::evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const {
