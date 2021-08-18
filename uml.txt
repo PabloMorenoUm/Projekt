@@ -224,56 +224,79 @@ GamePage <|-- Reaction
 Engine o-o Reaction
 
 class Coin {
--neutralColor: sf::Color
--hiddenColor: sf::Color
--playerColor: sf::Color
--opponentColor: sf::Color
+-neutral: sf::Color
+-hidden: sf::Color
+-player: sf::Color
+-opponent: sf::Color
 -shape: sf::CircleShape
-+getNeutralColor() const: const sf::Color&
-+getHiddenColor() const: const sf::Color&
-+getPlayerColor() const: const sf::Color&
-+getOpponentColor() const: const sf::Color&
 +getShape() const: const sf::CircleShape&
++isNeutral(): bool
++isHidden: bool
++isPlayer: bool
++isOpponent: bool
 +makeNeutral(): void
 +makeHidden(): void
 +makePlayer(): void
 +makeOpponent(): void
 +setPosition(const float &posX, const float &posY): void
 +setRadius(const float &radius): void
-+operator==(const sf::Color &color) const: bool
-+operator!=(const sf::Color &color) const: bool
 +operator==(const Coin &rhs) const: bool
 +operator!=(const Coin &rhs) const: bool
+}
+
+enum Orientation {
+RIGHT
+LEFT
+UP
+DOWN
+NONE
 }
 
 class Board {
 -m_WindowSize: WindowSize
 -nrows:  static constexpr unsigned
 -ncols: static constexpr unsigned
--tmax: const int
 -coins[nrows][ncols]: Coin
 -hiddenCoins[ncols]: Coin
 -numbers[ncols]: Words
--goRight(const unsigned &i, const unsigned &j, const int &t): int
--goLeft(const unsigned &i, const unsigned &j, const int &t): int
--goUp(const unsigned &i, const unsigned &j, const int &t): int
--goDown(const unsigned &i, const unsigned &j, const int &t): int
--goRightUp(const unsigned &i, const unsigned &j, const int &t): int
--goRightDown(const unsigned &i, const unsigned &j, const int &t): int
--goLeftUp(const unsigned &i, const unsigned &j, const int &t): int
--goLeftDown(const unsigned &i, const unsigned &j, const int &t): int
+-horizStates: std::vector<Orientation>
+-verticStates: std::vector<Orientation>
+-playerWins: bool
+-playerLosos: bool
+-playerWinState: bool
+-playerLoseState: bool
+-tStart: const int
+-tmax: const int
+-BESTEVAL: const int
+-WORSTEVAL: const int
+-SEARCHTREEDEPTH: const int
+-SECONDBESTEVAL: const double
+-THIRDBESTEVAL: const double
+-THIRDWORSTEVAL: const double
+-SECONDWORSTEVAL: const double
+-go(const unsigned &i, const unsigned &j, const int &t, const Orientation &horizontal, const Orientation &vertical): int
+-detectAvailableCols(): std::vector<int>
 -markColumn(const int &col): void
--addCoin(const unsigned &col, const bool &playersTurn): void
 -removeCoin(const unsigned &col): void
+-evaluatePositionWinLose(const int &coinsInLine, Coin &coin) const: int
+-checkDirections(const int &i, const int &j, const int &val): int
+-evaluatePosition(const int &coinsInLine, Coin &coin) const: double
 public:
 +Board()
-+evaluatePosition(const int &coinsInRow, const Coin &coin): double
++addCoin(const unsigned &col, const bool &playersTurn): void
++displayBoard(std::ostream &os): void
++checkBoardWinLose(): int
 +evaluateBoard(): double
-+input(): void
++searchDepthFirst(int currentDepth): double
++input(Words &words): void
 +draw(sf::RenderWindow &window): void
++isTie(): bool
++isPlayerWins() const: bool
++isPlayerLoses() const: bool
 }
 
 Coin *-- Board
+Orientation *-- Board
 WindowSize *-- Board
 Words *-- Board
 

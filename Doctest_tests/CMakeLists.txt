@@ -4,6 +4,7 @@ add_executable(
         BatTest.cpp
         BobTest.cpp
         BoardTest.cpp
+        CoinTest.cpp
         DirectionTest.cpp
         ThingTest.cpp
         WordsTest.cpp
