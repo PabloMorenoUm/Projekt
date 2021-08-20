@@ -1,26 +1,9 @@
 # Projekt
 C++ game project for karrieretutor® (team work, NOT my own work!!!)
 
-# Zielsetzung, Quellen, Urheberrechte
+# Zielsetzung
 Ziel ist ein Rollenspiel, bestehend aus mehreren "Unterspielen", mit der Bibliothek 
 [SFML](https://gamecodeschool.com/sfml-projects/). 
-In Anlehnung an die [hierin](https://gamecodeschool.com/sfml-projects/) enthaltenen Tutorials wurde das Spiel 
-entwickelt und einige Figuren übernommen. 
-Vier Gewinnt ist inspiriert durch [diese](https://www.igpm.rwth-aachen.de/Download/ss17/mapra/ma4.pdf) Empfehlung.
-
-Zum Testen nutzen wir die Frameworks 
-[doctest](https://github.com/onqtam/doctest) und 
-[fakeit](https://github.com/eranpeer/FakeIt).
-
-<a href='https://www.freepik.com/vectors/background'>Background vector created by upklyak - www.freepik.com</a>
-
-Alle Hintergrundbilder wurden aus [Freepik](http://www.freepik.com) 
-(Aufrufdatum: 19., 24., 25., 28. Juli und 8. August 2021) übernommen 
-und einige Icons aus [Flaticon](https://www.flaticon.com/de/) und 
-[icons8](https://icons8.com/icon/set/popular/doodle) (Aufrufdatum beide 28.7.). 
-
-Für die Entwicklung verwenden wir C++20 und [CLion](https://www.jetbrains.com/de-de/clion/).
-
 
 # Spielanleitung
 

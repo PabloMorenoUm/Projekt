@@ -11,7 +11,7 @@ using namespace sf;
 Pong::Pong(std::map<Games, bool> &missionsCompleted) {
     m_MissionsCompleted = std::move(missionsCompleted);
     createWindow("Pong");
-    loadSong("2021_04_07_Helenenmarsch.ogg");
+    loadSong("2020-10-25_NotInAbleton.ogg");
 }
 
 std::string Pong::writeScore() const {

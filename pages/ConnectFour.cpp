@@ -11,7 +11,7 @@ ConnectFour::ConnectFour(std::map<Games, bool> &missionsCompleted) {
     createWindow("ConnectFour");
     // <a href='https://www.freepik.com/vectors/background'>Background vector created by BiZkettE1 - www.freepik.com</a>
     setSprite("abstract-banner-background-with-red-shapes/ABSTRACT_BACKGROUND_01.jpg");
-    loadSong("2020-08-02.ogg");
+    loadSong("2020_04_19_rough.ogg");
     hud.setString("Try to align four coins.");
 }
 

@@ -26,7 +26,7 @@ Reaction::Reaction(map<Games, bool> &missionsCompleted) {
     createWindow("Reaktionsspiel");
     // <a href='https://www.freepik.com/vectors/background'>Background vector created by upklyak - www.freepik.com</a>
     setSprite("space-game-background-neon-night-alien-landscape/1624.jpg");
-    loadSong("2019-12-08_hh.ogg");
+    loadSong("2020-08-02.ogg");
 }
 
 void Reaction::input() {

@@ -12,7 +12,7 @@ MainMenu::MainMenu() {
     createWindow("Welcome to this freaky game!!!");
     // <a href='https://www.freepik.com/vectors/background'>Background vector created by freepik - www.freepik.com</a>
     setSprite("blue-copy-space-digital-background/4882066.jpg");
-    loadSong("2020-10-25_NotInAbleton.ogg");
+    loadSong("flm.wav");
     title.changeColor(Color::Green);
 }
 
