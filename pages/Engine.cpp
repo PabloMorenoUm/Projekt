@@ -25,10 +25,10 @@ Engine::Engine() {
 Engine::Engine(std::map<Games, bool> &missionsCompleted) : Engine() {
     m_MissionsCompleted = std::move(missionsCompleted);
 
-    m_ThingUp.setSprite(m_MissionsCompleted[Games::PONG] ? "icons8-checkmark-480.png" : "haus.png");
-    m_ThingDown.setSprite(m_MissionsCompleted[Games::CONNECTFOUR] ? "icons8-checkmark-480.png" : "haus.png");
-    m_ThingLeft.setSprite(m_MissionsCompleted[Games::REACTION] ? "icons8-checkmark-480.png" : "haus.png");
-    m_ThingRight.setSprite(m_MissionsCompleted[Games::GAME4] ? "icons8-checkmark-480.png" : "haus.png");
+    m_ThingUp.setSprite(m_MissionsCompleted[Games::PONG] ? "check.png" : "haus.png");
+    m_ThingDown.setSprite(m_MissionsCompleted[Games::CONNECTFOUR] ? "check.png" : "haus.png");
+    m_ThingLeft.setSprite(m_MissionsCompleted[Games::REACTION] ? "check.png" : "haus.png");
+    m_ThingRight.setSprite(m_MissionsCompleted[Games::GAME4] ? "check.png" : "haus.png");
 
     if (std::all_of(m_MissionsCompleted.begin(), m_MissionsCompleted.end(),
                     [](const auto &p) { return p.second; }))
