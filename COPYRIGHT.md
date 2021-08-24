@@ -1,5 +1,7 @@
 In Anlehnung an die in der [Game Code School](https://gamecodeschool.com/sfml-projects/) 
-enthaltenen Tutorials wurde das Spiel entwickelt und die Figur "Bob" übernommen.
+enthaltenen Tutorials wurde das Spiel entwickelt und die Figur "Bob" übernommen. 
+Dabei handelt es sich um die Open-Source-Bibliothek [SFML](https://www.sfml-dev.org/license.php).
+Im gesamten Spiel verwenden wir den Schriftsatz [DS-Digital von Dusit Supasawat](https://www.dafont.com/theme.php?cat=302).
 Vier Gewinnt ist inspiriert durch Empfehlung der 
 [RWTH Aachen](https://www.igpm.rwth-aachen.de/Download/ss17/mapra/ma4.pdf).
 
