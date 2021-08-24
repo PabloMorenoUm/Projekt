@@ -1,10 +1,35 @@
-# set the name of the installer
-Outfile "hello world.exe"
+# define name of installer
+OutFile "installer.exe"
 
-# create a default section.
+# define installation directory
+InstallDir $DESKTOP
+
+# For removing Start Menu shortcut in Windows 7
+RequestExecutionLevel user
+
+# start default section
 Section
 
-# create a popup box, with an OK button and the text "Hello world!"
-MessageBox MB_OK "Hello world!"
+    # set the installation directory as the destination for the following actions
+    SetOutPath $INSTDIR
 
+    # create the uninstaller
+    WriteUninstaller "$INSTDIR\uninstall.exe"
+
+    # create a shortcut named "new shortcut" in the start menu programs directory
+    # point the new shortcut at the program uninstaller
+    CreateShortcut "$SMPROGRAMS\new shortcut.lnk" "$INSTDIR\uninstall.exe"
+SectionEnd
+
+# uninstaller section start
+Section "uninstall"
+
+    # first, delete the uninstaller
+    Delete "$INSTDIR\uninstall.exe"
+
+    # second, remove the link from the start menu
+    Delete "$SMPROGRAMS\new shortcut.lnk"
+
+    RMDir $INSTDIR
+# uninstaller section end
 SectionEnd
