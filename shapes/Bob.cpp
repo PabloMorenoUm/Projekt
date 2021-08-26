@@ -19,16 +19,18 @@ void Bob::input() {
 }
 
 void Bob::update(const float &elapsedTime) {
-    if (m_RightPressed.isPressed())
+    if (m_RightPressed.isPressed() &&
+    m_Position.x + (float) m_Sprite.getTexture()->getSize().x < m_WindowSize.getX())
         m_Position.x += m_Speed * elapsedTime;
 
-    if (m_LeftPressed.isPressed())
+    if (m_LeftPressed.isPressed() && m_Position.x > 0)
         m_Position.x -= m_Speed * elapsedTime;
 
-    if (m_UpPressed.isPressed())
+    if (m_UpPressed.isPressed() && m_Position.y > 0)
         m_Position.y -= m_Speed * elapsedTime;
 
-    if (m_DownPressed.isPressed())
+    if (m_DownPressed.isPressed() &&
+    m_Position.y + (float) m_Sprite.getTexture()->getSize().y < m_WindowSize.getY())
         m_Position.y += m_Speed * elapsedTime;
 
     m_Sprite.setPosition(m_Position);
